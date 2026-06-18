@@ -1,0 +1,73 @@
+:root {
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: #172033;
+  background: #f5f7fb;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 64px;
+  padding: 0 24px;
+  background: #ffffff;
+  border-bottom: 1px solid #dde3ee;
+}
+
+.app-main {
+  padding: 24px;
+}
+
+.login-page {
+  display: grid;
+  min-height: 100vh;
+  place-items: center;
+  padding: 24px;
+}
+
+.login-form {
+  display: grid;
+  gap: 16px;
+  width: min(420px, 100%);
+}
+
+.login-form label {
+  display: grid;
+  gap: 6px;
+}
+
+.login-form input {
+  min-height: 42px;
+  padding: 8px 10px;
+  border: 1px solid #c9d2e3;
+  border-radius: 6px;
+}
+
+.login-form button,
+.app-header button {
+  min-height: 40px;
+  padding: 8px 14px;
+  color: #ffffff;
+  cursor: pointer;
+  background: #2563eb;
+  border: 0;
+  border-radius: 6px;
+}
+
+.form-error {
+  color: #b42318;
+}
