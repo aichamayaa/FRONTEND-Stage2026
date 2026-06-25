@@ -4,6 +4,7 @@ import { LoginPage } from '../pages/auth/LoginPage';
 import { DashboardPage } from '../pages/dashboard/DashboardPage';
 import { UsersPage } from '../pages/admin/UsersPage';
 import { RolesPage } from '../pages/admin/RolesPage';
+import { OffresEmployeurPage } from '../pages/employeur/OffresEmployeurPage';
 import { NotFoundPage } from '../pages/shared/NotFoundPage';
 
 export function AppRoutes() {
@@ -34,6 +35,16 @@ export function AppRoutes() {
         element={
           <ProtectedRoute roles={['SuperAdministrateur', 'Administrateur']}>
             <RolesPage />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* US-07 / US-08 / US-09 - CRUD offres employeur */}
+      <Route
+        path="/employeur/offres"
+        element={
+          <ProtectedRoute roles={['Employeur', 'Administrateur', 'SuperAdministrateur']}>
+            <OffresEmployeurPage />
           </ProtectedRoute>
         }
       />
