@@ -1,5 +1,5 @@
 import { formatDate } from '../../utils/formatDate';
-import { getUrlTelechargementDocument } from '../../services/candidatureService';
+import { telechargerDocument } from '../../services/candidatureService';
 
 const STATUT_LABELS = {
   EnAttente: 'En attente',
@@ -16,8 +16,6 @@ const TYPE_LABELS = {
 
 export function CandidatureDetail({ candidature, onRetour }) {
   if (!candidature) return null;
-
-  const token = localStorage.getItem('token');
 
   return (
     <div className="candidature-detail">
@@ -71,15 +69,13 @@ export function CandidatureDetail({ candidature, onRetour }) {
                       {(doc.tailleFichier / 1024).toFixed(0)} Ko
                     </span>
                   </div>
-                  <a
-                    href={getUrlTelechargementDocument(doc.idDocument)}
+                  <button
+                    type="button"
                     className="table-action"
-                    download={doc.nomFichier}
-                    target="_blank"
-                    rel="noreferrer"
+                    onClick={() => telechargerDocument(doc.idDocument, doc.nomFichier)}
                   >
                     Telecharger
-                  </a>
+                  </button>
                 </div>
               ))}
             </div>

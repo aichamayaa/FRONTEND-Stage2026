@@ -1,44 +1,35 @@
-import { useState } from 'react';
-import { getStatutOffre } from '../../services/offreService';
+import { useEffect, useState } from 'react';
+import { AppLayout } from '../../components/layout/AppLayout';
+import { OffreTable } from '../../components/offres/OffreTable';
+import { getOffres } from '../../services/offreService';
 
 export function StatutOffrePage() {
-  const [idOffre, setIdOffre] = useState('');
-  const [resultat, setResultat] = useState(null);
+  const [offres, setOffres] = useState([]);
+  const [chargement, setChargement] = useState(true);
   const [erreur, setErreur] = useState(null);
 
-  async function handleSubmit(event) {
-    event.preventDefault();
-    setErreur(null);
-    setResultat(null);
-
-    try {
-      const data = await getStatutOffre(idOffre);
-      setResultat(data);
-    } catch {
-      setErreur('Offre introuvable ou erreur.');
-    }
-  }
+  useEffect(() => {
+    getOffres()
+      .then(setOffres)
+      .catch(() => setErreur('Impossible de récupérer les offres.'))
+      .finally(() => setChargement(false));
+  }, []);
 
   return (
-    <main style={{ maxWidth: 500, margin: '0 auto', padding: 24 }}>
-      <h1>Statut d'une offre</h1>
+    <AppLayout>
+      <section className="dashboard-hero">
+        <div>
+          <p className="page-kicker">Offres</p>
+          <h1>Statut des offres</h1>
+          <p>Consultez toutes les offres et leur statut actuel.</p>
+        </div>
+      </section>
 
-      <form onSubmit={handleSubmit}>
-        <input
-          type="number"
-          placeholder="No de l'offre"
-          value={idOffre}
-          onChange={(event) => setIdOffre(event.target.value)}
-        />
-        <button type="submit">Vérifier</button>
-      </form>
-
-      {erreur && <p style={{ color: 'crimson' }}>{erreur}</p>}
-      {resultat && (
-        <p>
-          Offre #{resultat.idOffre} → statut : <strong>{resultat.statut}</strong>
-        </p>
+      {chargement && <p>Chargement...</p>}
+      {erreur && <p className="form-error">{erreur}</p>}
+      {!chargement && !erreur && (
+        <OffreTable offres={offres} isEmployeur={false} onVoir={() => {}} />
       )}
-    </main>
+    </AppLayout>
   );
 }

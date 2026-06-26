@@ -99,7 +99,7 @@ export function DashboardPage() {
           <Link className="dashboard-card dashboard-link" to="/statut-offre">
             <span className="dashboard-card-number">B</span>
             <h2>Statut d'une offre</h2>
-            <p>Verifier l'etat d'une offre par son numero.</p>
+            <p>Consulter toutes les offres et leur statut actuel.</p>
           </Link>
         )}
       </section>

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { AppLayout } from '../../components/layout/AppLayout';
 import { rechercherOffres } from '../../services/offreService';
 import { OffreCard } from '../../components/offres/OffreCard';
 import { CandidatureForm } from '../../components/candidatures/CandidatureForm';
@@ -35,33 +36,72 @@ export function RechercheOffresPage() {
   }
 
   return (
-    <main style={{ maxWidth: 900, margin: '0 auto', padding: 24 }}>
-      <h1>Recherche d'offres</h1>
+    <AppLayout>
+      <div className="page-header">
+        <p className="page-kicker">Espace étudiant</p>
+        <h1>Recherche d'offres</h1>
+        <p>Trouvez un emploi ou un stage et postulez en ligne.</p>
+      </div>
 
-      <form onSubmit={handleSearch} className="offre-filters">
-        <select value={type} onChange={(event) => setType(event.target.value)}>
-          <option value="">Tous les types</option>
-          <option value="Emploi">Emploi</option>
-          <option value="Stage">Stage</option>
-        </select>
-        <input
-          placeholder="Lieu"
-          value={lieu}
-          onChange={(event) => setLieu(event.target.value)}
-        />
-        <input
-          placeholder="Mots-clés"
-          value={motsCles}
-          onChange={(event) => setMotsCles(event.target.value)}
-        />
-        <button type="submit">Rechercher</button>
+      <form className="panel" onSubmit={handleSearch}>
+        <div className="offre-filters">
+          <label className="offre-filters__label">
+            Type
+            <select
+              className="offre-filters__select"
+              value={type}
+              onChange={(event) => setType(event.target.value)}
+            >
+              <option value="">Tous les types</option>
+              <option value="Emploi">Emploi</option>
+              <option value="Stage">Stage</option>
+            </select>
+          </label>
+
+          <label className="offre-filters__label">
+            Lieu
+            <input
+              className="offre-filters__select"
+              placeholder="Ville ou adresse"
+              value={lieu}
+              onChange={(event) => setLieu(event.target.value)}
+            />
+          </label>
+
+          <label className="offre-filters__label">
+            Mots-clés
+            <input
+              className="offre-filters__select"
+              placeholder="Titre ou description"
+              value={motsCles}
+              onChange={(event) => setMotsCles(event.target.value)}
+            />
+          </label>
+
+          <button
+            type="submit"
+            className="primary-action"
+            style={{ alignSelf: 'flex-end' }}
+          >
+            Rechercher
+          </button>
+        </div>
       </form>
 
       {chargement && <p>Chargement...</p>}
-      {erreur && <p className="form-error">{erreur}</p>}
-      {!chargement && recherchee && offres.length === 0 && <p>Aucune offre trouvée.</p>}
+      {erreur && <p className="notice notice-error">{erreur}</p>}
+      {!chargement && recherchee && offres.length === 0 && (
+        <p className="notice">Aucune offre trouvée.</p>
+      )}
 
-      <div className="offres-liste">
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
+          gap: 16,
+          marginTop: 16
+        }}
+      >
         {offres.map((offre) => (
           <OffreCard
             key={offre.idOffre}
@@ -74,13 +114,16 @@ export function RechercheOffresPage() {
 
       {idOffrePostuler && (
         <section style={{ marginTop: 24 }}>
-          <h2>Postuler à l'offre #{idOffrePostuler}</h2>
+          <div className="page-header">
+            <p className="page-kicker">Candidature</p>
+            <h2>Postuler à l'offre #{idOffrePostuler}</h2>
+          </div>
           <CandidatureForm
             idOffre={idOffrePostuler}
             onSuccess={() => setIdOffrePostuler(null)}
           />
         </section>
       )}
-    </main>
+    </AppLayout>
   );
 }
