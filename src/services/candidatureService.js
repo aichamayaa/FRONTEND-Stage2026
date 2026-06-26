@@ -23,12 +23,32 @@ export function getUrlTelechargementDocument(idDocument) {
   return `${base}/candidatures/documents/${idDocument}/telecharger`;
 }
 
+export async function telechargerDocument(idDocument, nomFichier) {
+  const base = import.meta.env.VITE_API_BASE_URL ?? 'https://localhost:7266/api';
+  const token = localStorage.getItem('token');
+  const response = await fetch(`${base}/candidatures/documents/${idDocument}/telecharger`, {
+    headers: token ? { Authorization: `Bearer ${token}` } : {}
+  });
+  if (!response.ok) {
+    throw new Error('Telechargement echoue.');
+  }
+  const blob = await response.blob();
+  const url = URL.createObjectURL(blob);
+  const lien = document.createElement('a');
+  lien.href = url;
+  lien.download = nomFichier ?? 'document';
+  document.body.appendChild(lien);
+  lien.click();
+  lien.remove();
+  URL.revokeObjectURL(url);
+}
+
 export async function postuler(payload) {
   const { data } = await apiClient.post('/candidatures', payload);
   return data;
 }
 
-export async function uploadCv(fichier) {
+export async function uploadDocument(fichier) {
   const formData = new FormData();
   formData.append('fichier', fichier);
   const base = import.meta.env.VITE_API_BASE_URL ?? 'https://localhost:7266/api';

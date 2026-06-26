@@ -1,10 +1,11 @@
 import { useRef, useState } from 'react';
-import { postuler, uploadCv } from '../../services/candidatureService';
+import { postuler, uploadDocument } from '../../services/candidatureService';
 
 export function CandidatureForm({ idOffre, onSuccess }) {
-  const fileInputRef = useRef(null);
-  const [fichier, setFichier] = useState(null);
-  const [lettreMotivation, setLettreMotivation] = useState('');
+  const cvInputRef = useRef(null);
+  const lettreInputRef = useRef(null);
+  const [fichierCv, setFichierCv] = useState(null);
+  const [fichierLettre, setFichierLettre] = useState(null);
   const [envoi, setEnvoi] = useState(false);
   const [message, setMessage] = useState(null);
   const [erreur, setErreur] = useState(null);
@@ -14,7 +15,7 @@ export function CandidatureForm({ idOffre, onSuccess }) {
     setErreur(null);
     setMessage(null);
 
-    if (!fichier) {
+    if (!fichierCv) {
       setErreur('Le CV est obligatoire.');
       return;
     }
@@ -22,17 +23,17 @@ export function CandidatureForm({ idOffre, onSuccess }) {
     setEnvoi(true);
 
     try {
-      const cvUrl = await uploadCv(fichier);
-      const candidature = await postuler({
-        idOffre,
-        cvUrl,
-        lettreMotivation: lettreMotivation || null
-      });
+      const cvUrl = await uploadDocument(fichierCv);
+      const lettreUrl = fichierLettre ? await uploadDocument(fichierLettre) : null;
+      const candidature = await postuler({ idOffre, cvUrl, lettreUrl });
       setMessage(`Candidature envoyée. Numéro de confirmation : ${candidature.idCandidature}.`);
-      setFichier(null);
-      setLettreMotivation('');
-      if (fileInputRef.current) {
-        fileInputRef.current.value = '';
+      setFichierCv(null);
+      setFichierLettre(null);
+      if (cvInputRef.current) {
+        cvInputRef.current.value = '';
+      }
+      if (lettreInputRef.current) {
+        lettreInputRef.current.value = '';
       }
       if (onSuccess) {
         onSuccess(candidature);
@@ -46,31 +47,41 @@ export function CandidatureForm({ idOffre, onSuccess }) {
 
   return (
     <form className="candidature-form card" onSubmit={handleSubmit}>
-      <div>
-        <label>CV (PDF ou Word)</label>
+      <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap' }}>
         <div>
-          <button type="button" onClick={() => fileInputRef.current?.click()}>
-            Ajouter fichier
-          </button>
-          {fichier && <span style={{ marginLeft: 8 }}>{fichier.name}</span>}
+          <label>CV (PDF ou Word)</label>
+          <div>
+            <button type="button" onClick={() => cvInputRef.current?.click()}>
+              Ajouter fichier
+            </button>
+            {fichierCv && <span style={{ marginLeft: 8 }}>{fichierCv.name}</span>}
+          </div>
+          <input
+            type="file"
+            ref={cvInputRef}
+            accept=".pdf,.doc,.docx"
+            style={{ display: 'none' }}
+            onChange={(event) => setFichierCv(event.target.files[0] ?? null)}
+          />
         </div>
-        <input
-          type="file"
-          ref={fileInputRef}
-          accept=".pdf,.doc,.docx"
-          style={{ display: 'none' }}
-          onChange={(event) => setFichier(event.target.files[0] ?? null)}
-        />
-      </div>
 
-      <label>
-        Lettre de motivation
-        <textarea
-          rows={4}
-          value={lettreMotivation}
-          onChange={(event) => setLettreMotivation(event.target.value)}
-        />
-      </label>
+        <div>
+          <label>Lettre de motivation (PDF ou Word)</label>
+          <div>
+            <button type="button" onClick={() => lettreInputRef.current?.click()}>
+              Ajouter fichier
+            </button>
+            {fichierLettre && <span style={{ marginLeft: 8 }}>{fichierLettre.name}</span>}
+          </div>
+          <input
+            type="file"
+            ref={lettreInputRef}
+            accept=".pdf,.doc,.docx"
+            style={{ display: 'none' }}
+            onChange={(event) => setFichierLettre(event.target.files[0] ?? null)}
+          />
+        </div>
+      </div>
 
       {erreur && <p className="form-error">{erreur}</p>}
       {message && <p className="form-success">{message}</p>}

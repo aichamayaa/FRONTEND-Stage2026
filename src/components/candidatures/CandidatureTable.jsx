@@ -55,7 +55,7 @@ export function CandidatureTable({ candidatures, onVoirDetail, onChangerStatut }
               </td>
               <td>{c.emailEtudiant ?? '-'}</td>
               <td>{formatDate(c.dateCandidature)}</td>
-              <td>{c.aCV ? 'Oui' : 'Non'}</td>
+              <td>{c.acv ? 'Oui' : 'Non'}</td>
               <td>{c.aLettreMotivation ? 'Oui' : 'Non'}</td>
               <td>
                 <span className={`badge ${STATUT_BADGE[c.statut] ?? 'badge-muted'}`}>
