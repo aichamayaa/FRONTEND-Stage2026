@@ -1,8 +1,6 @@
 import { useState } from 'react';
 import { getStatutOffre } from '../../services/offreService';
 
-const LIBELLES_STATUT = ['Brouillon', 'Publiee', 'Expiree', 'Fermee'];
-
 export function StatutOffrePage() {
   const [idOffre, setIdOffre] = useState('');
   const [resultat, setResultat] = useState(null);
@@ -23,7 +21,7 @@ export function StatutOffrePage() {
 
   return (
     <main style={{ maxWidth: 500, margin: '0 auto', padding: 24 }}>
-      <h1>Statut d'une offre (US-26)</h1>
+      <h1>Statut d'une offre</h1>
 
       <form onSubmit={handleSubmit}>
         <input
@@ -38,8 +36,7 @@ export function StatutOffrePage() {
       {erreur && <p style={{ color: 'crimson' }}>{erreur}</p>}
       {resultat && (
         <p>
-          Offre #{resultat.idOffre} → statut :{' '}
-          <strong>{LIBELLES_STATUT[resultat.statut] ?? resultat.statut}</strong>
+          Offre #{resultat.idOffre} → statut : <strong>{resultat.statut}</strong>
         </p>
       )}
     </main>

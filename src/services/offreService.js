@@ -43,3 +43,18 @@ export async function modifierOffreStage(idOffre, payload) {
 export async function supprimerOffre(idOffre) {
   await apiClient.delete(`/offres/${idOffre}`);
 }
+
+export async function rechercherOffres(filtres = {}) {
+  const params = { statut: 'Active' };
+  if (filtres.type) params.type = filtres.type;
+  if (filtres.idDomaine) params.idDomaine = filtres.idDomaine;
+  if (filtres.lieu) params.lieu = filtres.lieu;
+  if (filtres.motsCles) params.motsCles = filtres.motsCles;
+  const { data } = await apiClient.get('/offres', { params });
+  return data;
+}
+
+export async function getStatutOffre(idOffre) {
+  const offre = await getOffreById(idOffre);
+  return { idOffre, statut: offre.statut };
+}
