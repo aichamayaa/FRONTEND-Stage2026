@@ -19,6 +19,14 @@ const VUE_DETAIL = 'detail';
 const VUE_FORM_EMPLOI = 'form-emploi';
 const VUE_FORM_STAGE = 'form-stage';
 
+function messageErreur(e) {
+  const data = e.response?.data;
+  if (data?.errors) {
+    return Object.values(data.errors).flat().join(' ');
+  }
+  return data?.message ?? data?.title ?? e.message;
+}
+
 export function OffresEmployeurPage() {
   const [vue, setVue] = useState(VUE_LISTE);
   const [offres, setOffres] = useState([]);
@@ -42,7 +50,7 @@ export function OffresEmployeurPage() {
       const data = await getOffres(filtreType || undefined, filtreStatut || undefined);
       setOffres(data);
     } catch (e) {
-      setErreur(e.response?.data?.message ?? e.message);
+      setErreur(messageErreur(e));
     } finally {
       setChargement(false);
     }
@@ -55,7 +63,7 @@ export function OffresEmployeurPage() {
       setOffreSelectionnee(offre);
       setVue(VUE_DETAIL);
     } catch (e) {
-      setErreur(e.response?.data?.message ?? e.message);
+      setErreur(messageErreur(e));
     }
   }
 
@@ -77,7 +85,7 @@ export function OffresEmployeurPage() {
       setOffres((prev) => prev.filter((o) => o.idOffre !== idOffre));
       afficherSucces('Offre supprimee avec succes.');
     } catch (e) {
-      setErreur(e.response?.data?.message ?? e.message);
+      setErreur(messageErreur(e));
     }
   }
 
@@ -107,7 +115,7 @@ export function OffresEmployeurPage() {
       setVue(VUE_LISTE);
       chargerOffres();
     } catch (e) {
-      setErreurForm(e.response?.data?.message ?? e.message ?? 'Une erreur est survenue.');
+      setErreurForm(messageErreur(e) ?? 'Une erreur est survenue.');
     } finally {
       setChargementForm(false);
     }
