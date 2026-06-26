@@ -1,7 +1,10 @@
+import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 
 export function Header() {
   const { user, logout } = useAuth();
+  const location = useLocation();
+  const showDashboardLink = user && location.pathname !== '/';
 
   return (
     <header className="app-header">
@@ -19,6 +22,12 @@ export function Header() {
       </div>
 
       <div className="header-actions">
+        {showDashboardLink && (
+          <Link className="header-dashboard-link" to="/">
+            Tableau de bord
+          </Link>
+        )}
+
         {user && (
           <span className="header-user">
             {user.prenom} · {user.role}

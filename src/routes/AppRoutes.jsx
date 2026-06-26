@@ -5,6 +5,9 @@ import { DashboardPage } from '../pages/dashboard/DashboardPage';
 import { UsersPage } from '../pages/admin/UsersPage';
 import { RolesPage } from '../pages/admin/RolesPage';
 import { OffresEmployeurPage } from '../pages/employeur/OffresEmployeurPage';
+import { CandidaturesRecuesPage } from '../pages/employeur/CandidaturesRecuesPage';
+import { RechercheOffresPage } from '../pages/etudiant/RechercheOffresPage';
+import { StatutOffrePage } from '../pages/etudiant/StatutOffrePage';
 import { NotFoundPage } from '../pages/shared/NotFoundPage';
 
 export function AppRoutes() {
@@ -45,6 +48,34 @@ export function AppRoutes() {
         element={
           <ProtectedRoute roles={['Employeur', 'Administrateur', 'SuperAdministrateur']}>
             <OffresEmployeurPage />
+          </ProtectedRoute>
+        }
+      />
+
+
+      {/* US-10 / US-12 - Candidatures recues employeur */}
+      <Route
+        path="/employeur/candidatures"
+        element={
+          <ProtectedRoute roles={['Employeur', 'Administrateur', 'SuperAdministrateur']}>
+            <CandidaturesRecuesPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/recherche-offres"
+        element={
+          <ProtectedRoute>
+            <RechercheOffresPage />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/statut-offre"
+        element={
+          <ProtectedRoute>
+            <StatutOffrePage />
           </ProtectedRoute>
         }
       />

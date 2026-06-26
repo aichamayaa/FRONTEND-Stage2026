@@ -3,10 +3,13 @@ import { AppLayout } from '../../components/layout/AppLayout';
 import { useAuth } from '../../hooks/useAuth';
 
 const ADMIN_ROLES = ['SuperAdministrateur', 'Administrateur'];
+const EMPLOYEUR_ROLES = ['Employeur', 'Administrateur', 'SuperAdministrateur'];
 
 export function DashboardPage() {
   const { user } = useAuth();
   const canManageUsers = ADMIN_ROLES.includes(user?.role);
+  const canManageOffres = EMPLOYEUR_ROLES.includes(user?.role);
+  const isEtudiant = user?.role === 'Etudiant';
 
   return (
     <AppLayout>
@@ -55,6 +58,50 @@ export function DashboardPage() {
             Verifier les informations retournees par le token de connexion.
           </p>
         </article>
+
+        {canManageOffres && (
+          <Link className="dashboard-card dashboard-link" to="/employeur/offres">
+            <span className="dashboard-card-number">04</span>
+            <h2>Mes offres</h2>
+            <p>
+              Creer et modifier les offres d'emploi ou de stage publiees.
+            </p>
+          </Link>
+        )}
+
+        {canManageOffres && (
+          <Link className="dashboard-card dashboard-link" to="/employeur/offres">
+            <span className="dashboard-card-number">06</span>
+            <h2>Créer une offre</h2>
+            <p>Publier une nouvelle offre d'emploi ou de stage.</p>
+          </Link>
+        )}
+
+        {canManageOffres && (
+          <Link className="dashboard-card dashboard-link" to="/employeur/candidatures">
+            <span className="dashboard-card-number">05</span>
+            <h2>Candidatures recues</h2>
+            <p>
+              Consulter les candidats, changer leur statut et voir les documents.
+            </p>
+          </Link>
+        )}
+
+        {isEtudiant && (
+          <Link className="dashboard-card dashboard-link" to="/recherche-offres">
+            <span className="dashboard-card-number">A</span>
+            <h2>Rechercher des offres</h2>
+            <p>Trouver un emploi ou un stage et postuler.</p>
+          </Link>
+        )}
+
+        {isEtudiant && (
+          <Link className="dashboard-card dashboard-link" to="/statut-offre">
+            <span className="dashboard-card-number">B</span>
+            <h2>Statut d'une offre</h2>
+            <p>Verifier l'etat d'une offre par son numero.</p>
+          </Link>
+        )}
       </section>
     </AppLayout>
   );
