@@ -137,6 +137,14 @@ export function DashboardPage() {
             <p>Consulter toutes les offres et leur statut actuel.</p>
           </Link>
         )}
+
+        {isEtudiant && (
+          <Link className="dashboard-card dashboard-link" to="/mes-candidatures">
+            <span className="dashboard-card-number">C</span>
+            <h2>Mes candidatures</h2>
+            <p>Voir les offres auxquelles vous avez postulé et leur statut.</p>
+          </Link>
+        )}
       </section>
     </AppLayout>
   );
