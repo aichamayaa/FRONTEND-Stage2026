@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
 import { postuler, uploadDocument } from '../../services/candidatureService';
 
-export function CandidatureForm({ idOffre, onSuccess }) {
+export function CandidatureForm({ idOffre, titreOffre, onSuccess }) {
   const cvInputRef = useRef(null);
   const lettreInputRef = useRef(null);
   const [fichierCv, setFichierCv] = useState(null);
@@ -26,7 +26,7 @@ export function CandidatureForm({ idOffre, onSuccess }) {
       const cvUrl = await uploadDocument(fichierCv);
       const lettreUrl = fichierLettre ? await uploadDocument(fichierLettre) : null;
       const candidature = await postuler({ idOffre, cvUrl, lettreUrl });
-      setMessage(`Candidature envoyée. Numéro de confirmation : ${candidature.idCandidature}.`);
+      setMessage(`Merci d'avoir postulé à : ${titreOffre ?? "l'offre"}. Numéro de confirmation : ${candidature.idCandidature}.`);
       setFichierCv(null);
       setFichierLettre(null);
       if (cvInputRef.current) {

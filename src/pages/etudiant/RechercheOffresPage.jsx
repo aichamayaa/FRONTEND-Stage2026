@@ -13,6 +13,7 @@ export function RechercheOffresPage() {
   const [erreur, setErreur] = useState(null);
   const [recherchee, setRecherchee] = useState(false);
   const [idOffrePostuler, setIdOffrePostuler] = useState(null);
+  const [confirmation, setConfirmation] = useState(null);
 
   async function handleSearch(event) {
     event.preventDefault();
@@ -93,6 +94,7 @@ export function RechercheOffresPage() {
       {!chargement && recherchee && offres.length === 0 && (
         <p className="notice">Aucune offre trouvée.</p>
       )}
+      {confirmation && <p className="notice notice-success">{confirmation}</p>}
 
       <div
         style={{
@@ -107,7 +109,10 @@ export function RechercheOffresPage() {
             key={offre.idOffre}
             offre={offre}
             isEmployeur={false}
-            onVoir={(id) => setIdOffrePostuler(id)}
+            onVoir={(id) => {
+              setIdOffrePostuler(id);
+              setConfirmation(null);
+            }}
           />
         ))}
       </div>
@@ -116,11 +121,18 @@ export function RechercheOffresPage() {
         <section style={{ marginTop: 24 }}>
           <div className="page-header">
             <p className="page-kicker">Candidature</p>
-            <h2>Postuler à l'offre #{idOffrePostuler}</h2>
+            <h2>Postuler à : {offres.find((o) => o.idOffre === idOffrePostuler)?.titre}</h2>
           </div>
           <CandidatureForm
             idOffre={idOffrePostuler}
-            onSuccess={() => setIdOffrePostuler(null)}
+            titreOffre={offres.find((o) => o.idOffre === idOffrePostuler)?.titre}
+            onSuccess={(candidature) => {
+              const titre = offres.find((o) => o.idOffre === idOffrePostuler)?.titre ?? "l'offre";
+              setConfirmation(
+                `Merci d'avoir postulé à : ${titre}. Numéro de confirmation : ${candidature.idCandidature}.`
+              );
+              setIdOffrePostuler(null);
+            }}
           />
         </section>
       )}
