@@ -11,6 +11,7 @@ export function DashboardPage() {
   const canManageOffres = EMPLOYEUR_ROLES.includes(user?.role);
   const isEtudiant = user?.role === 'Etudiant';
   const isSuperAdmin = user?.role === "SuperAdministrateur";
+  const isEmployeur = user?.role === 'Employeur';
 
   return (
     <AppLayout>
@@ -65,7 +66,7 @@ export function DashboardPage() {
           </Link>
         )}
 
-        {canManageOffres && (
+        {isEmployeur && (
           <Link
             className="dashboard-card dashboard-link"
             to="/employeur/profil-entreprise"
@@ -76,15 +77,7 @@ export function DashboardPage() {
           </Link>
         )}
 
-        {canManageUsers && (
-          <Link className="dashboard-card dashboard-link" to="/admin/roles">
-            <span className="dashboard-card-number">02</span>
-            <h2>Roles et acces</h2>
-            <p>
-              Consulter les roles disponibles et verifier les acces associes.
-            </p>
-          </Link>
-        )}
+   
 
         <article className="dashboard-card">
           <span className="dashboard-card-number">03</span>
