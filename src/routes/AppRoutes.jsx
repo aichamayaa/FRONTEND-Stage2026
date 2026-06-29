@@ -46,7 +46,7 @@ export function AppRoutes() {
                 }
             />
 
-            {/* US-04 - Gestion des domaines d'études */}
+            {/* US-04 - Gestion des domaines d'ï¿½tudes */}
             <Route
                 path="/admin/domaines-etudes"
                 element={
@@ -85,6 +85,33 @@ export function AppRoutes() {
                     </ProtectedRoute>
                 }
             />
+
+      <Route
+        path="/employeur/candidatures"
+        element={
+          <ProtectedRoute roles={['Employeur', 'Administrateur', 'SuperAdministrateur']}>
+            <CandidaturesRecuesPage />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/recherche-offres"
+        element={
+          <ProtectedRoute>
+            <RechercheOffresPage />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/statut-offre"
+        element={
+          <ProtectedRoute>
+            <StatutOffrePage />
+          </ProtectedRoute>
+        }
+      />
 
       <Route
         path="/mes-candidatures"
