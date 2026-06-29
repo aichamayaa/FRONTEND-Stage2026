@@ -8,6 +8,7 @@ import { OffresEmployeurPage } from '../pages/employeur/OffresEmployeurPage';
 import { CandidaturesRecuesPage } from '../pages/employeur/CandidaturesRecuesPage';
 import { RechercheOffresPage } from '../pages/etudiant/RechercheOffresPage';
 import { StatutOffrePage } from '../pages/etudiant/StatutOffrePage';
+import { MesCandidaturesPage } from '../pages/etudiant/MesCandidaturesPage';
 import { NotFoundPage } from '../pages/shared/NotFoundPage';
 
 export function AppRoutes() {
@@ -76,6 +77,15 @@ export function AppRoutes() {
         element={
           <ProtectedRoute>
             <StatutOffrePage />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/mes-candidatures"
+        element={
+          <ProtectedRoute>
+            <MesCandidaturesPage />
           </ProtectedRoute>
         }
       />

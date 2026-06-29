@@ -6,6 +6,12 @@ export async function getCandidaturesOffre(idOffre) {
   return data;
 }
 
+// Candidatures de l'etudiant connecte
+export async function getMesCandidatures() {
+  const { data } = await apiClient.get('/candidatures/mes');
+  return data;
+}
+
 // Detail d'une candidature
 export async function getCandidatureDetail(idCandidature) {
   const { data } = await apiClient.get(`/candidatures/${idCandidature}/detail`);
