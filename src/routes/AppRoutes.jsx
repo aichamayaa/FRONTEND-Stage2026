@@ -45,7 +45,7 @@ export function AppRoutes() {
                 }
             />
 
-            {/* US-04 - Gestion des domaines d'etudes */}
+            {/* US-04 - Gestion des domaines d'études */}
             <Route
                 path="/admin/domaines-etudes"
                 element={
