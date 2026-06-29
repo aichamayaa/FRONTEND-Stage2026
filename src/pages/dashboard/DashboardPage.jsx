@@ -10,6 +10,7 @@ export function DashboardPage() {
   const canManageUsers = ADMIN_ROLES.includes(user?.role);
   const canManageOffres = EMPLOYEUR_ROLES.includes(user?.role);
   const isEtudiant = user?.role === 'Etudiant';
+  const isSuperAdmin = user?.role === "SuperAdministrateur";
 
   return (
     <AppLayout>
@@ -38,6 +39,40 @@ export function DashboardPage() {
               Creer, modifier, activer ou desactiver les comptes de la
               plateforme.
             </p>
+          </Link>
+        )}
+
+            {isSuperAdmin && (
+          <Link className="dashboard-card dashboard-link" to="/admin/colleges">
+            <span className="dashboard-card-number">07</span>
+            <h2>Gestion des cégeps</h2>
+            <p>
+              Créer, modifier ou désactiver les cégeps participants de la
+              plateforme.
+            </p>
+          </Link>
+        )}
+        {canManageUsers && (
+          <Link
+            className="dashboard-card dashboard-link"
+            to="/admin/domaines-etudes"
+          >
+            <span className="dashboard-card-number">08</span>
+            <h2>Domaines d'études</h2>
+            <p>
+              Ajouter, modifier ou désactiver les domaines d'études du cégep.
+            </p>
+          </Link>
+        )}
+
+        {canManageOffres && (
+          <Link
+            className="dashboard-card dashboard-link"
+            to="/employeur/profil-entreprise"
+          >
+            <span className="dashboard-card-number">09</span>
+            <h2>Profil entreprise</h2>
+            <p>Compléter ou modifier les informations de votre entreprise.</p>
           </Link>
         )}
 
