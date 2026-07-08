@@ -12,6 +12,10 @@ import { ProfilEntreprisePage } from '../pages/employeur/ProfilEntreprisePage';
 import { RechercheOffresPage } from '../pages/etudiant/RechercheOffresPage';
 import { StatutOffrePage } from '../pages/etudiant/StatutOffrePage';
 import { MesCandidaturesPage } from '../pages/etudiant/MesCandidaturesPage';
+import { DemandeStagePage } from '../pages/etudiant/DemandeStagePage';
+import { OffresStageRecuesPage } from '../pages/etudiant/OffresStageRecuesPage';
+import { CandidaturesParDomainePage } from '../pages/employeur/CandidaturesParDomainePage';
+import { DemandesStageRecuesPage } from '../pages/employeur/DemandesStageRecuesPage';
 import { NotFoundPage } from '../pages/shared/NotFoundPage';
 
 export function AppRoutes() {
@@ -118,6 +122,42 @@ export function AppRoutes() {
         element={
           <ProtectedRoute>
             <MesCandidaturesPage />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/demande-stage"
+        element={
+          <ProtectedRoute>
+            <DemandeStagePage />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/offres-stage-recues"
+        element={
+          <ProtectedRoute>
+            <OffresStageRecuesPage />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/employeur/candidatures-domaine"
+        element={
+          <ProtectedRoute roles={['Employeur', 'Administrateur', 'SuperAdministrateur']}>
+            <CandidaturesParDomainePage />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/employeur/demandes-stage"
+        element={
+          <ProtectedRoute roles={['Employeur', 'Administrateur', 'SuperAdministrateur']}>
+            <DemandesStageRecuesPage />
           </ProtectedRoute>
         }
       />

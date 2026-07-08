@@ -12,6 +12,22 @@ export async function getMesCandidatures() {
   return data;
 }
 
+// US-13 : mettre a jour le message de sa candidature
+export async function mettreAJourCandidature(idCandidature, message) {
+  await apiClient.put(`/candidatures/${idCandidature}/mes`, { message });
+}
+
+// US-13 : retirer sa candidature
+export async function retirerCandidature(idCandidature) {
+  await apiClient.post(`/candidatures/${idCandidature}/retirer`);
+}
+
+// US-11 : candidatures pour un domaine (employeur)
+export async function getCandidaturesParDomaine(idDomaine) {
+  const { data } = await apiClient.get(`/candidatures/domaine/${idDomaine}`);
+  return data;
+}
+
 // Detail d'une candidature
 export async function getCandidatureDetail(idCandidature) {
   const { data } = await apiClient.get(`/candidatures/${idCandidature}/detail`);
