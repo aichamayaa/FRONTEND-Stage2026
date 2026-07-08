@@ -115,6 +115,22 @@ export function DashboardPage() {
           </Link>
         )}
 
+        {canManageOffres && (
+          <Link className="dashboard-card dashboard-link" to="/employeur/candidatures-domaine">
+            <span className="dashboard-card-number">10</span>
+            <h2>Candidatures par domaine</h2>
+            <p>Consulter les candidatures reçues filtrées par domaine d'études.</p>
+          </Link>
+        )}
+
+        {canManageOffres && (
+          <Link className="dashboard-card dashboard-link" to="/employeur/demandes-stage">
+            <span className="dashboard-card-number">11</span>
+            <h2>Demandes de stage reçues</h2>
+            <p>Consulter les demandes de stage des étudiants par domaine.</p>
+          </Link>
+        )}
+
         {isEtudiant && (
           <Link className="dashboard-card dashboard-link" to="/recherche-offres">
             <span className="dashboard-card-number">A</span>
@@ -136,6 +152,22 @@ export function DashboardPage() {
             <span className="dashboard-card-number">C</span>
             <h2>Mes candidatures</h2>
             <p>Voir les offres auxquelles vous avez postulé et leur statut.</p>
+          </Link>
+        )}
+
+        {isEtudiant && (
+          <Link className="dashboard-card dashboard-link" to="/demande-stage">
+            <span className="dashboard-card-number">D</span>
+            <h2>Demande de stage</h2>
+            <p>Formuler une demande de stage dans un domaine d'études.</p>
+          </Link>
+        )}
+
+        {isEtudiant && (
+          <Link className="dashboard-card dashboard-link" to="/offres-stage-recues">
+            <span className="dashboard-card-number">E</span>
+            <h2>Offres de stage reçues</h2>
+            <p>Consulter les offres de stage directes et y répondre.</p>
           </Link>
         )}
       </section>
