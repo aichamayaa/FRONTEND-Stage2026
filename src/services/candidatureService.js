@@ -39,6 +39,11 @@ export async function changerStatutCandidature(idCandidature, statut) {
   await apiClient.patch(`/candidatures/${idCandidature}/statut`, { statut });
 }
 
+// US-16 : confirmer un emploi
+export async function confirmerEmploi(idCandidature, message) {
+    await apiClient.post(`/candidatures/${idCandidature}/confirmer-emploi`, { message });
+}
+
 // US-12 : URL de telechargement d'un document
 export function getUrlTelechargementDocument(idDocument) {
   const base = import.meta.env.VITE_API_BASE_URL ?? 'https://localhost:7266/api';
