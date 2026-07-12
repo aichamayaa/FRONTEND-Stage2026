@@ -68,14 +68,41 @@ export function CandidaturesRecuesPage() {
         }
     }
 
+    // Modifié pour US - 14
     async function handleChangerStatut(idCandidature, statut) {
+        let message = null;
+
+        if (statut === 'Acceptee' || statut === 'Refusee') {
+            message = window.prompt(
+                "Message de réponse pour l'étudiant (optionnel) :",
+                statut === 'Acceptee'
+                    ? 'Votre candidature a été acceptée.'
+                    : 'Votre candidature a été refusée.'
+            );
+
+            if (message === null) return; // Si l'employeur clique 
+        }
+
+        // Appelle l'API backend
         try {
-            await changerStatutCandidature(idCandidature, statut);
+            await changerStatutCandidature(idCandidature, statut, message?.trim() || null);
+
             setCandidatures((prev) =>
                 prev.map((c) =>
-                    c.idCandidature === idCandidature ? { ...c, statut } : c
+                    c.idCandidature === idCandidature
+                        ? { ...c, statut, messageReponseEmployeur: message?.trim() || null }
+                        : c
                 )
             );
+
+            if (candidatureDetail?.idCandidature === idCandidature) {
+                setCandidatureDetail((prev) =>
+                    prev
+                        ? { ...prev, statut, messageReponseEmployeur: message?.trim() || null }
+                        : prev
+                );
+            }
+
             afficherSucces('Statut mis a jour.');
         } catch (e) {
             setErreur(e.response?.data?.message ?? e.message);
@@ -85,7 +112,7 @@ export function CandidaturesRecuesPage() {
     // Ajout d'un gestionnaire pour la confirmation d'un emploi par un id de candidature
     async function handleConfirmerEmploi(idCandidature) {
         const message = window.prompt(
-            "Message de confirmation pour l'étudiant:",
+            "Message de confirmation pour l'étudiant :",
             "Emploi confirmé par l'employeur."
         );
 

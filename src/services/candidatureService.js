@@ -34,9 +34,9 @@ export async function getCandidatureDetail(idCandidature) {
   return data;
 }
 
-// US-10 : changer le statut
-export async function changerStatutCandidature(idCandidature, statut) {
-  await apiClient.patch(`/candidatures/${idCandidature}/statut`, { statut });
+// US-14 : changer le statut avec message optionnel de l'employeur
+export async function changerStatutCandidature(idCandidature, statut, message = null) {
+  await apiClient.patch(`/candidatures/${idCandidature}/statut`, { statut, message }); // Ajout du message optionnel
 }
 
 // US-16 : confirmer un emploi
