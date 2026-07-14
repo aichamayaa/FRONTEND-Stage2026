@@ -131,6 +131,15 @@ export function DashboardPage() {
           </Link>
         )}
 
+        {/* Ajout */}
+        {canManageOffres && (
+          <Link className="dashboard-card dashboard-link" to="/employeur/offres-stage-directes">
+            <span className="dashboard-card-number">12</span>
+            <h2>Offres de stage directes</h2>
+            <p>Proposer un stage directement a un candidat et suivre sa réponse.</p>
+          </Link>
+        )}
+
         {isEtudiant && (
           <Link className="dashboard-card dashboard-link" to="/recherche-offres">
             <span className="dashboard-card-number">A</span>
