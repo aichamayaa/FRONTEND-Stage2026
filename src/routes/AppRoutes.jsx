@@ -7,6 +7,7 @@ import { RolesPage } from '../pages/admin/RolesPage';
 import { CollegesPage } from '../pages/admin/CollegesPage';
 import { DomainesEtudesPage } from '../pages/admin/DomainesEtudesPage';
 import { OffresEmployeurPage } from '../pages/employeur/OffresEmployeurPage';
+import { OffresStageDirectesPage } from '../pages/employeur/OffresStageDirectesPage';
 import { CandidaturesRecuesPage } from '../pages/employeur/CandidaturesRecuesPage';
 import { ProfilEntreprisePage } from '../pages/employeur/ProfilEntreprisePage';
 import { RechercheOffresPage } from '../pages/etudiant/RechercheOffresPage';
@@ -158,6 +159,16 @@ export function AppRoutes() {
         element={
           <ProtectedRoute roles={['Employeur', 'Administrateur', 'SuperAdministrateur']}>
             <DemandesStageRecuesPage />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Ajout de la Route */}
+      <Route
+        path="/employeur/offres-stage-directes"
+        element={
+          <ProtectedRoute roles={['Employeur', 'Administrateur', 'SuperAdministrateur']}>
+            <OffresStageDirectesPage />
           </ProtectedRoute>
         }
       />
