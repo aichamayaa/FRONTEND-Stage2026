@@ -1,36 +1,137 @@
+import { NavLink } from 'react-router-dom';
+
 import { useAuth } from '../../hooks/useAuth';
 
+const DEFAULT_LOGO = '/images/GeraldGodin_Logo_COULEUR@2x.png';
+
 export function Header() {
-  const { user, logout } = useAuth();
+  const { user, collegeTheme, logout } = useAuth();
+  const role = user?.role;
+
+  const logoUrl = collegeTheme?.logoUrl || DEFAULT_LOGO;
+  const nomCollege = collegeTheme?.nom || 'Cegep Gerald-Godin';
+
+  const navigationItems = [
+    {
+      label: 'Dashboard',
+      to: '/',
+      roles: ['SuperAdministrateur', 'Administrateur', 'Employeur', 'Etudiant', 'ResponsableStage']
+    },
+    {
+      label: 'Utilisateurs',
+      to: '/admin/users',
+      roles: ['SuperAdministrateur', 'Administrateur']
+    },
+    {
+      label: 'Roles',
+      to: '/admin/roles',
+      roles: ['SuperAdministrateur', 'Administrateur']
+    },
+    {
+      label: 'Colleges',
+      to: '/admin/colleges',
+      roles: ['SuperAdministrateur']
+    },
+    {
+      label: 'Domaines',
+      to: '/admin/domaines-etudes',
+      roles: ['SuperAdministrateur', 'Administrateur']
+    },
+    {
+      label: 'Profil entreprise',
+      to: '/employeur/profil-entreprise',
+      roles: ['Employeur']
+    },
+    {
+      label: 'Mes offres',
+      to: '/employeur/offres',
+      roles: ['Employeur']
+    },
+    {
+      label: 'Candidatures recues',
+      to: '/employeur/candidatures',
+      roles: ['Employeur']
+    },
+    {
+      label: 'Rechercher',
+      to: '/recherche-offres',
+      roles: ['Etudiant']
+    },
+    {
+      label: 'Mes candidatures',
+      to: '/mes-candidatures',
+      roles: ['Etudiant']
+    },
+    {
+      label: 'Mes demarches',
+      to: '/mes-demarches',
+      roles: ['Etudiant']
+    },
+    {
+      label: 'Suivi etudiants',
+      to: '/responsable/suivi-etudiants',
+      roles: ['ResponsableStage']
+    },
+    {
+      label: 'Confirmations',
+      to: '/stages/confirmations',
+      roles: ['Employeur', 'ResponsableStage']
+    }
+  ];
+
+  const visibleNavigationItems = navigationItems.filter((item) =>
+    role ? item.roles.includes(role) : false
+  );
+
 
   return (
     <header className="app-header">
-      <div className="header-brand">
-        <img
-          className="header-logo"
-          src="/images/GeraldGodin_Logo_COULEUR@2x.png"
-          alt="Cégep Gérald-Godin"
-        />
+      <div className="header-top-row">
+        <div className="header-brand">
+          <img
+            className="header-logo"
+            src={logoUrl}
+            alt={nomCollege}
+          />
 
-        <div>
-          <strong>Système de placement</strong>
-          <span>Cégep Gérald-Godin</span>
+          <div>
+            <strong>Systeme de placement</strong>
+            <span>{nomCollege}</span>
+          </div>
+        </div>
+
+        <div className="header-actions">
+          {user && (
+            <span className="header-user">
+              {user.prenom} - {user.role}
+            </span>
+          )}
+
+          {user && (
+            <button type="button" onClick={logout}>
+              Deconnexion
+            </button>
+          )}
         </div>
       </div>
 
-      <div className="header-actions">
-        {user && (
-          <span className="header-user">
-            {user.prenom} · {user.role}
-          </span>
-        )}
+      {user && visibleNavigationItems.length > 0 && (
+        <nav className="app-nav" aria-label="Navigation principale">
+          {visibleNavigationItems.map((item) => (
+            <NavLink
+              key={item.to}
+              className={({ isActive }) =>
+                isActive ? 'app-nav-link app-nav-link-active' : 'app-nav-link'
+              }
+              to={item.to}
+              end={item.to === '/'}
+            >
+              {item.label}
+            </NavLink>
+          ))}
+        </nav>
+      )}
 
-        {user && (
-          <button type="button" onClick={logout}>
-            Déconnexion
-          </button>
-        )}
-      </div>
     </header>
   );
 }
