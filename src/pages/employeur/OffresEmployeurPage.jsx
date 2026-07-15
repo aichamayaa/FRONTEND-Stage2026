@@ -1,18 +1,10 @@
-
-﻿import { useEffect, useState } from 'react';
-
 import { useEffect, useState } from 'react';
-
 import { AppLayout } from '../../components/layout/AppLayout';
 import { OffreFilters } from '../../components/offres/OffreFilters';
 import { OffreTable } from '../../components/offres/OffreTable';
 import { OffreForm } from '../../components/offres/OffreForm';
 import {
-
   getMesOffres,
-
-  getOffres,
-
   getOffreById,
   creerOffreEmploi,
   creerOffreStage,
@@ -21,7 +13,6 @@ import {
   supprimerOffre,
 } from '../../services/offreService';
 
-// Vue : liste | detail | form-emploi | form-stage
 const VUE_LISTE = 'liste';
 const VUE_DETAIL = 'detail';
 const VUE_FORM_EMPLOI = 'form-emploi';
@@ -29,12 +20,6 @@ const VUE_FORM_STAGE = 'form-stage';
 
 function messageErreur(e) {
   const data = e.response?.data;
-
-
-  if (data?.errors) {
-    return Object.values(data.errors).flat().join(' ');
-  }
-
 
   if (data?.errors) {
     return Object.values(data.errors).flat().join(' ');
@@ -63,12 +48,9 @@ export function OffresEmployeurPage() {
     setChargement(true);
     setErreur(null);
 
-
     try {
-      // Important : cette route retourne seulement les offres de l'employeur connecte.
       const data = await getMesOffres();
 
-      // Les filtres restent ici pour ne pas recharger inutilement le backend.
       const offresFiltrees = data.filter((offre) => {
         const typeOk = filtreType ? offre.typeOffre === filtreType : true;
         const statutOk = filtreStatut ? offre.statut === filtreStatut : true;
@@ -77,11 +59,6 @@ export function OffresEmployeurPage() {
       });
 
       setOffres(offresFiltrees);
-
-    try {
-      const data = await getOffres(filtreType || undefined, filtreStatut || undefined);
-      setOffres(data);
-
     } catch (e) {
       setErreur(messageErreur(e));
     } finally {
@@ -163,7 +140,6 @@ export function OffresEmployeurPage() {
     setTimeout(() => setSucces(null), 4000);
   }
 
-
   if (vue === VUE_FORM_EMPLOI || vue === VUE_FORM_STAGE) {
     return (
       <AppLayout>
@@ -193,13 +169,6 @@ export function OffresEmployeurPage() {
     );
   }
 
-
-  if (vue === VUE_DETAIL && offreSelectionnee) {
-    const o = offreSelectionnee;
-
-
-  // ── Rendu : detail ────────────────────────────────────────────────────────
-
   if (vue === VUE_DETAIL && offreSelectionnee) {
     const o = offreSelectionnee;
 
@@ -225,90 +194,6 @@ export function OffresEmployeurPage() {
 
           <p style={{ whiteSpace: 'pre-wrap' }}>{o.description}</p>
 
-          {o.typeOffre === 'Emploi' && (
-            <dl className="offre-detail__dl">
-
-              {o.typeContrat && (
-                <>
-                  <dt>Type de contrat</dt>
-                  <dd>{o.typeContrat}</dd>
-                </>
-              )}
-
-              {o.teleTravail && (
-                <>
-                  <dt>Teletravail</dt>
-                  <dd>{o.teleTravail}</dd>
-                </>
-              )}
-
-              {o.salaireMin != null && (
-                <>
-                  <dt>Salaire</dt>
-                  <dd>
-                    {o.salaireMin}
-                    {o.salaireMax ? ` - ${o.salaireMax}` : ''}
-                  </dd>
-                </>
-
-              {o.typeContrat && <><dt>Type de contrat</dt><dd>{o.typeContrat}</dd></>}
-              {o.teleTravail && <><dt>Teletravail</dt><dd>{o.teleTravail}</dd></>}
-              {o.salaireMin != null && (
-                <><dt>Salaire</dt><dd>{o.salaireMin} {o.salaireMax ? `- ${o.salaireMax}` : ''}</dd></>
-
-              )}
-            </dl>
-          )}
-
-          {o.typeOffre === 'Stage' && (
-            <dl className="offre-detail__dl">
-
-              {o.session && (
-                <>
-                  <dt>Session</dt>
-                  <dd>{o.session}</dd>
-                </>
-              )}
-
-              {o.dateDebutStage && (
-                <>
-                  <dt>Debut</dt>
-                  <dd>{o.dateDebutStage?.slice(0, 10)}</dd>
-                </>
-              )}
-
-              {o.dateFinStage && (
-                <>
-                  <dt>Fin</dt>
-                  <dd>{o.dateFinStage?.slice(0, 10)}</dd>
-                </>
-              )}
-
-              {o.dureeHeuresParSemaine != null && (
-                <>
-                  <dt>Heures/semaine</dt>
-                  <dd>{o.dureeHeuresParSemaine} h</dd>
-                </>
-              )}
-
-              {o.remuneration != null && (
-                <>
-                  <dt>Remuneration</dt>
-                  <dd>{o.remuneration} $/h</dd>
-                </>
-              )}
-
-              {o.session && <><dt>Session</dt><dd>{o.session}</dd></>}
-              {o.dateDebutStage && <><dt>Debut</dt><dd>{o.dateDebutStage?.slice(0, 10)}</dd></>}
-              {o.dateFinStage && <><dt>Fin</dt><dd>{o.dateFinStage?.slice(0, 10)}</dd></>}
-              {o.dureeHeuresParSemaine != null && (
-                <><dt>Heures/semaine</dt><dd>{o.dureeHeuresParSemaine} h</dd></>
-              )}
-              {o.remuneration != null && <><dt>Remuneration</dt><dd>{o.remuneration} $/h</dd></>}
-
-            </dl>
-          )}
-
           <div className="table-actions" style={{ marginTop: '24px' }}>
             <button
               type="button"
@@ -322,10 +207,6 @@ export function OffresEmployeurPage() {
       </AppLayout>
     );
   }
-
-
-  // ── Rendu : liste ─────────────────────────────────────────────────────────
-
 
   return (
     <AppLayout>
@@ -365,7 +246,6 @@ export function OffresEmployeurPage() {
         </div>
       </div>
 
-
       {chargement ? (
         <p>Chargement...</p>
       ) : (
@@ -379,22 +259,6 @@ export function OffresEmployeurPage() {
           />
         </div>
       )}
-
-      {chargement
-        ? <p>Chargement...</p>
-        : (
-          <div className="panel" style={{ marginTop: '16px' }}>
-            <OffreTable
-              offres={offres}
-              isEmployeur
-              onVoir={handleVoir}
-              onModifier={handleModifier}
-              onSupprimer={handleSupprimer}
-            />
-          </div>
-        )
-      }
-
     </AppLayout>
   );
 }
