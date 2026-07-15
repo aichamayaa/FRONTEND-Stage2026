@@ -1,15 +1,9 @@
-
 import { NavLink } from 'react-router-dom';
-
-
-import { Link, useLocation } from 'react-router-dom';
-
 import { useAuth } from '../../hooks/useAuth';
 
 const DEFAULT_LOGO = '/images/GeraldGodin_Logo_COULEUR@2x.png';
 
 export function Header() {
-
   const { user, collegeTheme, logout } = useAuth();
   const role = user?.role;
 
@@ -20,79 +14,73 @@ export function Header() {
     {
       label: 'Dashboard',
       to: '/',
-      roles: ['SuperAdministrateur', 'Administrateur', 'Employeur', 'Etudiant', 'ResponsableStage']
+      roles: ['SuperAdministrateur', 'Administrateur', 'Employeur', 'Etudiant', 'ResponsableStage'],
     },
     {
       label: 'Utilisateurs',
       to: '/admin/users',
-      roles: ['SuperAdministrateur', 'Administrateur']
+      roles: ['SuperAdministrateur', 'Administrateur'],
     },
     {
       label: 'Roles',
       to: '/admin/roles',
-      roles: ['SuperAdministrateur', 'Administrateur']
+      roles: ['SuperAdministrateur', 'Administrateur'],
     },
     {
       label: 'Colleges',
       to: '/admin/colleges',
-      roles: ['SuperAdministrateur']
+      roles: ['SuperAdministrateur'],
     },
     {
       label: 'Domaines',
       to: '/admin/domaines-etudes',
-      roles: ['SuperAdministrateur', 'Administrateur']
+      roles: ['SuperAdministrateur', 'Administrateur'],
     },
     {
       label: 'Profil entreprise',
       to: '/employeur/profil-entreprise',
-      roles: ['Employeur']
+      roles: ['Employeur'],
     },
     {
       label: 'Mes offres',
       to: '/employeur/offres',
-      roles: ['Employeur']
+      roles: ['Employeur'],
     },
     {
       label: 'Candidatures recues',
       to: '/employeur/candidatures',
-      roles: ['Employeur']
+      roles: ['Employeur'],
     },
     {
       label: 'Rechercher',
       to: '/recherche-offres',
-      roles: ['Etudiant']
+      roles: ['Etudiant'],
     },
     {
       label: 'Mes candidatures',
       to: '/mes-candidatures',
-      roles: ['Etudiant']
+      roles: ['Etudiant'],
     },
     {
       label: 'Mes demarches',
       to: '/mes-demarches',
-      roles: ['Etudiant']
+      roles: ['Etudiant'],
     },
     {
       label: 'Suivi etudiants',
       to: '/responsable/suivi-etudiants',
-      roles: ['ResponsableStage']
+      roles: ['ResponsableStage'],
     },
     {
       label: 'Confirmations',
       to: '/stages/confirmations',
-      roles: ['Employeur', 'ResponsableStage']
-    }
+      roles: ['Employeur', 'ResponsableStage'],
+    },
   ];
 
   const visibleNavigationItems = navigationItems.filter((item) =>
     role ? item.roles.includes(role) : false
   );
-
-
-  const { user, logout } = useAuth();
-  const location = useLocation();
-  const showDashboardLink = user && location.pathname !== '/';
-
 
   return (
     <header className="app-header">
@@ -110,7 +98,6 @@ export function Header() {
           </div>
         </div>
 
-
         <div className="header-actions">
           {user && (
             <span className="header-user">
@@ -124,26 +111,6 @@ export function Header() {
             </button>
           )}
         </div>
-
-      <div className="header-actions">
-        {showDashboardLink && (
-          <Link className="header-dashboard-link" to="/">
-            Tableau de bord
-          </Link>
-        )}
-
-        {user && (
-          <span className="header-user">
-            {user.prenom} · {user.role}
-          </span>
-        )}
-
-        {user && (
-          <button type="button" onClick={logout}>
-            Déconnexion
-          </button>
-        )}
-
       </div>
 
       {user && visibleNavigationItems.length > 0 && (
@@ -162,7 +129,6 @@ export function Header() {
           ))}
         </nav>
       )}
-
     </header>
   );
 }
