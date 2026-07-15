@@ -1,10 +1,15 @@
+
 import { NavLink } from 'react-router-dom';
+
+
+import { Link, useLocation } from 'react-router-dom';
 
 import { useAuth } from '../../hooks/useAuth';
 
 const DEFAULT_LOGO = '/images/GeraldGodin_Logo_COULEUR@2x.png';
 
 export function Header() {
+
   const { user, collegeTheme, logout } = useAuth();
   const role = user?.role;
 
@@ -84,6 +89,11 @@ export function Header() {
   );
 
 
+  const { user, logout } = useAuth();
+  const location = useLocation();
+  const showDashboardLink = user && location.pathname !== '/';
+
+
   return (
     <header className="app-header">
       <div className="header-top-row">
@@ -100,6 +110,7 @@ export function Header() {
           </div>
         </div>
 
+
         <div className="header-actions">
           {user && (
             <span className="header-user">
@@ -113,6 +124,26 @@ export function Header() {
             </button>
           )}
         </div>
+
+      <div className="header-actions">
+        {showDashboardLink && (
+          <Link className="header-dashboard-link" to="/">
+            Tableau de bord
+          </Link>
+        )}
+
+        {user && (
+          <span className="header-user">
+            {user.prenom} · {user.role}
+          </span>
+        )}
+
+        {user && (
+          <button type="button" onClick={logout}>
+            Déconnexion
+          </button>
+        )}
+
       </div>
 
       {user && visibleNavigationItems.length > 0 && (

@@ -288,6 +288,25 @@ a {
   background: var(--color-primary-hover);
 }
 
+.header-dashboard-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: 0 16px;
+  color: var(--color-primary-dark);
+  background: #ffffff;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-weight: 800;
+}
+
+.header-dashboard-link:hover {
+  color: #ffffff;
+  background: var(--color-secondary);
+  border-color: var(--color-secondary);
+}
+
 .app-main {
   width: min(1180px, calc(100% - 48px));
   margin: 0 auto;
@@ -1024,6 +1043,7 @@ p {
   white-space: nowrap;
 }
 
+
 /* Navigation principale par role */
 .app-header {
   flex-direction: column;
@@ -1155,3 +1175,4 @@ p {
   border: 1px solid var(--color-border);
   border-radius: 999px;
 }
+
