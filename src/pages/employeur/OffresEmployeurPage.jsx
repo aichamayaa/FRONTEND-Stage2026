@@ -4,7 +4,7 @@ import { OffreFilters } from '../../components/offres/OffreFilters';
 import { OffreTable } from '../../components/offres/OffreTable';
 import { OffreForm } from '../../components/offres/OffreForm';
 import {
-  getOffres,
+  getMesOffres,
   getOffreById,
   creerOffreEmploi,
   creerOffreStage,
@@ -13,11 +13,20 @@ import {
   supprimerOffre,
 } from '../../services/offreService';
 
-// Vue : liste | detail | form-emploi | form-stage
 const VUE_LISTE = 'liste';
 const VUE_DETAIL = 'detail';
 const VUE_FORM_EMPLOI = 'form-emploi';
 const VUE_FORM_STAGE = 'form-stage';
+
+function messageErreur(e) {
+  const data = e.response?.data;
+
+  if (data?.errors) {
+    return Object.values(data.errors).flat().join(' ');
+  }
+
+  return data?.message ?? data?.title ?? e.message;
+}
 
 export function OffresEmployeurPage() {
   const [vue, setVue] = useState(VUE_LISTE);
@@ -38,11 +47,20 @@ export function OffresEmployeurPage() {
   async function chargerOffres() {
     setChargement(true);
     setErreur(null);
+
     try {
-      const data = await getOffres(filtreType || undefined, filtreStatut || undefined);
-      setOffres(data);
+      const data = await getMesOffres();
+
+      const offresFiltrees = data.filter((offre) => {
+        const typeOk = filtreType ? offre.typeOffre === filtreType : true;
+        const statutOk = filtreStatut ? offre.statut === filtreStatut : true;
+
+        return typeOk && statutOk;
+      });
+
+      setOffres(offresFiltrees);
     } catch (e) {
-      setErreur(e.response?.data?.message ?? e.message);
+      setErreur(messageErreur(e));
     } finally {
       setChargement(false);
     }
@@ -50,12 +68,13 @@ export function OffresEmployeurPage() {
 
   async function handleVoir(idOffre) {
     setErreur(null);
+
     try {
       const offre = await getOffreById(idOffre);
       setOffreSelectionnee(offre);
       setVue(VUE_DETAIL);
     } catch (e) {
-      setErreur(e.response?.data?.message ?? e.message);
+      setErreur(messageErreur(e));
     }
   }
 
@@ -77,13 +96,14 @@ export function OffresEmployeurPage() {
       setOffres((prev) => prev.filter((o) => o.idOffre !== idOffre));
       afficherSucces('Offre supprimee avec succes.');
     } catch (e) {
-      setErreur(e.response?.data?.message ?? e.message);
+      setErreur(messageErreur(e));
     }
   }
 
   async function handleSubmitForm(payload) {
     setChargementForm(true);
     setErreurForm(null);
+
     try {
       const isEdit = Boolean(offreSelectionnee);
       const isStage = vue === VUE_FORM_STAGE;
@@ -94,6 +114,7 @@ export function OffresEmployeurPage() {
         } else {
           await modifierOffreEmploi(offreSelectionnee.idOffre, payload);
         }
+
         afficherSucces('Offre modifiee avec succes.');
       } else {
         if (isStage) {
@@ -101,13 +122,14 @@ export function OffresEmployeurPage() {
         } else {
           await creerOffreEmploi(payload);
         }
+
         afficherSucces('Offre publiee avec succes.');
       }
 
       setVue(VUE_LISTE);
       chargerOffres();
     } catch (e) {
-      setErreurForm(e.response?.data?.message ?? e.message ?? 'Une erreur est survenue.');
+      setErreurForm(messageErreur(e) ?? 'Une erreur est survenue.');
     } finally {
       setChargementForm(false);
     }
@@ -117,8 +139,6 @@ export function OffresEmployeurPage() {
     setSucces(msg);
     setTimeout(() => setSucces(null), 4000);
   }
-
-  // ── Rendu : formulaire ──────────────────────────────────────────────────
 
   if (vue === VUE_FORM_EMPLOI || vue === VUE_FORM_STAGE) {
     return (
@@ -149,10 +169,9 @@ export function OffresEmployeurPage() {
     );
   }
 
-  // ── Rendu : detail ────────────────────────────────────────────────────────
-
   if (vue === VUE_DETAIL && offreSelectionnee) {
     const o = offreSelectionnee;
+
     return (
       <AppLayout>
         <div className="page-header">
@@ -175,28 +194,6 @@ export function OffresEmployeurPage() {
 
           <p style={{ whiteSpace: 'pre-wrap' }}>{o.description}</p>
 
-          {o.typeOffre === 'Emploi' && (
-            <dl className="offre-detail__dl">
-              {o.typeContrat && <><dt>Type de contrat</dt><dd>{o.typeContrat}</dd></>}
-              {o.teleTravail && <><dt>Teletravail</dt><dd>{o.teleTravail}</dd></>}
-              {o.salaireMin != null && (
-                <><dt>Salaire</dt><dd>{o.salaireMin} {o.salaireMax ? `- ${o.salaireMax}` : ''}</dd></>
-              )}
-            </dl>
-          )}
-
-          {o.typeOffre === 'Stage' && (
-            <dl className="offre-detail__dl">
-              {o.session && <><dt>Session</dt><dd>{o.session}</dd></>}
-              {o.dateDebutStage && <><dt>Debut</dt><dd>{o.dateDebutStage?.slice(0, 10)}</dd></>}
-              {o.dateFinStage && <><dt>Fin</dt><dd>{o.dateFinStage?.slice(0, 10)}</dd></>}
-              {o.dureeHeuresParSemaine != null && (
-                <><dt>Heures/semaine</dt><dd>{o.dureeHeuresParSemaine} h</dd></>
-              )}
-              {o.remuneration != null && <><dt>Remuneration</dt><dd>{o.remuneration} $/h</dd></>}
-            </dl>
-          )}
-
           <div className="table-actions" style={{ marginTop: '24px' }}>
             <button
               type="button"
@@ -210,8 +207,6 @@ export function OffresEmployeurPage() {
       </AppLayout>
     );
   }
-
-  // ── Rendu : liste ─────────────────────────────────────────────────────────
 
   return (
     <AppLayout>
@@ -240,6 +235,7 @@ export function OffresEmployeurPage() {
           >
             + Offre d&apos;emploi
           </button>
+
           <button
             type="button"
             className="primary-action"
@@ -250,20 +246,19 @@ export function OffresEmployeurPage() {
         </div>
       </div>
 
-      {chargement
-        ? <p>Chargement...</p>
-        : (
-          <div className="panel" style={{ marginTop: '16px' }}>
-            <OffreTable
-              offres={offres}
-              isEmployeur
-              onVoir={handleVoir}
-              onModifier={handleModifier}
-              onSupprimer={handleSupprimer}
-            />
-          </div>
-        )
-      }
+      {chargement ? (
+        <p>Chargement...</p>
+      ) : (
+        <div className="panel" style={{ marginTop: '16px' }}>
+          <OffreTable
+            offres={offres}
+            isEmployeur
+            onVoir={handleVoir}
+            onModifier={handleModifier}
+            onSupprimer={handleSupprimer}
+          />
+        </div>
+      )}
     </AppLayout>
   );
 }
