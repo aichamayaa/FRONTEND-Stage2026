@@ -155,6 +155,14 @@ export function DashboardPage() {
           </Link>
         )}
 
+        {isEmployeur && (
+          <Link className="dashboard-card dashboard-link" to="/notifications">
+            <span className="dashboard-card-number">12</span>
+            <h2>Notifications</h2>
+            <p>Être averti des nouvelles candidatures et réponses reçues.</p>
+          </Link>
+        )}
+
         {isEtudiant && (
           <Link className="dashboard-card dashboard-link" to="/recherche-offres">
             <span className="dashboard-card-number">A</span>
