@@ -155,7 +155,7 @@ export function DashboardPage() {
           </Link>
         )}
 
-        {canManageOffres && (
+        {isEmployeur && (
           <Link className="dashboard-card dashboard-link" to="/notifications">
             <span className="dashboard-card-number">12</span>
             <h2>Notifications</h2>

@@ -26,6 +26,7 @@ import { OffresStageRecuesPage } from '../pages/etudiant/OffresStageRecuesPage';
 import { CandidaturesParDomainePage } from '../pages/employeur/CandidaturesParDomainePage';
 import { DemandesStageRecuesPage } from '../pages/employeur/DemandesStageRecuesPage';
 
+import { NotificationsPage } from '../pages/shared/NotificationsPage';
 import { NotFoundPage } from '../pages/shared/NotFoundPage';
 
 export function AppRoutes() {
@@ -277,6 +278,15 @@ export function AppRoutes() {
         element={
           <ProtectedRoute roles={['ResponsableStage', 'Employeur']}>
             <ConfirmationsStagePage />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/notifications"
+        element={
+          <ProtectedRoute>
+            <NotificationsPage />
           </ProtectedRoute>
         }
       />
