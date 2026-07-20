@@ -1,4 +1,4 @@
-﻿import { Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import { ProtectedRoute } from '../components/layout/ProtectedRoute';
 import { LoginPage } from '../pages/auth/LoginPage';
 import { DashboardPage } from '../pages/dashboard/DashboardPage';
@@ -7,182 +7,55 @@ import { RolesPage } from '../pages/admin/RolesPage';
 import { CollegesPage } from '../pages/admin/CollegesPage';
 import { DomainesEtudesPage } from '../pages/admin/DomainesEtudesPage';
 import { OffresEmployeurPage } from '../pages/employeur/OffresEmployeurPage';
-
-
 import { OffresStageDirectesPage } from '../pages/employeur/OffresStageDirectesPage';
-
 import { CandidaturesRecuesPage } from '../pages/employeur/CandidaturesRecuesPage';
 import { ProfilEntreprisePage } from '../pages/employeur/ProfilEntreprisePage';
+import { CandidaturesParDomainePage } from '../pages/employeur/CandidaturesParDomainePage';
+import { DemandesStageRecuesPage } from '../pages/employeur/DemandesStageRecuesPage';
 import { RechercheOffresPage } from '../pages/etudiant/RechercheOffresPage';
 import { StatutOffrePage } from '../pages/etudiant/StatutOffrePage';
 import { MesCandidaturesPage } from '../pages/etudiant/MesCandidaturesPage';
-
+import { DemandeStagePage } from '../pages/etudiant/DemandeStagePage';
+import { OffresStageRecuesPage } from '../pages/etudiant/OffresStageRecuesPage';
 import { MesDemarchesPage } from '../pages/etudiant/MesDemarchesPage';
 import { SuiviEtudiantsPage } from '../pages/responsable/SuiviEtudiantsPage';
 import { ConfirmationsStagePage } from '../pages/responsable/ConfirmationsStagePage';
-
-import { DemandeStagePage } from '../pages/etudiant/DemandeStagePage';
-import { OffresStageRecuesPage } from '../pages/etudiant/OffresStageRecuesPage';
-import { CandidaturesParDomainePage } from '../pages/employeur/CandidaturesParDomainePage';
-import { DemandesStageRecuesPage } from '../pages/employeur/DemandesStageRecuesPage';
-
 import { NotificationsPage } from '../pages/shared/NotificationsPage';
 import { NotFoundPage } from '../pages/shared/NotFoundPage';
 
+const ADMIN_ROLES = ['SuperAdministrateur', 'Administrateur'];
+
 export function AppRoutes() {
-    return (
-        <Routes>
-            <Route path="/login" element={<LoginPage />} />
-
-            <Route
-                path="/"
-                element={
-                    <ProtectedRoute>
-                        <DashboardPage />
-                    </ProtectedRoute>
-                }
-            />
-
-            <Route
-                path="/admin/users"
-                element={
-                    <ProtectedRoute roles={['SuperAdministrateur', 'Administrateur']}>
-                        <UsersPage />
-                    </ProtectedRoute>
-                }
-            />
-
-            <Route
-                path="/admin/roles"
-                element={
-                    <ProtectedRoute roles={['SuperAdministrateur', 'Administrateur']}>
-                        <RolesPage />
-                    </ProtectedRoute>
-                }
-            />
-
-            {/* US-04 - Gestion des domaines d'�tudes */}
-            <Route
-                path="/admin/domaines-etudes"
-                element={
-                    <ProtectedRoute roles={['SuperAdministrateur', 'Administrateur']}>
-                        <DomainesEtudesPage />
-                    </ProtectedRoute>
-                }
-            />
-
-            {/* US-05 - Gestion des colleges */}
-            <Route
-                path="/admin/colleges"
-                element={
-                    <ProtectedRoute roles={['SuperAdministrateur', 'Administrateur']}>
-                        <CollegesPage />
-                    </ProtectedRoute>
-                }
-            />
-
-            {/* US-06 - Profil entreprise employeur */}
-            <Route
-                path="/employeur/profil-entreprise"
-                element={
-                    <ProtectedRoute roles={['Employeur']}>
-                        <ProfilEntreprisePage />
-                    </ProtectedRoute>
-                }
-            />
-
-            {/* US-07 / US-08 / US-09 - CRUD offres employeur */}
-            <Route
-                path="/employeur/offres"
-                element={
-                    <ProtectedRoute roles={['Employeur', 'Administrateur', 'SuperAdministrateur']}>
-                        <OffresEmployeurPage />
-                    </ProtectedRoute>
-                }
-            />
+  return (
+    <Routes>
+      <Route path="/login" element={<LoginPage />} />
 
       <Route
-        path="/employeur/candidatures"
-        element={
-          <ProtectedRoute roles={['Employeur', 'Administrateur', 'SuperAdministrateur']}>
-            <CandidaturesRecuesPage />
-          </ProtectedRoute>
-        }
-      />
-
-      <Route
-        path="/recherche-offres"
+        path="/"
         element={
           <ProtectedRoute>
-            <RechercheOffresPage />
+            <DashboardPage />
           </ProtectedRoute>
         }
       />
 
+      {/* ── Administration ─────────────────────────────── */}
       <Route
-        path="/statut-offre"
+        path="/admin/users"
         element={
-          <ProtectedRoute>
-            <StatutOffrePage />
+          <ProtectedRoute roles={ADMIN_ROLES}>
+            <UsersPage />
           </ProtectedRoute>
         }
       />
-
       <Route
-        path="/mes-candidatures"
+        path="/admin/roles"
         element={
-          <ProtectedRoute>
-            <MesCandidaturesPage />
+          <ProtectedRoute roles={ADMIN_ROLES}>
+            <RolesPage />
           </ProtectedRoute>
         }
       />
-
-      <Route
-        path="/demande-stage"
-        element={
-          <ProtectedRoute>
-            <DemandeStagePage />
-          </ProtectedRoute>
-        }
-      />
-
-      <Route
-        path="/offres-stage-recues"
-        element={
-          <ProtectedRoute>
-            <OffresStageRecuesPage />
-          </ProtectedRoute>
-        }
-      />
-
-      <Route
-        path="/employeur/candidatures-domaine"
-        element={
-          <ProtectedRoute roles={['Employeur', 'Administrateur', 'SuperAdministrateur']}>
-            <CandidaturesParDomainePage />
-          </ProtectedRoute>
-        }
-      />
-
-      <Route
-        path="/employeur/demandes-stage"
-        element={
-          <ProtectedRoute roles={['Employeur', 'Administrateur', 'SuperAdministrateur']}>
-            <DemandesStageRecuesPage />
-          </ProtectedRoute>
-        }
-      />
-
-      {/* Ajout de la Route */}
-      <Route
-        path="/employeur/offres-stage-directes"
-        element={
-          <ProtectedRoute roles={['Employeur', 'Administrateur', 'SuperAdministrateur']}>
-            <OffresStageDirectesPage />
-          </ProtectedRoute>
-        }
-      />
-
       <Route
         path="/admin/colleges"
         element={
@@ -191,16 +64,16 @@ export function AppRoutes() {
           </ProtectedRoute>
         }
       />
-
       <Route
         path="/admin/domaines-etudes"
         element={
-          <ProtectedRoute roles={['SuperAdministrateur', 'Administrateur']}>
+          <ProtectedRoute roles={ADMIN_ROLES}>
             <DomainesEtudesPage />
           </ProtectedRoute>
         }
       />
 
+      {/* ── Employeur ──────────────────────────────────── */}
       <Route
         path="/employeur/profil-entreprise"
         element={
@@ -209,7 +82,6 @@ export function AppRoutes() {
           </ProtectedRoute>
         }
       />
-
       <Route
         path="/employeur/offres"
         element={
@@ -218,7 +90,6 @@ export function AppRoutes() {
           </ProtectedRoute>
         }
       />
-
       <Route
         path="/employeur/candidatures"
         element={
@@ -227,7 +98,32 @@ export function AppRoutes() {
           </ProtectedRoute>
         }
       />
+      <Route
+        path="/employeur/candidatures-domaine"
+        element={
+          <ProtectedRoute roles={['Employeur']}>
+            <CandidaturesParDomainePage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/employeur/demandes-stage"
+        element={
+          <ProtectedRoute roles={['Employeur']}>
+            <DemandesStageRecuesPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/employeur/offres-stage-directes"
+        element={
+          <ProtectedRoute roles={['Employeur']}>
+            <OffresStageDirectesPage />
+          </ProtectedRoute>
+        }
+      />
 
+      {/* ── Etudiant ───────────────────────────────────── */}
       <Route
         path="/recherche-offres"
         element={
@@ -236,7 +132,6 @@ export function AppRoutes() {
           </ProtectedRoute>
         }
       />
-
       <Route
         path="/statut-offre"
         element={
@@ -245,7 +140,6 @@ export function AppRoutes() {
           </ProtectedRoute>
         }
       />
-
       <Route
         path="/mes-candidatures"
         element={
@@ -254,7 +148,22 @@ export function AppRoutes() {
           </ProtectedRoute>
         }
       />
-
+      <Route
+        path="/demande-stage"
+        element={
+          <ProtectedRoute roles={['Etudiant']}>
+            <DemandeStagePage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/offres-stage-recues"
+        element={
+          <ProtectedRoute roles={['Etudiant']}>
+            <OffresStageRecuesPage />
+          </ProtectedRoute>
+        }
+      />
       <Route
         path="/mes-demarches"
         element={
@@ -264,6 +173,7 @@ export function AppRoutes() {
         }
       />
 
+      {/* ── Responsable de stage ───────────────────────── */}
       <Route
         path="/responsable/suivi-etudiants"
         element={
@@ -272,7 +182,6 @@ export function AppRoutes() {
           </ProtectedRoute>
         }
       />
-
       <Route
         path="/stages/confirmations"
         element={
@@ -282,10 +191,11 @@ export function AppRoutes() {
         }
       />
 
+      {/* ── Notifications (employeur) ──────────────────── */}
       <Route
         path="/notifications"
         element={
-          <ProtectedRoute>
+          <ProtectedRoute roles={['Employeur']}>
             <NotificationsPage />
           </ProtectedRoute>
         }
