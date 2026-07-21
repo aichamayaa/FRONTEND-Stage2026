@@ -59,7 +59,7 @@ export function CandidatureTable({
                                     {c.prenomEtudiant} {c.nomEtudiant}
                                 </button>
                             </td>
-                            <td>{c.emailEtudiant ?? '-'}</td>
+                            <td>{c.courrielEtudiant ?? c.emailEtudiant ?? '-'}</td> {/* Modification ici */}
                             <td>{formatDate(c.dateCandidature)}</td>
                             <td>{c.acv ? 'Oui' : 'Non'}</td>
                             <td>{c.aLettreMotivation ? 'Oui' : 'Non'}</td>
