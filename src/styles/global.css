@@ -1043,6 +1043,33 @@ p {
   white-space: nowrap;
 }
 
+/* Réponse de l'employeur dans Mes candidatures */
+.candidature-reponse {
+    display: grid;
+    gap: 8px;
+    padding: 14px 16px;
+    background: #f7fbff;
+    border: 1px solid var(--color-border);
+    border-left: 4px solid var(--color-primary);
+    border-radius: var(--radius-sm);
+}
+
+.candidature-reponse__titre {
+    color: var(--color-primary-dark);
+    font-weight: 800;
+}
+
+.candidature-reponse__message {
+    margin: 0;
+    color: var(--color-text);
+    line-height: 1.5;
+    white-space: pre-wrap;
+}
+
+.candidature-reponse__date {
+    color: var(--color-muted);
+    font-size: 0.85rem;
+}
 
 /* Navigation principale par role */
 .app-header {

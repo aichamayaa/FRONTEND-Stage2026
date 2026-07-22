@@ -108,6 +108,7 @@ export function MesCandidaturesPage() {
                 <th>Actions</th>
               </tr>
             </thead>
+
             <tbody>
               {candidatures.map((c) => (
                 <Fragment key={c.idCandidature}>
@@ -131,6 +132,7 @@ export function MesCandidaturesPage() {
                           >
                             Modifier
                           </button>
+
                           <button
                             type="button"
                             className="table-action danger-action"
@@ -144,6 +146,29 @@ export function MesCandidaturesPage() {
                       )}
                     </td>
                   </tr>
+
+                  {['Acceptee', 'Refusee'].includes(c.statut) && (
+                    <tr>
+                      <td colSpan={6}>
+                        <div className="candidature-reponse">
+                          <strong className="candidature-reponse__titre">
+                            Réponse de l’employeur
+                          </strong>
+
+                          <p className="candidature-reponse__message">
+                            {c.messageReponseEmployeur || 'Aucun message fourni.'}
+                          </p>
+
+                          {c.dateReponseEmployeur && (
+                            <small className="candidature-reponse__date">
+                              Réponse reçue le {formatDate(c.dateReponseEmployeur)}
+                            </small>
+                          )}
+                        </div>
+                      </td>
+                    </tr>
+                  )}
+
                   {editId === c.idCandidature && (
                     <tr>
                       <td colSpan={6}>
@@ -156,6 +181,7 @@ export function MesCandidaturesPage() {
                             style={{ width: '100%' }}
                           />
                         </label>
+
                         <div className="table-actions" style={{ marginTop: 8 }}>
                           <button
                             type="button"
@@ -164,6 +190,7 @@ export function MesCandidaturesPage() {
                           >
                             Enregistrer
                           </button>
+
                           <button
                             type="button"
                             className="secondary-action"
