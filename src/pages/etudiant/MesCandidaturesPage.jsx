@@ -91,7 +91,7 @@ export function MesCandidaturesPage() {
       {!chargement && candidatures.length === 0 && (
         <div className="empty-state">
           <h2>Aucune candidature</h2>
-          <p>Vous n'avez postulé à aucune offre pour le moment.</p>
+          <p>Vous n&#39;avez postulé à aucune offre pour le moment.</p>
         </div>
       )}
 
@@ -168,7 +168,29 @@ export function MesCandidaturesPage() {
                       </td>
                     </tr>
                   )}
+                  {c.emploiConfirme && (
+                      <tr>
+                          <td colSpan={6}>
+                              <div className="candidature-reponse">
+                                  <strong className="candidature-reponse__titre">
+                                      Emploi confirmé
+                                  </strong>
 
+                                  <p className="candidature-reponse__message">
+                                      {c.messageConfirmationEmploi ||
+                                          "Emploi confirmé par l'employeur."}
+                                  </p>
+
+                                  {c.dateConfirmationEmploi && (
+                                      <small className="candidature-reponse__date">
+                                          Confirmation reçue le{' '}
+                                          {formatDate(c.dateConfirmationEmploi)}
+                                      </small>
+                                  )}
+                              </div>
+                          </td>
+                      </tr>
+                  )}
                   {editId === c.idCandidature && (
                     <tr>
                       <td colSpan={6}>

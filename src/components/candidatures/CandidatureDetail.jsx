@@ -4,8 +4,8 @@ import { telechargerDocument } from '../../services/candidatureService';
 const STATUT_LABELS = {
     EnAttente: 'En attente',
     Vue: 'Vue',
-    Acceptee: 'Acceptee',
-    Refusee: 'Refusee',
+    Acceptee: 'Acceptée',
+    Refusee: 'Refusée',
 };
 
 const TYPE_LABELS = {
@@ -54,15 +54,33 @@ export function CandidatureDetail({ candidature, onRetour }) {
                     </div>
                 )}
 
-                {/* Ajout de la r�ponse de l'employeur si elle existe, avec la date de r�ponse */}
+                {/* Ajout de la réponse de l'employeur si elle existe, avec la date de réponse */}
                 {candidature.messageReponseEmployeur && (
                     <div className="candidature-detail__message">
-                        <h3>Reponse de l'employeur</h3>
+                        <h3>Réponse de l&#39;employeur</h3>
                         <p style={{ whiteSpace: 'pre-wrap' }}>{candidature.messageReponseEmployeur}</p>
 
                         {candidature.dateReponseEmployeur && (
                             <p className="candidature-detail__date">
-                                Reponse envoyee le {formatDate(candidature.dateReponseEmployeur)}
+                                Réponse envoyée le {formatDate(candidature.dateReponseEmployeur)}
+                            </p>
+                        )}
+                    </div>
+                )}
+
+                {candidature.emploiConfirme && (
+                    <div className="candidature-detail__message">
+                        <h3>Confirmation de l&#39;emploi</h3>
+
+                        <p style={{ whiteSpace: 'pre-wrap' }}>
+                            {candidature.messageConfirmationEmploi ||
+                                "Emploi confirmé par l'employeur."}
+                        </p>
+
+                        {candidature.dateConfirmationEmploi && (
+                            <p className="candidature-detail__date">
+                                Emploi confirmé le{' '}
+                                {formatDate(candidature.dateConfirmationEmploi)}
                             </p>
                         )}
                     </div>
@@ -88,7 +106,7 @@ export function CandidatureDetail({ candidature, onRetour }) {
                                         className="table-action"
                                         onClick={() => telechargerDocument(doc.idDocument, doc.nomFichier)}
                                     >
-                                        Telecharger
+                                        Télécharger
                                     </button>
                                 </div>
                             ))}
