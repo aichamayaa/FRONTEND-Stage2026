@@ -118,31 +118,59 @@ export function CandidaturesRecuesPage() {
 
         if (message === null) return;
 
+        const messageConfirmation =
+            message.trim() || "Emploi confirmé par l'employeur.";
+
+        const dateConfirmation = new Date().toISOString();
+
         setErreur(null);
 
         try {
             await confirmerEmploi(
                 idCandidature,
-                message.trim() || "Emploi confirmé par l'employeur."
+                messageConfirmation
             );
 
             setCandidatures((prev) =>
                 prev.map((c) =>
                     c.idCandidature === idCandidature
-                        ? { ...c, statut: 'Acceptée' }
+                        ? {
+                            ...c,
+                            emploiConfirme: true,
+                            messageConfirmationEmploi:
+                                messageConfirmation,
+                            dateConfirmationEmploi:
+                                dateConfirmation,
+                        }
                         : c
                 )
             );
 
-            if (candidatureDetail?.idCandidature === idCandidature) {
+            if (
+                candidatureDetail?.idCandidature ===
+                idCandidature
+            ) {
                 setCandidatureDetail((prev) =>
-                    prev ? { ...prev, statut: 'Acceptée' } : prev
+                    prev
+                        ? {
+                            ...prev,
+                            emploiConfirme: true,
+                            messageConfirmationEmploi:
+                                messageConfirmation,
+                            dateConfirmationEmploi:
+                                dateConfirmation,
+                        }
+                        : prev
                 );
             }
 
-            afficherSucces("Emploi confirmé avec succès.");
+            afficherSucces(
+                "Emploi confirmé avec succès."
+            );
         } catch (e) {
-            setErreur(e.response?.data?.message ?? e.message);
+            setErreur(
+                e.response?.data?.message ?? e.message
+            );
         }
     }
 
