@@ -3,6 +3,7 @@ import { AppLayout } from '../../components/layout/AppLayout';
 import { OffreFilters } from '../../components/offres/OffreFilters';
 import { OffreTable } from '../../components/offres/OffreTable';
 import { OffreForm } from '../../components/offres/OffreForm';
+import { OffrePdfActions } from '../../components/offres/OffrePdfActions';
 import {
   getMesOffres,
   getOffreById,
@@ -202,6 +203,10 @@ export function OffresEmployeurPage() {
             >
               Modifier
             </button>
+          </div>
+
+          <div style={{ marginTop: '20px' }}>
+            <OffrePdfActions idOffre={o.idOffre} />
           </div>
         </div>
       </AppLayout>
