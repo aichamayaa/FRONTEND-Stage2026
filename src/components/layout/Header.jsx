@@ -76,6 +76,11 @@ export function Header() {
       to: '/stages/confirmations',
       roles: ['Employeur', 'ResponsableStage'],
     },
+    {
+      label: 'Notifications',
+      to: '/notifications',
+      roles: ['Employeur', 'Etudiant'],
+    },
   ];
 
   const visibleNavigationItems = navigationItems.filter((item) =>
