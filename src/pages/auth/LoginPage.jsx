@@ -26,10 +26,28 @@ export function LoginPage() {
         </div>
 
         <div className="login-hero-text">
-          <h2>Connecter les étudiants, les employeurs et les stages.</h2>
-          <p>
-            Une plateforme institutionnelle pour gérer les candidatures,
-            les offres et le suivi de placement.
+          <h2
+            style={{
+              fontSize: 'clamp(1.95rem, 2.35vw, 2.5rem)',
+              lineHeight: 1.1,
+              maxWidth: '720px',
+              width: '100%',
+            }}
+          >
+            Votre espace de placement,
+            <br />
+            au cœur de votre cégep.
+          </h2>
+
+          <p
+            style={{
+              fontSize: 'clamp(1rem, 1.1vw, 1.1rem)',
+              lineHeight: 1.5,
+              maxWidth: '760px',
+              width: '100%',
+            }}
+          >
+            Offres, candidatures, stages, emplois et suivi réunis au même endroit.
           </p>
         </div>
       </section>
