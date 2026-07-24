@@ -5,7 +5,7 @@ export function LogoutButton() {
 
   return (
     <button type="button" onClick={logout}>
-      Deconnexion
+      Déconnexion
     </button>
   );
 }

@@ -27,7 +27,7 @@ export function CandidatureTable({
         return (
             <div className="empty-state">
                 <h2>Aucune candidature recue</h2>
-                <p>Les candidatures apparaitront ici des qu un etudiant postule.</p>
+                <p>Les candidatures apparaîtront ici dès qu’un étudiant postulera.</p>
             </div>
         );
     }

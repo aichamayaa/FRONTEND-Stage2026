@@ -40,7 +40,7 @@ export function DashboardPage() {
             <span className="dashboard-card-number">01</span>
             <h2>Gestion des utilisateurs</h2>
             <p>
-              Creer, modifier, activer ou desactiver les comptes de la
+              Créer, modifier, activer ou désactiver les comptes de la
               plateforme.
             </p>
           </Link>
@@ -49,7 +49,7 @@ export function DashboardPage() {
         {canManageUsers && (
           <Link className="dashboard-card dashboard-link" to="/admin/roles">
             <span className="dashboard-card-number">02</span>
-            <h2>Roles et acces</h2>
+            <h2>Rôles et accès</h2>
             <p>Consulter les roles disponibles et verifier les acces.</p>
           </Link>
         )}
@@ -57,9 +57,9 @@ export function DashboardPage() {
         {isSuperAdmin && (
           <Link className="dashboard-card dashboard-link" to="/admin/colleges">
             <span className="dashboard-card-number">03</span>
-            <h2>Gestion des cegeps</h2>
+            <h2>Gestion des cégeps</h2>
             <p>
-              Creer, modifier ou desactiver les cegeps participants de la
+              Créer, modifier ou désactiver les cegeps participants de la
               plateforme.
             </p>
           </Link>
@@ -71,9 +71,9 @@ export function DashboardPage() {
             to="/admin/domaines-etudes"
           >
             <span className="dashboard-card-number">04</span>
-            <h2>Domaines d'etudes</h2>
+            <h2>Domaines d’études</h2>
             <p>
-              Ajouter, modifier ou desactiver les domaines d'etudes du cegep.
+              Ajouter, modifier ou désactiver les domaines d’études du cegep.
             </p>
           </Link>
         )}
@@ -103,7 +103,7 @@ export function DashboardPage() {
             to="/employeur/candidatures"
           >
             <span className="dashboard-card-number">07</span>
-            <h2>Candidatures recues</h2>
+            <h2>Candidatures reçues</h2>
             <p>
               Consulter les candidats, changer leur statut et voir les
               documents.
@@ -118,7 +118,7 @@ export function DashboardPage() {
           >
             <span className="dashboard-card-number">08</span>
             <h2>Candidatures par domaine</h2>
-            <p>Consulter les candidatures recues filtrees par domaine.</p>
+            <p>Consulter les candidatures reçues filtrées par domaine.</p>
           </Link>
         )}
 
@@ -128,8 +128,8 @@ export function DashboardPage() {
             to="/employeur/demandes-stage"
           >
             <span className="dashboard-card-number">09</span>
-            <h2>Demandes de stage recues</h2>
-            <p>Consulter les demandes de stage des etudiants.</p>
+            <h2>Demandes de stage reçues</h2>
+            <p>Consulter les demandes de stage des étudiants.</p>
           </Link>
         )}
 
@@ -140,7 +140,7 @@ export function DashboardPage() {
           >
             <span className="dashboard-card-number">10</span>
             <h2>Offres de stage directes</h2>
-            <p>Proposer un stage directement a un etudiant.</p>
+            <p>Proposer un stage directement à un étudiant.</p>
           </Link>
         )}
 
@@ -191,7 +191,7 @@ export function DashboardPage() {
           <Link className="dashboard-card dashboard-link" to="/demande-stage">
             <span className="dashboard-card-number">D</span>
             <h2>Demande de stage</h2>
-            <p>Formuler une demande de stage dans un domaine d'etudes.</p>
+            <p>Formuler une demande de stage dans un domaine d’études.</p>
           </Link>
         )}
 
@@ -201,7 +201,7 @@ export function DashboardPage() {
             to="/offres-stage-recues"
           >
             <span className="dashboard-card-number">E</span>
-            <h2>Offres de stage recues</h2>
+            <h2>Offres de stage reçues</h2>
             <p>Consulter les offres de stage directes et y repondre.</p>
           </Link>
         )}
@@ -209,7 +209,7 @@ export function DashboardPage() {
         {isEtudiant && (
           <Link className="dashboard-card dashboard-link" to="/mes-demarches">
             <span className="dashboard-card-number">F</span>
-            <h2>Mes demarches</h2>
+            <h2>Mes démarches</h2>
             <p>Voir les suivis, appels ou rencontres ajoutes par le responsable.</p>
           </Link>
         )}
@@ -228,7 +228,7 @@ export function DashboardPage() {
             to="/responsable/suivi-etudiants"
           >
             <span className="dashboard-card-number">S1</span>
-            <h2>Suivi des etudiants</h2>
+            <h2>Suivi des étudiants</h2>
             <p>Consulter les etudiants et suivre leurs demarches.</p>
           </Link>
         )}
@@ -246,8 +246,8 @@ export function DashboardPage() {
 
         <article className="dashboard-card">
           <span className="dashboard-card-number">?</span>
-          <h2>Profil connecte</h2>
-          <p>Verifier les informations retournees par le token de connexion.</p>
+          <h2>Profil connecté</h2>
+          <p>Vérifier les informations retournées par le token de connexion.</p>
         </article>
       </section>
     </AppLayout>

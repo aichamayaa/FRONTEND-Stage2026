@@ -184,7 +184,7 @@ export function CandidaturesRecuesPage() {
         return (
             <AppLayout>
                 <div className="page-header">
-                    <p className="page-kicker">Candidatures recues</p>
+                    <p className="page-kicker">Candidatures reçues</p>
                     <h1>Detail de la candidature</h1>
                 </div>
 
@@ -204,7 +204,7 @@ export function CandidaturesRecuesPage() {
         <AppLayout>
             <div className="page-header">
                 <p className="page-kicker">Employeur</p>
-                <h1>Candidatures recues</h1>
+                <h1>Candidatures reçues</h1>
                 <p>Consultez et gerez les candidatures pour vos offres.</p>
             </div>
 

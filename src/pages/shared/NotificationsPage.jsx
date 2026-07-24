@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { AppLayout } from '../../components/layout/AppLayout';
 import { getMesNotifications, marquerLue } from '../../services/notificationService';
-import { formatDate } from '../../utils/formatDate';
+import { formatDateTime } from '../../utils/formatDate';
 
 export function NotificationsPage() {
   const [notifications, setNotifications] = useState([]);
@@ -67,7 +67,7 @@ export function NotificationsPage() {
               {notifications.map((n) => (
                 <tr key={n.idNotification}>
                   <td>{n.message}</td>
-                  <td>{formatDate(n.dateCreation)}</td>
+                  <td>{formatDateTime(n.dateCreation)}</td>
                   <td>
                     <span className={`badge ${n.lue ? 'badge-muted' : 'badge-success'}`}>
                       {n.lue ? 'Lue' : 'Nouvelle'}

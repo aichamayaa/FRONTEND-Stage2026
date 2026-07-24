@@ -8,7 +8,7 @@ export function Header() {
   const role = user?.role;
 
   const logoUrl = collegeTheme?.logoUrl || DEFAULT_LOGO;
-  const nomCollege = collegeTheme?.nom || 'Cegep Gerald-Godin';
+  const nomCollege = collegeTheme?.nom || 'Cégep Gérald-Godin';
 
   const navigationItems = [
     {
@@ -47,7 +47,7 @@ export function Header() {
       roles: ['Employeur'],
     },
     {
-      label: 'Candidatures recues',
+      label: 'Candidatures reçues',
       to: '/employeur/candidatures',
       roles: ['Employeur'],
     },
@@ -62,12 +62,12 @@ export function Header() {
       roles: ['Etudiant'],
     },
     {
-      label: 'Mes demarches',
+      label: 'Mes démarches',
       to: '/mes-demarches',
       roles: ['Etudiant'],
     },
     {
-      label: 'Suivi etudiants',
+      label: 'Suivi étudiants',
       to: '/responsable/suivi-etudiants',
       roles: ['ResponsableStage'],
     },
@@ -98,7 +98,7 @@ export function Header() {
           />
 
           <div>
-            <strong>Systeme de placement</strong>
+            <strong>Système de placement</strong>
             <span>{nomCollege}</span>
           </div>
         </div>
@@ -112,7 +112,7 @@ export function Header() {
 
           {user && (
             <button type="button" onClick={logout}>
-              Deconnexion
+              Déconnexion
             </button>
           )}
         </div>

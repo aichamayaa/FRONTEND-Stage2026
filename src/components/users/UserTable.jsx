@@ -1,3 +1,4 @@
+import { formatDateTime } from '../../utils/formatDate';
 export function UserTable({ users, onEdit, onToggleActif }) {
   if (!users.length) {
     return (
@@ -39,7 +40,7 @@ export function UserTable({ users, onEdit, onToggleActif }) {
               </td>
               <td>
                 {user.derniereConnexion
-                  ? new Date(user.derniereConnexion).toLocaleDateString('fr-CA')
+                  ? formatDateTime(user.derniereConnexion)
                   : '-'}
               </td>
               <td>
@@ -57,7 +58,7 @@ export function UserTable({ users, onEdit, onToggleActif }) {
                     type="button"
                     onClick={() => onToggleActif(user)}
                   >
-                    {user.actif ? 'Desactiver' : 'Activer'}
+                    {user.actif ? 'Désactiver' : 'Activer'}
                   </button>
                 </div>
               </td>
