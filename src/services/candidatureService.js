@@ -70,6 +70,11 @@ export async function telechargerDocument(idDocument, nomFichier) {
   URL.revokeObjectURL(url);
 }
 
+export async function validerPostulation(idOffre) {
+  const { data } = await apiClient.get(`/candidatures/validation/${idOffre}`);
+  return data;
+}
+
 export async function postuler(payload) {
   const { data } = await apiClient.post('/candidatures', payload);
   return data;
@@ -86,7 +91,16 @@ export async function uploadDocument(fichier) {
     body: formData
   });
   if (!response.ok) {
-    throw new Error('Upload du CV échoué.');
+    let message = 'Téléversement du document échoué.';
+
+    try {
+      const data = await response.json();
+      message = data?.message || message;
+    } catch {
+      // La réponse ne contient pas de message JSON exploitable.
+    }
+
+    throw new Error(message);
   }
   const data = await response.json();
   return data.url;
