@@ -47,7 +47,7 @@ export function CollegesPage() {
       const data = await getColleges();
       setColleges(data);
     } catch (e) {
-      setError(getErrorMessage(e) || 'Impossible de charger les cegeps.');
+      setError(getErrorMessage(e) || 'Impossible de charger les cégeps.');
     } finally {
       setLoading(false);
     }
@@ -112,7 +112,7 @@ export function CollegesPage() {
     };
 
     if (!payload.nom || !payload.ville) {
-      setError('Le nom et la ville du cegep sont obligatoires.');
+      setError('Le nom et la ville du cégep sont obligatoires.');
       setSaving(false);
       return;
     }
@@ -120,10 +120,10 @@ export function CollegesPage() {
     try {
       if (selectedCollege) {
         await updateCollege(selectedCollege.idCollege, payload);
-        setMessage('Cegep modifie avec succes.');
+        setMessage('Cégep modifié avec succès.');
       } else {
         await createCollege(payload);
-        setMessage('Cegep cree avec succes.');
+        setMessage('Cégep créé avec succès.');
       }
 
       setSelectedCollege(null);
@@ -138,7 +138,7 @@ export function CollegesPage() {
 
   async function handleDelete(college) {
     const confirmation = window.confirm(
-      `Desactiver le cegep "${college.nom}" ?`
+      `Désactiver le cegep "${college.nom}" ?`
     );
 
     if (!confirmation) return;
@@ -148,7 +148,7 @@ export function CollegesPage() {
 
     try {
       await deleteCollege(college.idCollege);
-      setMessage('Cegep desactive avec succes.');
+      setMessage('Cégep désactivé avec succès.');
       await loadColleges();
     } catch (e) {
       setError(getErrorMessage(e));
@@ -160,9 +160,9 @@ export function CollegesPage() {
       <section className="page-header">
         <div>
           <p className="page-kicker">Administration</p>
-          <h1>Gestion des cegeps</h1>
+          <h1>Gestion des cégeps</h1>
           <p>
-            Creez, modifiez et personnalisez les cegeps participants de la plateforme.
+            Créez, modifiez et personnalisez les cégeps participants de la plateforme.
           </p>
         </div>
       </section>
@@ -173,7 +173,7 @@ export function CollegesPage() {
       <section className="admin-grid">
         <div className="panel">
           <h2>
-            {selectedCollege ? 'Modifier un cegep' : 'Creer un cegep'}
+            {selectedCollege ? 'Modifier un cégep' : 'Créer un cégep'}
           </h2>
 
           <form onSubmit={handleSubmit} className="admin-form">
@@ -185,7 +185,7 @@ export function CollegesPage() {
                   name="nom"
                   value={form.nom}
                   onChange={handleChange}
-                  placeholder="Ex. Cegep Gerald-Godin"
+                  placeholder="Ex. Cégep Gérald-Godin"
                 />
               </label>
 
@@ -286,7 +286,7 @@ export function CollegesPage() {
               >
                 <div>
                   <strong>Apercu du theme</strong>
-                  <span>{form.nom || 'Nom du cegep'}</span>
+                  <span>{form.nom || 'Nom du cégep'}</span>
                 </div>
                 <button type="button">Action</button>
               </div>
@@ -300,7 +300,7 @@ export function CollegesPage() {
                     onChange={handleChange}
                     style={{ marginRight: '8px' }}
                   />
-                  Cegep actif
+                  Cégep actif
                 </span>
               </label>
             </div>
@@ -329,13 +329,13 @@ export function CollegesPage() {
         </div>
 
         <div className="panel admin-list-panel">
-          <h2>Cegeps</h2>
+          <h2>Cégeps</h2>
 
           {loading ? (
             <p>Chargement...</p>
           ) : colleges.length === 0 ? (
             <div className="empty-state">
-              <p>Aucun cegep trouve.</p>
+              <p>Aucun cégep trouvé.</p>
             </div>
           ) : (
             <div className="table-shell">
@@ -380,7 +380,7 @@ export function CollegesPage() {
                             className="danger-action"
                             onClick={() => handleDelete(college)}
                           >
-                            Desactiver
+                            Désactiver
                           </button>
                         </div>
                       </td>

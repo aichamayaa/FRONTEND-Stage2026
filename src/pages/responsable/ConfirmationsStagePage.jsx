@@ -1,3 +1,4 @@
+import { formatDate } from '../../utils/formatDate';
 import { useEffect, useState } from 'react';
 import { AppLayout } from '../../components/layout/AppLayout';
 import { useAuth } from '../../hooks/useAuth';
@@ -140,14 +141,14 @@ export function ConfirmationsStagePage() {
                 <dt>Début</dt>
                 <dd>
                   {selected.dateDebut
-                    ? new Date(selected.dateDebut).toLocaleDateString()
+                    ? formatDate(selected.dateDebut)
                     : 'Non précisé'}
                 </dd>
 
                 <dt>Fin</dt>
                 <dd>
                   {selected.dateFin
-                    ? new Date(selected.dateFin).toLocaleDateString()
+                    ? formatDate(selected.dateFin)
                     : 'Non précisé'}
                 </dd>
               </dl>
