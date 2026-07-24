@@ -1,5 +1,9 @@
 import { useRef, useState } from 'react';
-import { postuler, uploadDocument } from '../../services/candidatureService';
+import {
+  postuler,
+  uploadDocument,
+  validerPostulation
+} from '../../services/candidatureService';
 
 export function CandidatureForm({ idOffre, titreOffre, onSuccess }) {
   const cvInputRef = useRef(null);
@@ -23,6 +27,8 @@ export function CandidatureForm({ idOffre, titreOffre, onSuccess }) {
     setEnvoi(true);
 
     try {
+      await validerPostulation(idOffre);
+
       const cvUrl = await uploadDocument(fichierCv);
       const lettreUrl = fichierLettre ? await uploadDocument(fichierLettre) : null;
       const candidature = await postuler({ idOffre, cvUrl, lettreUrl });
@@ -38,8 +44,15 @@ export function CandidatureForm({ idOffre, titreOffre, onSuccess }) {
       if (onSuccess) {
         onSuccess(candidature);
       }
-    } catch {
-      setErreur("Impossible d'envoyer la candidature.");
+    } catch (error) {
+      const messageApi =
+        error?.response?.data?.message ??
+        error?.message;
+
+      setErreur(
+        messageApi ||
+        "Impossible d'envoyer la candidature."
+      );
     } finally {
       setEnvoi(false);
     }

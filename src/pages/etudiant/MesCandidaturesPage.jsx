@@ -61,16 +61,18 @@ export function MesCandidaturesPage() {
 
   function ouvrirEdition(c) {
     setEditId(c.idCandidature);
-    setEditMessage('');
+    setEditMessage(c.messageMotivation ?? '');
     setMessage(null);
+    setErreur(null);
   }
 
   async function handleEnregistrer(id) {
     try {
       await mettreAJourCandidature(id, editMessage);
       setMessage('Candidature mise à jour.');
+      setErreur(null);
       setEditId(null);
-      charger();
+      await charger();
     } catch {
       setErreur('Impossible de mettre à jour la candidature.');
     }
