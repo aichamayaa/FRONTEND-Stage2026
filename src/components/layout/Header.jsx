@@ -21,11 +21,7 @@ export function Header() {
       to: '/admin/users',
       roles: ['SuperAdministrateur', 'Administrateur'],
     },
-    {
-      label: 'Roles',
-      to: '/admin/roles',
-      roles: ['SuperAdministrateur', 'Administrateur'],
-    },
+  
     {
       label: 'Colleges',
       to: '/admin/colleges',
