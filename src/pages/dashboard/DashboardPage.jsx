@@ -214,6 +214,14 @@ export function DashboardPage() {
           </Link>
         )}
 
+        {isEtudiant && (
+          <Link className="dashboard-card dashboard-link" to="/notifications">
+            <span className="dashboard-card-number">G</span>
+            <h2>Notifications</h2>
+            <p>Consulter les confirmations liées aux emplois et les avis reçus.</p>
+          </Link>
+        )}
+
         {isResponsableStage && (
           <Link
             className="dashboard-card dashboard-link"
