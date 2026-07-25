@@ -1203,3 +1203,114 @@ p {
   border-radius: 999px;
 }
 
+
+/* Demande de stage - mise en page */
+.demande-stage-form {
+  display: grid;
+  gap: 20px;
+}
+
+.demande-stage-form__grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: 18px;
+}
+
+.demande-stage-form__field {
+  display: grid;
+  min-width: 0;
+  gap: 8px;
+  color: var(--color-primary-dark);
+  font-weight: 800;
+}
+
+.demande-stage-form__field--full {
+  grid-column: 1 / -1;
+}
+
+.demande-stage-form input,
+.demande-stage-form select,
+.demande-stage-form textarea {
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 12px;
+  color: var(--color-text);
+  background: #f7fbff;
+  border: 1px solid #b7d8ec;
+  border-radius: var(--radius-sm);
+  outline: none;
+}
+
+.demande-stage-form textarea {
+  min-height: 96px;
+  line-height: 1.5;
+  resize: vertical;
+}
+
+.demande-stage-form textarea[rows="4"] {
+  min-height: 140px;
+}
+
+.demande-stage-form input:focus,
+.demande-stage-form select:focus,
+.demande-stage-form textarea:focus {
+  background: #ffffff;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(0, 159, 218, 0.16);
+}
+
+.demande-stage-form .form-actions {
+  justify-content: flex-end;
+}
+
+.demande-stage-form .primary-action {
+  min-width: 190px;
+}
+
+.demande-stage-list {
+  margin-top: 24px;
+}
+
+.demande-stage-list__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 20px;
+}
+
+.demande-stage-list__header h2 {
+  margin: 0;
+  color: var(--color-primary-dark);
+}
+
+.demande-stage-list__header .page-kicker {
+  margin-bottom: 5px;
+}
+
+.demande-stage-list .empty-state {
+  margin: 0;
+}
+
+@media (max-width: 760px) {
+  .demande-stage-form__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .demande-stage-form__field--full {
+    grid-column: auto;
+  }
+
+  .demande-stage-form .form-actions {
+    justify-content: stretch;
+  }
+
+  .demande-stage-form .primary-action {
+    width: 100%;
+  }
+
+  .demande-stage-list__header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
