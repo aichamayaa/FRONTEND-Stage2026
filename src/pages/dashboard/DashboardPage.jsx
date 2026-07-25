@@ -28,10 +28,12 @@ export function DashboardPage() {
           </p>
         </div>
 
-        <div className="dashboard-role-card">
-          <span>Role actif</span>
-          <strong>{user?.role}</strong>
-        </div>
+        {!isEtudiant && (
+          <div className="dashboard-role-card">
+            <span>Role actif</span>
+            <strong>{user?.role}</strong>
+          </div>
+        )}
       </section>
 
       <section className="dashboard-grid">
