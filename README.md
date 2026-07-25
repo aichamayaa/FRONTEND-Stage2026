@@ -1,7 +1,3 @@
-
-## Frontend `README.md`
-
-```markdown
 # Système de placement — Frontend
 
 Application React du système de placement en ligne du Cégep.
@@ -23,3 +19,8 @@ Le frontend communique avec l’API du projet backend.
 ```bash
 npm install
 npm run dev
+```
+
+## Configuration
+
+Copier `.env.example` vers `.env`, puis ajuster l’URL de l’API backend au besoin.
