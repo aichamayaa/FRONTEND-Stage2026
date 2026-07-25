@@ -12,23 +12,23 @@ export function Header() {
 
   const navigationItems = [
     {
-      label: 'Dashboard',
+      label: 'Tableau de bord',
       to: '/',
       roles: ['SuperAdministrateur', 'Administrateur', 'Employeur', 'Etudiant', 'ResponsableStage'],
     },
     {
-      label: 'Utilisateurs',
+      label: 'Gestion des utilisateurs',
       to: '/admin/users',
       roles: ['SuperAdministrateur', 'Administrateur'],
     },
   
     {
-      label: 'Colleges',
+      label: 'Gestion des cégeps',
       to: '/admin/colleges',
       roles: ['SuperAdministrateur'],
     },
     {
-      label: 'Domaines',
+      label: 'Domaines d’études',
       to: '/admin/domaines-etudes',
       roles: ['SuperAdministrateur', 'Administrateur'],
     },
@@ -48,8 +48,28 @@ export function Header() {
       roles: ['Employeur'],
     },
     {
-      label: 'Rechercher',
+      label: 'Candidatures par domaine',
+      to: '/employeur/candidatures-domaine',
+      roles: ['Employeur'],
+    },
+    {
+      label: 'Demandes de stage reçues',
+      to: '/employeur/demandes-stage',
+      roles: ['Employeur'],
+    },
+    {
+      label: 'Offres de stage directes',
+      to: '/employeur/offres-stage-directes',
+      roles: ['Employeur'],
+    },
+    {
+      label: 'Rechercher des offres',
       to: '/recherche-offres',
+      roles: ['Etudiant'],
+    },
+    {
+      label: "Statut d'une offre",
+      to: '/statut-offre',
       roles: ['Etudiant'],
     },
     {
@@ -58,17 +78,27 @@ export function Header() {
       roles: ['Etudiant'],
     },
     {
+      label: 'Demande de stage',
+      to: '/demande-stage',
+      roles: ['Etudiant'],
+    },
+    {
+      label: 'Offres de stage reçues',
+      to: '/offres-stage-recues',
+      roles: ['Etudiant'],
+    },
+    {
       label: 'Mes démarches',
       to: '/mes-demarches',
       roles: ['Etudiant'],
     },
     {
-      label: 'Suivi étudiants',
+      label: 'Suivi des étudiants',
       to: '/responsable/suivi-etudiants',
       roles: ['ResponsableStage'],
     },
     {
-      label: 'Confirmations',
+      label: 'Confirmations de stage',
       to: '/stages/confirmations',
       roles: ['Employeur', 'ResponsableStage'],
     },
