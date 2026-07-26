@@ -64,7 +64,11 @@ export function CandidatureForm({ idOffre, titreOffre, onSuccess }) {
         <div>
           <label>CV (PDF ou Word)</label>
           <div>
-            <button type="button" onClick={() => cvInputRef.current?.click()}>
+            <button
+              type="button"
+              className="primary-action"
+              onClick={() => cvInputRef.current?.click()}
+            >
               Ajouter un fichier
             </button>
             {fichierCv && <span style={{ marginLeft: 8 }}>{fichierCv.name}</span>}
@@ -81,7 +85,11 @@ export function CandidatureForm({ idOffre, titreOffre, onSuccess }) {
         <div>
           <label>Lettre de motivation (PDF ou Word)</label>
           <div>
-            <button type="button" onClick={() => lettreInputRef.current?.click()}>
+            <button
+              type="button"
+              className="primary-action"
+              onClick={() => lettreInputRef.current?.click()}
+            >
               Ajouter un fichier
             </button>
             {fichierLettre && <span style={{ marginLeft: 8 }}>{fichierLettre.name}</span>}
@@ -99,9 +107,11 @@ export function CandidatureForm({ idOffre, titreOffre, onSuccess }) {
       {erreur && <p className="form-error">{erreur}</p>}
       {message && <p className="form-success">{message}</p>}
 
-      <button type="submit" disabled={envoi}>
-        {envoi ? 'Envoi...' : 'Soumettre ma candidature'}
-      </button>
+      <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+        <button type="submit" className="primary-action" disabled={envoi}>
+          {envoi ? 'Envoi...' : 'Soumettre ma candidature'}
+        </button>
+      </div>
     </form>
   );
 }

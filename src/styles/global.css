@@ -1126,6 +1126,29 @@ p {
   border-color: var(--color-primary);
 }
 
+.app-nav-link-alert {
+  color: #ffffff;
+  background: #e5484d;
+  border-color: #e5484d;
+  animation: nav-alert-pulse 1.4s ease-in-out infinite;
+}
+
+.app-nav-link-alert:hover {
+  color: #ffffff;
+  background: #c62a2f;
+  border-color: #c62a2f;
+}
+
+@keyframes nav-alert-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(229, 72, 77, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 0 6px rgba(229, 72, 77, 0);
+  }
+}
+
 @media (max-width: 760px) {
   .app-header {
     padding: 16px 18px;
