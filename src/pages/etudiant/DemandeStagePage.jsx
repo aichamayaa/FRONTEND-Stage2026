@@ -77,13 +77,13 @@ export function DemandeStagePage() {
       <div className="page-header">
         <p className="page-kicker">Espace étudiant</p>
         <h1>Demande de stage</h1>
-        <p>Formulez une demande de stage dans un domaine d'études.</p>
+        <p>Formulez une demande de stage dans un domaine d’études.</p>
       </div>
 
       <form className="panel demande-stage-form" onSubmit={handleSubmit}>
         <div className="form-grid demande-stage-form__grid">
           <label className="demande-stage-form__field">
-            Domaine d'études *
+            Domaine d’études *
             <select value={idDomaine} onChange={(e) => setIdDomaine(e.target.value)}>
               <option value="">-- Choisir --</option>
               {domaines.map((d) => (

@@ -59,12 +59,12 @@ export function CandidaturesParDomainePage() {
       <div className="page-header">
         <p className="page-kicker">Employeur</p>
         <h1>Candidatures par domaine</h1>
-        <p>Consultez les candidatures reçues sur vos offres, filtrées par domaine d'études.</p>
+        <p>Consultez les candidatures reçues sur vos offres, filtrées par domaine d’études.</p>
       </div>
 
       <div className="panel">
         <label className="offre-filters__label">
-          Domaine d'études
+          Domaine d’études
           <select
             className="offre-filters__select"
             value={idDomaine}

@@ -35,7 +35,7 @@ export function MesDemarchesPage() {
           <div className="empty-state">
             <h2>Aucune demarche visible</h2>
             <p>
-              Votre responsable de stage n'a pas encore partage de demarche avec
+              Votre responsable de stage n’a pas encore partage de demarche avec
               vous.
             </p>
           </div>

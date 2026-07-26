@@ -48,7 +48,7 @@ export function NotificationsPage() {
       {!chargement && notifications.length === 0 && (
         <div className="empty-state">
           <h2>Aucune notification</h2>
-          <p>Vous n'avez aucune notification pour le moment.</p>
+          <p>Vous n’avez aucune notification pour le moment.</p>
         </div>
       )}
 

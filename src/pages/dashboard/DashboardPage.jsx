@@ -88,7 +88,7 @@ export function DashboardPage() {
           <Link className="dashboard-card dashboard-link" to="/employeur/offres">
            
             <h2>Mes offres</h2>
-            <p>Creer et modifier vos offres d'emploi ou de stage.</p>
+            <p>Creer et modifier vos offres d’emploi ou de stage.</p>
           </Link>
         )}
 
@@ -146,7 +146,7 @@ export function DashboardPage() {
           >
            
             <h2>Confirmations de stage</h2>
-            <p>Confirmer ou refuser un stage afin d'officialiser le placement.</p>
+            <p>Confirmer ou refuser un stage afin d’officialiser le placement.</p>
           </Link>
         )}
 
@@ -169,7 +169,7 @@ export function DashboardPage() {
         {isEtudiant && (
           <Link className="dashboard-card dashboard-link" to="/statut-offre">
            
-            <h2>Statut d'une offre</h2>
+            <h2>Statut d’une offre</h2>
             <p>Consulter les offres et leur statut actuel.</p>
           </Link>
         )}
@@ -235,7 +235,7 @@ export function DashboardPage() {
           >
             
             <h2>Confirmations de stage</h2>
-            <p>Confirmer ou refuser un stage afin d'officialiser le placement.</p>
+            <p>Confirmer ou refuser un stage afin d’officialiser le placement.</p>
           </Link>
         )}
 
