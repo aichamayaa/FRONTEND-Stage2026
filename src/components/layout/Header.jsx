@@ -1,12 +1,41 @@
 import { NavLink } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import { useAuth } from '../../hooks/useAuth';
 import { formatRole } from '../../utils/formatStatus';
+import { compterNonLues } from '../../services/notificationService';
 
 const DEFAULT_LOGO = '/images/GeraldGodin_Logo_COULEUR@2x.png';
 
 export function Header() {
   const { user, collegeTheme, logout } = useAuth();
   const role = user?.role;
+
+  const [nonLues, setNonLues] = useState(0);
+  const peutRecevoirNotifs = role === 'Employeur' || role === 'Etudiant';
+
+  useEffect(() => {
+    if (!peutRecevoirNotifs) {
+      setNonLues(0);
+      return undefined;
+    }
+
+    let actif = true;
+    async function charger() {
+      try {
+        const n = await compterNonLues();
+        if (actif) setNonLues(n);
+      } catch {
+        /* silencieux */
+      }
+    }
+
+    charger();
+    const intervalle = setInterval(charger, 20000);
+    return () => {
+      actif = false;
+      clearInterval(intervalle);
+    };
+  }, [peutRecevoirNotifs]);
 
   const logoUrl = collegeTheme?.logoUrl || DEFAULT_LOGO;
   const nomCollege = collegeTheme?.nom || 'Cégep Gérald-Godin';
@@ -147,18 +176,25 @@ export function Header() {
 
       {user && visibleNavigationItems.length > 0 && (
         <nav className="app-nav" aria-label="Navigation principale">
-          {visibleNavigationItems.map((item) => (
-            <NavLink
-              key={item.to}
-              className={({ isActive }) =>
-                isActive ? 'app-nav-link app-nav-link-active' : 'app-nav-link'
-              }
-              to={item.to}
-              end={item.to === '/'}
-            >
-              {item.label}
-            </NavLink>
-          ))}
+          {visibleNavigationItems.map((item) => {
+            const estNotif = item.to === '/notifications';
+            const alerte = estNotif && nonLues > 0;
+            return (
+              <NavLink
+                key={item.to}
+                className={({ isActive }) => {
+                  const classes = ['app-nav-link'];
+                  if (isActive) classes.push('app-nav-link-active');
+                  if (alerte) classes.push('app-nav-link-alert');
+                  return classes.join(' ');
+                }}
+                to={item.to}
+                end={item.to === '/'}
+              >
+                {alerte ? `${item.label} (${nonLues})` : item.label}
+              </NavLink>
+            );
+          })}
         </nav>
       )}
     </header>
