@@ -50,10 +50,10 @@ export function UsersPage() {
 
     try {
       await createUser(user);
-      setMessage('Utilisateur cree avec succes.');
+      setMessage('Utilisateur créé avec succès.');
       await loadData();
     } catch {
-      setError("Impossible de creer l'utilisateur.");
+      setError("Impossible de créer l'utilisateur.");
     }
   }
 
@@ -64,7 +64,7 @@ export function UsersPage() {
     try {
       await updateUser(selectedUser.idUtilisateur, user);
       setSelectedUser(null);
-      setMessage('Utilisateur modifie avec succes.');
+      setMessage('Utilisateur modifié avec succès.');
       await loadData();
     } catch {
       setError("Impossible de modifier l'utilisateur.");
@@ -86,7 +86,7 @@ export function UsersPage() {
     try {
       if (user.actif) {
         await desactiverUser(user.idUtilisateur);
-        setMessage('Utilisateur desactive.');
+        setMessage('Utilisateur désactivé.');
       } else {
         await activerUser(user.idUtilisateur);
         setMessage('Utilisateur active.');
@@ -105,7 +105,7 @@ export function UsersPage() {
           <p className="page-kicker">Administration</p>
           <h1>Gestion des utilisateurs</h1>
           <p>
-            Creez les comptes et gerez les acces selon votre niveau
+            Créez les comptes et gérez les accès selon votre niveau
             {"d'administration."}
           </p>
         </div>
@@ -116,7 +116,7 @@ export function UsersPage() {
 
       <section className="admin-grid">
         <div className="panel">
-          <h2>{selectedUser ? 'Modifier un utilisateur' : 'Creer un utilisateur'}</h2>
+          <h2>{selectedUser ? 'Modifier un utilisateur' : 'Créer un utilisateur'}</h2>
           <UserForm
             roles={roles}
             currentUser={currentUser}

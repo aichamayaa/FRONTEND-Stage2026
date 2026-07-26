@@ -1,3 +1,3 @@
 export function OffreDetailsPage() {
-  return <h1>OffreDetailsPage</h1>;
+  return <h1>Détails de l’offre</h1>;
 }

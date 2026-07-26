@@ -138,7 +138,7 @@ export function CollegesPage() {
 
   async function handleDelete(college) {
     const confirmation = window.confirm(
-      `Désactiver le cegep "${college.nom}" ?`
+      `Désactiver le cégep "${college.nom}" ?`
     );
 
     if (!confirmation) return;
@@ -196,18 +196,18 @@ export function CollegesPage() {
                   name="ville"
                   value={form.ville}
                   onChange={handleChange}
-                  placeholder="Ex. Montreal"
+                  placeholder="Ex. Montréal"
                 />
               </label>
 
               <label>
-                Logo URL
+                URL du logo
                 <input
                   type="text"
                   name="logoUrl"
                   value={form.logoUrl}
                   onChange={handleChange}
-                  placeholder="/images/logo-college.png"
+                  placeholder="/images/logo-collège.png"
                 />
               </label>
 
@@ -223,7 +223,7 @@ export function CollegesPage() {
                 </label>
 
                 <label>
-                  Primaire foncee
+                  Primaire foncée
                   <input
                     type="color"
                     name="couleurPrimaireFoncee"
@@ -285,7 +285,7 @@ export function CollegesPage() {
                 }}
               >
                 <div>
-                  <strong>Apercu du theme</strong>
+                  <strong>Aperçu du thème</strong>
                   <span>{form.nom || 'Nom du cégep'}</span>
                 </div>
                 <button type="button">Action</button>
@@ -311,7 +311,7 @@ export function CollegesPage() {
                   ? 'Enregistrement...'
                   : selectedCollege
                     ? 'Modifier'
-                    : 'Creer'}
+                    : 'Créer'}
               </button>
 
               {selectedCollege && (
@@ -344,7 +344,7 @@ export function CollegesPage() {
                   <tr>
                     <th>Nom</th>
                     <th>Ville</th>
-                    <th>Theme</th>
+                    <th>Thème</th>
                     <th>Statut</th>
                     <th>Actions</th>
                   </tr>

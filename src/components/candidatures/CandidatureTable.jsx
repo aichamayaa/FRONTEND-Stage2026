@@ -26,7 +26,7 @@ export function CandidatureTable({
     if (!candidatures || candidatures.length === 0) {
         return (
             <div className="empty-state">
-                <h2>Aucune candidature recue</h2>
+                <h2>Aucune candidature reçue</h2>
                 <p>Les candidatures apparaîtront ici dès qu’un étudiant postulera.</p>
             </div>
         );
@@ -74,7 +74,7 @@ export function CandidatureTable({
                                         className="table-action secondary-table-action"
                                         onClick={() => onVoirDetail(c.idCandidature)}
                                     >
-                                        Detail
+                                        Détail
                                     </button>
 
                                     <select

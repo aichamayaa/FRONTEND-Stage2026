@@ -103,7 +103,7 @@ export function CandidaturesRecuesPage() {
                 );
             }
 
-            afficherSucces('Statut mis a jour.');
+            afficherSucces('Statut mis à jour.');
         } catch (e) {
             setErreur(e.response?.data?.message ?? e.message);
         }
@@ -185,7 +185,7 @@ export function CandidaturesRecuesPage() {
             <AppLayout>
                 <div className="page-header">
                     <p className="page-kicker">Candidatures reçues</p>
-                    <h1>Detail de la candidature</h1>
+                    <h1>Détail de la candidature</h1>
                 </div>
 
                 {succes && <p className="notice notice-success">{succes}</p>}
@@ -205,7 +205,7 @@ export function CandidaturesRecuesPage() {
             <div className="page-header">
                 <p className="page-kicker">Employeur</p>
                 <h1>Candidatures reçues</h1>
-                <p>Consultez et gerez les candidatures pour vos offres.</p>
+                <p>Consultez et gérez les candidatures pour vos offres.</p>
             </div>
 
             {succes && <p className="notice notice-success">{succes}</p>}
@@ -213,7 +213,7 @@ export function CandidaturesRecuesPage() {
 
             <div className="panel" style={{ marginBottom: '16px' }}>
                 <label className="offre-filters__label">
-                    Selectionner une offre
+                    Sélectionner une offre
                     <select
                         className="offre-filters__select"
                         value={idOffreSelectionnee}

@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { AppLayout } from '../../components/layout/AppLayout';
 import { useAuth } from '../../hooks/useAuth';
 import { stageService } from '../../services/stageService';
+import { formatRole, formatStatus } from '../../utils/formatStatus';
 
 export function ConfirmationsStagePage() {
   const { user } = useAuth();
@@ -96,7 +97,7 @@ export function ConfirmationsStagePage() {
                     <tr key={stage.idStage}>
                       <td>{stage.nomEtudiant}</td>
                       <td>
-                        <span className="badge badge-muted">{stage.statut}</span>
+                        <span className="badge badge-muted">{formatStatus(stage.statut)}</span>
                       </td>
                       <td>{stage.confirmations?.length ?? 0}/2</td>
                       <td>
@@ -128,7 +129,7 @@ export function ConfirmationsStagePage() {
             <>
               <h2>{selected.nomEtudiant}</h2>
               <p>
-                Statut : <strong>{selected.statut}</strong>
+                Statut : <strong>{formatStatus(selected.statut)}</strong>
               </p>
 
               <dl className="offre-detail__dl">
@@ -165,11 +166,11 @@ export function ConfirmationsStagePage() {
                       key={confirmation.idConfirmation}
                     >
                       <div>
-                        <strong>{confirmation.typeConfirmation}</strong>
+                        <strong>{formatRole(confirmation.typeConfirmation)}</strong>
                         <p>{confirmation.motif ?? 'Aucun motif'}</p>
                       </div>
                       <span className="badge badge-muted">
-                        {confirmation.decision}
+                        {formatStatus(confirmation.decision)}
                       </span>
                     </div>
                   ))}

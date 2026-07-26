@@ -65,7 +65,7 @@ export function CandidatureForm({ idOffre, titreOffre, onSuccess }) {
           <label>CV (PDF ou Word)</label>
           <div>
             <button type="button" onClick={() => cvInputRef.current?.click()}>
-              Ajouter fichier
+              Ajouter un fichier
             </button>
             {fichierCv && <span style={{ marginLeft: 8 }}>{fichierCv.name}</span>}
           </div>
@@ -82,7 +82,7 @@ export function CandidatureForm({ idOffre, titreOffre, onSuccess }) {
           <label>Lettre de motivation (PDF ou Word)</label>
           <div>
             <button type="button" onClick={() => lettreInputRef.current?.click()}>
-              Ajouter fichier
+              Ajouter un fichier
             </button>
             {fichierLettre && <span style={{ marginLeft: 8 }}>{fichierLettre.name}</span>}
           </div>

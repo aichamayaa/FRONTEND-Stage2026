@@ -23,7 +23,7 @@ export function MesDemarchesPage() {
         <p className="page-kicker">Étudiant</p>
         <h1>Mes démarches de suivi</h1>
         <p>
-          Consultez les rencontres, appels et suivis partages par votre
+          Consultez les rencontres, appels et suivis partagés par votre
           responsable de stage.
         </p>
       </section>
@@ -33,9 +33,9 @@ export function MesDemarchesPage() {
 
         {!loading && demarches.length === 0 && (
           <div className="empty-state">
-            <h2>Aucune demarche visible</h2>
+            <h2>Aucune démarche visible</h2>
             <p>
-              Votre responsable de stage n’a pas encore partage de demarche avec
+              Votre responsable de stage n’a pas encore partagé de démarche avec
               vous.
             </p>
           </div>

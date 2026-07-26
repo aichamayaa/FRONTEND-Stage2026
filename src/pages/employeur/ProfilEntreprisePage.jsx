@@ -185,7 +185,7 @@ export function ProfilEntreprisePage() {
                                 </label>
 
                                 <label>
-                                    Logo URL
+                                    URL du logo
                                     <input
                                         type="url"
                                         name="logoUrl"

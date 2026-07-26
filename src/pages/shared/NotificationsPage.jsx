@@ -39,7 +39,7 @@ export function NotificationsPage() {
       <div className="page-header">
         <p className="page-kicker">Notifications</p>
         <h1>Mes notifications</h1>
-        <p>Les évènements liés à vos offres et candidatures.</p>
+        <p>Les événements liés à vos offres et candidatures.</p>
       </div>
 
       {erreur && <p className="notice notice-error">{erreur}</p>}

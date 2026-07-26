@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import { formatRole } from '../../utils/formatStatus';
 
 const createInitialState = {
   prenom: '',
@@ -95,7 +96,7 @@ export function UserForm({ roles, currentUser, userToEdit, onSubmit, onCancelEdi
     <form className="admin-form" onSubmit={handleSubmit}>
       <div className="form-grid">
         <label>
-          Prenom
+          Prénom
           <input
             name="prenom"
             value={form.prenom}
@@ -151,7 +152,7 @@ export function UserForm({ roles, currentUser, userToEdit, onSubmit, onCancelEdi
         )}
 
         <label>
-          Role
+          Rôle
           <select
             name="idRole"
             value={form.idRole}
@@ -160,7 +161,7 @@ export function UserForm({ roles, currentUser, userToEdit, onSubmit, onCancelEdi
           >
             {availableRoles.map((role) => (
               <option key={role.idRole} value={role.idRole}>
-                {role.nomRole}
+                {formatRole(role.nomRole)}
               </option>
             ))}
           </select>
@@ -168,14 +169,14 @@ export function UserForm({ roles, currentUser, userToEdit, onSubmit, onCancelEdi
 
         {isSuperAdmin && (
           <label>
-            Id du college
+            ID du collège
             <input
               type="number"
               min="1"
               name="idCollege"
               value={form.idCollege}
               onChange={handleChange}
-              placeholder="Vide pour SuperAdmin"
+              placeholder="Laisser vide pour le super administrateur"
             />
           </label>
         )}
@@ -184,7 +185,7 @@ export function UserForm({ roles, currentUser, userToEdit, onSubmit, onCancelEdi
       {!isSuperAdmin && (
         <p className="form-help">
           Votre compte administrateur rattache automatiquement les utilisateurs
-          a votre college.
+          à votre collège.
         </p>
       )}
 
@@ -194,7 +195,7 @@ export function UserForm({ roles, currentUser, userToEdit, onSubmit, onCancelEdi
             ? 'Enregistrement...'
             : isEditMode
               ? 'Enregistrer les modifications'
-              : "Creer l'utilisateur"}
+              : "Créer l'utilisateur"}
         </button>
 
         {isEditMode && (
