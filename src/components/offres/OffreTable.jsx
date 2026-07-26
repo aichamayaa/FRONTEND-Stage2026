@@ -1,11 +1,12 @@
 import { formatDate } from '../../utils/formatDate';
+import { formatStatus } from '../../utils/formatStatus';
 
 export function OffreTable({ offres, onVoir, onModifier, onSupprimer, isEmployeur }) {
   if (!offres || offres.length === 0) {
     return (
       <div className="empty-state">
-        <h2>Aucune offre trouvee</h2>
-        <p>Creez votre premiere offre avec le bouton ci-dessus.</p>
+        <h2>Aucune offre trouvée</h2>
+        <p>Créez votre première offre avec le bouton ci-dessus.</p>
       </div>
     );
   }
@@ -44,7 +45,7 @@ export function OffreTable({ offres, onVoir, onModifier, onSupprimer, isEmployeu
               <td>{offre.ville}</td>
               <td>
                 <span className={`badge ${offre.statut === 'Active' ? 'badge-success' : 'badge-muted'}`}>
-                  {offre.statut}
+                  {formatStatus(offre.statut)}
                 </span>
               </td>
               <td>{formatDate(offre.datePublication)}</td>

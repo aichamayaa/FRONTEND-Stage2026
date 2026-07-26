@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { AppLayout } from '../../components/layout/AppLayout';
 import { useAuth } from '../../hooks/useAuth';
+import { formatRole } from '../../utils/formatStatus';
 
 const ADMIN_ROLES = ['SuperAdministrateur', 'Administrateur'];
 
@@ -23,15 +24,15 @@ export function DashboardPage() {
           <p className="page-kicker">Tableau de bord</p>
           <h1>Bienvenue, {user?.prenom}</h1>
           <p>
-            Consultez rapidement les sections disponibles selon votre role dans
-            le systeme de placement.
+            Consultez rapidement les sections disponibles selon votre rôle dans
+            le système de placement.
           </p>
         </div>
 
         {!isEtudiant && (
           <div className="dashboard-role-card">
-            <span>Role actif</span>
-            <strong>{user?.role}</strong>
+            <span>Rôle actif</span>
+            <strong>{formatRole(user?.role)}</strong>
           </div>
         )}
       </section>
@@ -55,7 +56,7 @@ export function DashboardPage() {
             
             <h2>Gestion des cégeps</h2>
             <p>
-              Créer, modifier ou désactiver les cegeps participants de la
+              Créer, modifier ou désactiver les cégeps participants de la
               plateforme.
             </p>
           </Link>
@@ -68,7 +69,7 @@ export function DashboardPage() {
             
             <h2>Domaines d’études</h2>
             <p>
-              Ajouter, modifier ou désactiver les domaines d’études du cegep.
+              Ajouter, modifier ou désactiver les domaines d’études du cégep.
             </p>
           </Link>
         )}
@@ -80,7 +81,7 @@ export function DashboardPage() {
           >
             
             <h2>Profil entreprise</h2>
-            <p>Completer ou modifier les informations de votre entreprise.</p>
+            <p>Compléter ou modifier les informations de votre entreprise.</p>
           </Link>
         )}
 
@@ -88,7 +89,7 @@ export function DashboardPage() {
           <Link className="dashboard-card dashboard-link" to="/employeur/offres">
            
             <h2>Mes offres</h2>
-            <p>Creer et modifier vos offres d’emploi ou de stage.</p>
+            <p>Créer et modifier vos offres d’emploi ou de stage.</p>
           </Link>
         )}
 
@@ -178,7 +179,7 @@ export function DashboardPage() {
           <Link className="dashboard-card dashboard-link" to="/mes-candidatures">
             
             <h2>Mes candidatures</h2>
-            <p>Voir les offres auxquelles vous avez postule.</p>
+            <p>Voir les offres auxquelles vous avez postulé.</p>
           </Link>
         )}
 
@@ -197,7 +198,7 @@ export function DashboardPage() {
           >
            
             <h2>Offres de stage reçues</h2>
-            <p>Consulter les offres de stage directes et y repondre.</p>
+            <p>Consulter les offres de stage directes et y répondre.</p>
           </Link>
         )}
 
@@ -205,7 +206,7 @@ export function DashboardPage() {
           <Link className="dashboard-card dashboard-link" to="/mes-demarches">
             
             <h2>Mes démarches</h2>
-            <p>Voir les suivis, appels ou rencontres ajoutes par le responsable.</p>
+            <p>Voir les suivis, appels ou rencontres ajoutés par le responsable.</p>
           </Link>
         )}
 
@@ -224,7 +225,7 @@ export function DashboardPage() {
           >
             
             <h2>Suivi des étudiants</h2>
-            <p>Consulter les etudiants et suivre leurs demarches.</p>
+            <p>Consulter les étudiants et suivre leurs démarches.</p>
           </Link>
         )}
 

@@ -1,3 +1,3 @@
 export function OffrePdfPage() {
-  return <h1>OffrePdfPage</h1>;
+  return <h1>Offre en format PDF</h1>;
 }

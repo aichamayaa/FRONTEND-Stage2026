@@ -1,5 +1,6 @@
 import { NavLink } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
+import { formatRole } from '../../utils/formatStatus';
 
 const DEFAULT_LOGO = '/images/GeraldGodin_Logo_COULEUR@2x.png';
 
@@ -132,7 +133,7 @@ export function Header() {
         <div className="header-actions">
           {user && (
             <span className="header-user">
-              {user.prenom} - {user.role}
+              {user.prenom} - {formatRole(user.role)}
             </span>
           )}
 

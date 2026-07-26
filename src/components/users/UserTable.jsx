@@ -1,10 +1,11 @@
 import { formatDateTime } from '../../utils/formatDate';
+import { formatRole } from '../../utils/formatStatus';
 export function UserTable({ users, onEdit, onToggleActif }) {
   if (!users.length) {
     return (
       <div className="empty-state">
         <h2>Aucun utilisateur</h2>
-        <p>{"Aucun compte utilisateur n'a encore ete cree."}</p>
+        <p>{"Aucun compte utilisateur n'a encore été créé."}</p>
       </div>
     );
   }
@@ -17,10 +18,10 @@ export function UserTable({ users, onEdit, onToggleActif }) {
             <th>Nom</th>
             <th>{"Nom d'utilisateur"}</th>
             <th>Courriel</th>
-            <th>Role</th>
+            <th>Rôle</th>
             <th>College</th>
             <th>Statut</th>
-            <th>Derniere connexion</th>
+            <th>Dernière connexion</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -31,7 +32,7 @@ export function UserTable({ users, onEdit, onToggleActif }) {
               <td>{user.prenom} {user.nom}</td>
               <td>{user.nomUtilisateur}</td>
               <td>{user.courriel}</td>
-              <td>{user.role}</td>
+              <td>{formatRole(user.role)}</td>
               <td>{user.nomCollege ?? user.idCollege ?? '-'}</td>
               <td>
                 <span className={user.actif ? 'badge badge-success' : 'badge badge-muted'}>

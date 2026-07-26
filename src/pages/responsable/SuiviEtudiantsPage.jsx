@@ -2,6 +2,7 @@ import { formatDateTime } from '../../utils/formatDate';
 import { useEffect, useState } from 'react';
 import { AppLayout } from '../../components/layout/AppLayout';
 import { suiviService } from '../../services/suiviService';
+import { formatStatus } from '../../utils/formatStatus';
 
 export function SuiviEtudiantsPage() {
   const [etudiants, setEtudiants] = useState([]);
@@ -39,7 +40,7 @@ export function SuiviEtudiantsPage() {
 
     setSelected(detail);
     setForm({ typeDemarche: 'Note', note: '', visibleEtudiant: true });
-    setMessage('Demarche ajoutee avec succes.');
+    setMessage('Demarche ajoutée avec succès.');
   }
 
   useEffect(() => {
@@ -52,7 +53,7 @@ export function SuiviEtudiantsPage() {
         <p className="page-kicker">Responsable de stage</p>
         <h1>Suivi des étudiants</h1>
         <p>
-          Consultez la progression des étudiants et ajoutez des demarches de suivi.
+          Consultez la progression des étudiants et ajoutez des démarches de suivi.
         </p>
       </section>
 
@@ -95,7 +96,9 @@ export function SuiviEtudiantsPage() {
                       <td>{etudiant.nombreCandidatures}</td>
                       <td>
                         <span className="badge badge-muted">
-                          {etudiant.dernierStatutCandidature ?? 'Aucun'}
+                          {etudiant.dernierStatutCandidature
+                            ? formatStatus(etudiant.dernierStatutCandidature)
+                            : 'Aucun'}
                         </span>
                       </td>
                       <td>
@@ -152,7 +155,7 @@ export function SuiviEtudiantsPage() {
                           <td>{candidature.typeOffre}</td>
                           <td>
                             <span className="badge badge-muted">
-                              {candidature.statut}
+                              {formatStatus(candidature.statut)}
                             </span>
                           </td>
                         </tr>
@@ -164,7 +167,7 @@ export function SuiviEtudiantsPage() {
 
               <h3>Démarches</h3>
               {selected.demarches.length === 0 ? (
-                <p>Aucune demarche ajoutee.</p>
+                <p>Aucune démarche ajoutée.</p>
               ) : (
                 <div className="documents-liste">
                   {selected.demarches.map((demarche) => (
@@ -188,7 +191,7 @@ export function SuiviEtudiantsPage() {
 
               <form className="admin-form" onSubmit={ajouterDemarche}>
                 <label>
-                  Type de demarche
+                  Type de démarche
                   <select
                     value={form.typeDemarche}
                     onChange={(e) =>
@@ -228,7 +231,7 @@ export function SuiviEtudiantsPage() {
                 </label>
 
                 <button className="primary-action" type="submit">
-                  Ajouter la demarche
+                  Ajouter la démarche
                 </button>
               </form>
             </>
