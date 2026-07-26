@@ -26,7 +26,14 @@ function buildEditState(user) {
   };
 }
 
-export function UserForm({ roles, currentUser, userToEdit, onSubmit, onCancelEdit }) {
+export function UserForm({
+  roles,
+  colleges,
+  currentUser,
+  userToEdit,
+  onSubmit,
+  onCancelEdit
+}) {
   const isEditMode = Boolean(userToEdit);
   const [form, setForm] = useState(createInitialState);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -38,7 +45,6 @@ export function UserForm({ roles, currentUser, userToEdit, onSubmit, onCancelEdi
       return roles;
     }
 
-    // Un admin local ne peut pas creer ou attribuer le role SuperAdministrateur.
     return roles.filter((role) => role.nomRole !== 'SuperAdministrateur');
   }, [roles, isSuperAdmin]);
 
@@ -169,15 +175,20 @@ export function UserForm({ roles, currentUser, userToEdit, onSubmit, onCancelEdi
 
         {isSuperAdmin && (
           <label>
-            ID du collège
-            <input
-              type="number"
-              min="1"
+            Collège
+            <select
               name="idCollege"
               value={form.idCollege}
               onChange={handleChange}
-              placeholder="Laisser vide pour le super administrateur"
-            />
+            >
+              <option value="">Aucun collège / Super administrateur</option>
+
+              {colleges.map((college) => (
+                <option key={college.idCollege} value={college.idCollege}>
+                  {college.nom}
+                </option>
+              ))}
+            </select>
           </label>
         )}
       </div>
