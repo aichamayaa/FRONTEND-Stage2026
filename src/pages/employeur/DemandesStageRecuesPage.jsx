@@ -55,12 +55,12 @@ export function DemandesStageRecuesPage() {
       <div className="page-header">
         <p className="page-kicker">Employeur</p>
         <h1>Demandes de stage reçues</h1>
-        <p>Consultez les demandes de stage formulées par les étudiants, par domaine d'études.</p>
+        <p>Consultez les demandes de stage formulées par les étudiants, par domaine d’études.</p>
       </div>
 
       <div className="panel">
         <label className="offre-filters__label">
-          Domaine d'études
+          Domaine d’études
           <select
             className="offre-filters__select"
             value={idDomaine}

@@ -1,4 +1,5 @@
-import { createContext, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { AuthContext } from './AuthContextDefinition';
 import {
   applyDefaultCollegeTheme,
   clearCollegeTheme,
@@ -10,14 +11,12 @@ import {
   logout as logoutRequest
 } from '../services/authService';
 
-export const AuthContext = createContext(null);
-
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [collegeTheme, setCollegeTheme] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  async function appliquerThemeUtilisateur(utilisateur) {
+  const appliquerThemeUtilisateur = useCallback(async (utilisateur) => {
     if (!utilisateur?.idCollege) {
       applyDefaultCollegeTheme();
       setCollegeTheme(null);
@@ -31,7 +30,7 @@ export function AuthProvider({ children }) {
       applyDefaultCollegeTheme();
       setCollegeTheme(null);
     }
-  }
+  }, []);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -52,9 +51,9 @@ export function AuthProvider({ children }) {
         clearCollegeTheme();
       })
       .finally(() => setLoading(false));
-  }, []);
+  }, [appliquerThemeUtilisateur]);
 
-  async function login(credentials) {
+  const login = useCallback(async (credentials) => {
     const response = await loginRequest(credentials);
 
     localStorage.setItem('token', response.token);
@@ -63,9 +62,9 @@ export function AuthProvider({ children }) {
     await appliquerThemeUtilisateur(response.utilisateur);
 
     return response;
-  }
+  }, [appliquerThemeUtilisateur]);
 
-  async function logout() {
+  const logout = useCallback(async () => {
     try {
       await logoutRequest();
     } finally {
@@ -74,7 +73,7 @@ export function AuthProvider({ children }) {
       setCollegeTheme(null);
       clearCollegeTheme();
     }
-  }
+  }, []);
 
   const value = useMemo(() => ({
     user,
@@ -83,7 +82,7 @@ export function AuthProvider({ children }) {
     isAuthenticated: Boolean(user),
     login,
     logout
-  }), [user, collegeTheme, loading]);
+  }), [user, collegeTheme, loading, login, logout]);
 
   return (
     <AuthContext.Provider value={value}>

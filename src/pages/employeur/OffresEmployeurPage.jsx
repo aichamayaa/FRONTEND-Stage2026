@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { AppLayout } from '../../components/layout/AppLayout';
 import { OffreFilters } from '../../components/offres/OffreFilters';
 import { OffreTable } from '../../components/offres/OffreTable';
@@ -40,11 +40,7 @@ export function OffresEmployeurPage() {
   const [erreurForm, setErreurForm] = useState(null);
   const [succes, setSucces] = useState(null);
 
-  useEffect(() => {
-    chargerOffres();
-  }, [filtreType, filtreStatut]);
-
-  async function chargerOffres() {
+  const chargerOffres = useCallback(async () => {
     setChargement(true);
     setErreur(null);
 
@@ -64,7 +60,11 @@ export function OffresEmployeurPage() {
     } finally {
       setChargement(false);
     }
-  }
+  }, [filtreType, filtreStatut]);
+
+  useEffect(() => {
+    chargerOffres();
+  }, [chargerOffres]);
 
   async function handleVoir(idOffre) {
     setErreur(null);

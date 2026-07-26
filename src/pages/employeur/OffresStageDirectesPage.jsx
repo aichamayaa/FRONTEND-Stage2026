@@ -211,7 +211,7 @@ export function OffresStageDirectesPage() {
 
                             {offresStage.length === 0 && (
                                 <p className="notice">
-                                    Aucune offre de stage active. Creez d'abord une offre de stage.
+                                    Aucune offre de stage active. Creez d’abord une offre de stage.
                                 </p>
                             )}
 
