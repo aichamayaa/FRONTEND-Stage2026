@@ -16,6 +16,15 @@ const STATUT_BADGE = {
   Annulee: 'badge-danger'
 };
 
+const SESSIONS = [
+  'Hiver 2026',
+  'Été 2026',
+  'Automne 2026',
+  'Hiver 2027',
+  'Été 2027',
+  'Automne 2027'
+];
+
 export function DemandeStagePage() {
   const [domaines, setDomaines] = useState([]);
   const [demandes, setDemandes] = useState([]);
@@ -93,12 +102,15 @@ export function DemandeStagePage() {
           </label>
           <label className="demande-stage-form__field">
             Période souhaitée
-            <input
-              type="text"
+            <select
               value={periodeSouhaitee}
               onChange={(e) => setPeriodeSouhaitee(e.target.value)}
-              placeholder="Ex : Hiver 2026"
-            />
+            >
+              <option value="">-- Choisir --</option>
+              {SESSIONS.map((s) => (
+                <option key={s} value={s}>{s}</option>
+              ))}
+            </select>
           </label>
           <label className="demande-stage-form__field demande-stage-form__field--full">
             Compétences
