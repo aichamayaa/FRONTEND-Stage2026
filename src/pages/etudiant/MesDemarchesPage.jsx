@@ -1,17 +1,25 @@
-import { formatDateTime } from '../../utils/formatDate';
 import { useEffect, useState } from 'react';
 import { AppLayout } from '../../components/layout/AppLayout';
 import { suiviService } from '../../services/suiviService';
+import { formatDateTime } from '../../utils/formatDate';
 
 export function MesDemarchesPage() {
   const [demarches, setDemarches] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [erreur, setErreur] = useState('');
 
   useEffect(() => {
     async function chargerDemarches() {
-      const data = await suiviService.getMesDémarches();
-      setDemarches(data);
-      setLoading(false);
+      try {
+        // Appelle la fonction du service sans accent dans le nom.
+        const data = await suiviService.getMesDemarches();
+        setDemarches(data);
+      } catch {
+        setErreur('Impossible de charger vos démarches de suivi.');
+        setDemarches([]);
+      } finally {
+        setLoading(false);
+      }
     }
 
     chargerDemarches();
@@ -31,7 +39,11 @@ export function MesDemarchesPage() {
       <section className="panel">
         {loading && <p>Chargement des démarches...</p>}
 
-        {!loading && demarches.length === 0 && (
+        {!loading && erreur && (
+          <p className="notice notice-error">{erreur}</p>
+        )}
+
+        {!loading && !erreur && demarches.length === 0 && (
           <div className="empty-state">
             <h2>Aucune démarche visible</h2>
             <p>
@@ -41,7 +53,7 @@ export function MesDemarchesPage() {
           </div>
         )}
 
-        {!loading && demarches.length > 0 && (
+        {!loading && !erreur && demarches.length > 0 && (
           <div className="documents-liste">
             {demarches.map((demarche) => (
               <article className="document-item" key={demarche.idDemarche}>
@@ -49,9 +61,8 @@ export function MesDemarchesPage() {
                   <strong>{demarche.typeDemarche}</strong>
                   <p>{demarche.note}</p>
                 </div>
-                <span>
-                  {formatDateTime(demarche.dateDemarche)}
-                </span>
+
+                <span>{formatDateTime(demarche.dateDemarche)}</span>
               </article>
             ))}
           </div>

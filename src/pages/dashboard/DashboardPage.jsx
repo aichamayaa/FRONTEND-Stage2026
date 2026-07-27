@@ -218,6 +218,17 @@ export function DashboardPage() {
           </Link>
         )}
 
+         {isResponsableStage && (
+          <Link
+            className="dashboard-card dashboard-link"
+            to="/responsable/recommandations"
+          >
+            
+            <h2>Recommandation</h2>
+            <p>Rédiger ou consulter les recommandations destinées aux étudiants.</p>
+          </Link>
+        )}
+
         {isResponsableStage && (
           <Link
             className="dashboard-card dashboard-link"
