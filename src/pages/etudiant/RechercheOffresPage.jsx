@@ -73,7 +73,7 @@ export function RechercheOffresPage() {
           </label>
 
           <label className="offre-filters__label">
-            Mots-cl\u00e9s
+            Mots-cles
             <input
               className="offre-filters__select"
               placeholder="Titre ou description"
