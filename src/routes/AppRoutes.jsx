@@ -21,7 +21,6 @@ import { MesDemarchesPage } from '../pages/etudiant/MesDemarchesPage';
 import { SuiviEtudiantsPage } from '../pages/responsable/SuiviEtudiantsPage';
 import { ConfirmationsStagePage } from '../pages/responsable/ConfirmationsStagePage';
 import { RecommandationsPage } from '../pages/responsable/RecommandationsPage';
-import { NotificationsPage } from '../pages/shared/NotificationsPage';
 import { NotFoundPage } from '../pages/shared/NotFoundPage';
 
 const ADMIN_ROLES = ['SuperAdministrateur', 'Administrateur'];
@@ -207,15 +206,6 @@ export function AppRoutes() {
         element={
           <ProtectedRoute roles={['ResponsableStage', 'Employeur']}>
             <ConfirmationsStagePage />
-          </ProtectedRoute>
-        }
-      />
-
-      <Route
-        path="/notifications"
-        element={
-          <ProtectedRoute roles={['Employeur']}>
-            <NotificationsPage />
           </ProtectedRoute>
         }
       />
