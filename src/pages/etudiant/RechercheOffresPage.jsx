@@ -30,7 +30,7 @@ export function RechercheOffresPage() {
       });
       setOffres(data);
     } catch {
-      setErreur('Impossible de r\u00e9cup\u00e9rer les offres.');
+      setErreur('Impossible de récupérer les offres.');
     } finally {
       setChargement(false);
       setRecherchee(true);
@@ -73,7 +73,7 @@ export function RechercheOffresPage() {
           </label>
 
           <label className="offre-filters__label">
-            Mots-cl\u00e9s
+            Mots-clés
             <input
               className="offre-filters__select"
               placeholder="Titre ou description"
@@ -95,7 +95,7 @@ export function RechercheOffresPage() {
       {chargement && <p>Chargement...</p>}
       {erreur && <p className="notice notice-error">{erreur}</p>}
       {!chargement && recherchee && offres.length === 0 && (
-        <p className="notice">Aucune offre trouv\u00e9e.</p>
+        <p className="notice">Aucune offre trouvée.</p>
       )}
       {confirmation && <p className="notice notice-success">{confirmation}</p>}
 
@@ -124,7 +124,7 @@ export function RechercheOffresPage() {
         <section style={{ marginTop: 24 }}>
           <div className="page-header">
             <p className="page-kicker">Candidature</p>
-            <h2>Postuler \u00e0 : {offreSelectionnee.titre}</h2>
+            <h2>Postuler à : {offreSelectionnee.titre}</h2>
             <p>{offreSelectionnee.nomEmployeur} &mdash; {offreSelectionnee.ville}</p>
           </div>
 
@@ -138,7 +138,7 @@ export function RechercheOffresPage() {
             onSuccess={(candidature) => {
               const titre = offreSelectionnee.titre ?? "l'offre";
               setConfirmation(
-                `Merci d'avoir postul\u00e9 \u00e0 : ${titre}. Num\u00e9ro de confirmation : ${candidature.idCandidature}.`
+                `Merci d'avoir postulé à : ${titre}. Numéro de confirmation : ${candidature.idCandidature}.`
               );
               setIdOffrePostuler(null);
             }}
