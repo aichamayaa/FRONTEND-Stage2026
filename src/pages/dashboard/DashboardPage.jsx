@@ -110,21 +110,10 @@ export function DashboardPage() {
         {isEmployeur && (
           <Link
             className="dashboard-card dashboard-link"
-            to="/employeur/candidatures-domaine"
-          >
-            
-            <h2>Candidatures par domaine</h2>
-            <p>Consulter les candidatures reçues filtrées par domaine.</p>
-          </Link>
-        )}
-
-        {isEmployeur && (
-          <Link
-            className="dashboard-card dashboard-link"
             to="/employeur/demandes-stage"
           >
             
-            <h2>Demandes de stage reçues</h2>
+            <h2>Demandes de stage</h2>
             <p>Consulter les demandes de stage des étudiants.</p>
           </Link>
         )}

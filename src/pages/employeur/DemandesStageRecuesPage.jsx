@@ -54,7 +54,7 @@ export function DemandesStageRecuesPage() {
     <AppLayout>
       <div className="page-header">
         <p className="page-kicker">Employeur</p>
-        <h1>Demandes de stage reçues</h1>
+        <h1>Demandes de stage</h1>
         <p>Consultez les demandes de stage formulées par les étudiants, par domaine d’études.</p>
       </div>
 
@@ -88,6 +88,7 @@ export function DemandesStageRecuesPage() {
             <thead>
               <tr>
                 <th>Étudiant</th>
+                <th>Collège</th>
                 <th>Période</th>
                 <th>Compétences</th>
                 <th>Description</th>
@@ -99,6 +100,7 @@ export function DemandesStageRecuesPage() {
               {demandes.map((d) => (
                 <tr key={d.idDemandeStage}>
                   <td>{d.prenomEtudiant} {d.nomEtudiant}</td>
+                  <td>{d.nomCollege || '—'}</td>
                   <td>{d.periodeSouhaitee ?? '—'}</td>
                   <td>{d.competences ?? '—'}</td>
                   <td>{d.description}</td>

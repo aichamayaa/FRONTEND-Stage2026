@@ -78,12 +78,7 @@ export function Header() {
       roles: ['Employeur'],
     },
     {
-      label: 'Candidatures par domaine',
-      to: '/employeur/candidatures-domaine',
-      roles: ['Employeur'],
-    },
-    {
-      label: 'Demandes de stage reçues',
+      label: 'Demandes de stage',
       to: '/employeur/demandes-stage',
       roles: ['Employeur'],
     },
