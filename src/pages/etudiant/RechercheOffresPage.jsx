@@ -42,8 +42,8 @@ export function RechercheOffresPage() {
   return (
     <AppLayout>
       <div className="page-header">
-        <p className="page-kicker">Espace \u00e9tudiant</p>
-        <h1>Recherche d&apos;offres</h1>
+        <p className="page-kicker">Espace étudiant</p>
+        <h1>Recherche d’offres</h1>
         <p>Trouvez un emploi ou un stage et postulez en ligne.</p>
       </div>
 

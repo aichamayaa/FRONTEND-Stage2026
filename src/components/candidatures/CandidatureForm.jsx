@@ -1,5 +1,9 @@
 import { useRef, useState } from 'react';
-import { postuler, uploadDocument } from '../../services/candidatureService';
+import {
+  postuler,
+  uploadDocument,
+  validerPostulation
+} from '../../services/candidatureService';
 
 export function CandidatureForm({ idOffre, titreOffre, onSuccess }) {
   const cvInputRef = useRef(null);
@@ -23,6 +27,8 @@ export function CandidatureForm({ idOffre, titreOffre, onSuccess }) {
     setEnvoi(true);
 
     try {
+      await validerPostulation(idOffre);
+
       const cvUrl = await uploadDocument(fichierCv);
       const lettreUrl = fichierLettre ? await uploadDocument(fichierLettre) : null;
       const candidature = await postuler({ idOffre, cvUrl, lettreUrl });
@@ -38,8 +44,15 @@ export function CandidatureForm({ idOffre, titreOffre, onSuccess }) {
       if (onSuccess) {
         onSuccess(candidature);
       }
-    } catch {
-      setErreur("Impossible d'envoyer la candidature.");
+    } catch (error) {
+      const messageApi =
+        error?.response?.data?.message ??
+        error?.message;
+
+      setErreur(
+        messageApi ||
+        "Impossible d'envoyer la candidature."
+      );
     } finally {
       setEnvoi(false);
     }
@@ -51,8 +64,12 @@ export function CandidatureForm({ idOffre, titreOffre, onSuccess }) {
         <div>
           <label>CV (PDF ou Word)</label>
           <div>
-            <button type="button" onClick={() => cvInputRef.current?.click()}>
-              Ajouter fichier
+            <button
+              type="button"
+              className="primary-action"
+              onClick={() => cvInputRef.current?.click()}
+            >
+              Ajouter un fichier
             </button>
             {fichierCv && <span style={{ marginLeft: 8 }}>{fichierCv.name}</span>}
           </div>
@@ -68,8 +85,12 @@ export function CandidatureForm({ idOffre, titreOffre, onSuccess }) {
         <div>
           <label>Lettre de motivation (PDF ou Word)</label>
           <div>
-            <button type="button" onClick={() => lettreInputRef.current?.click()}>
-              Ajouter fichier
+            <button
+              type="button"
+              className="primary-action"
+              onClick={() => lettreInputRef.current?.click()}
+            >
+              Ajouter un fichier
             </button>
             {fichierLettre && <span style={{ marginLeft: 8 }}>{fichierLettre.name}</span>}
           </div>
@@ -86,9 +107,11 @@ export function CandidatureForm({ idOffre, titreOffre, onSuccess }) {
       {erreur && <p className="form-error">{erreur}</p>}
       {message && <p className="form-success">{message}</p>}
 
-      <button type="submit" disabled={envoi}>
-        {envoi ? 'Envoi...' : 'Soumettre ma candidature'}
-      </button>
+      <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+        <button type="submit" className="primary-action" disabled={envoi}>
+          {envoi ? 'Envoi...' : 'Soumettre ma candidature'}
+        </button>
+      </div>
     </form>
   );
 }

@@ -1,13 +1,12 @@
 import { formatDate } from '../../utils/formatDate';
-import { getUrlTelechargementDocument } from '../../services/candidatureService';
 
 const STATUTS = ['EnAttente', 'Vue', 'Acceptee', 'Refusee'];
 
 const STATUT_LABELS = {
     EnAttente: 'En attente',
     Vue: 'Vue',
-    Acceptee: 'Acceptee',
-    Refusee: 'Refusee',
+    Acceptee: 'Acceptée',
+    Refusee: 'Refusée',
 };
 
 const STATUT_BADGE = {
@@ -27,8 +26,8 @@ export function CandidatureTable({
     if (!candidatures || candidatures.length === 0) {
         return (
             <div className="empty-state">
-                <h2>Aucune candidature recue</h2>
-                <p>Les candidatures apparaitront ici des qu un etudiant postule.</p>
+                <h2>Aucune candidature reçue</h2>
+                <p>Les candidatures apparaîtront ici dès qu’un étudiant postulera.</p>
             </div>
         );
     }
@@ -59,7 +58,7 @@ export function CandidatureTable({
                                     {c.prenomEtudiant} {c.nomEtudiant}
                                 </button>
                             </td>
-                            <td>{c.emailEtudiant ?? '-'}</td>
+                            <td>{c.courrielEtudiant ?? c.emailEtudiant ?? '-'}</td> {/* Modification ici */}
                             <td>{formatDate(c.dateCandidature)}</td>
                             <td>{c.acv ? 'Oui' : 'Non'}</td>
                             <td>{c.aLettreMotivation ? 'Oui' : 'Non'}</td>
@@ -75,27 +74,45 @@ export function CandidatureTable({
                                         className="table-action secondary-table-action"
                                         onClick={() => onVoirDetail(c.idCandidature)}
                                     >
-                                        Detail
+                                        Détail
                                     </button>
 
                                     <select
                                         className="statut-select"
                                         value={c.statut}
-                                        onChange={(e) => onChangerStatut(c.idCandidature, e.target.value)}
+                                        disabled={c.emploiConfirme}
+                                        title={
+                                            c.emploiConfirme
+                                                ? "Le statut ne peut plus être modifié après la confirmation de l'emploi."
+                                                : undefined
+                                        }
+                                        onChange={(e) =>
+                                            onChangerStatut(c.idCandidature, e.target.value)
+                                        }
                                     >
                                         {STATUTS.map((s) => (
                                             <option key={s} value={s}>{STATUT_LABELS[s]}</option>
                                         ))}
                                     </select>
 
-                                    {isOffreEmploi && c.statut !== 'Acceptee' && (
-                                        <button
-                                            type="button"
-                                            className="table-action"
-                                            onClick={() => onConfirmerEmploi(c.idCandidature)}
-                                        >
-                                            Confirmer l'emploi
-                                        </button>
+                                    {isOffreEmploi &&
+                                        c.statut === 'Acceptee' &&
+                                        !c.emploiConfirme && (
+                                            <button
+                                                type="button"
+                                                className="table-action"
+                                                onClick={() =>
+                                                    onConfirmerEmploi(c.idCandidature)
+                                                }
+                                            >
+                                                Confirmer l&#39;emploi
+                                            </button>
+                                        )}
+
+                                    {isOffreEmploi && c.emploiConfirme && (
+                                        <span className="badge badge-success">
+                                            Emploi confirmé
+                                        </span>
                                     )}
                                 </div>
                             </td>

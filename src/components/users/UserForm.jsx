@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import { formatRole } from '../../utils/formatStatus';
 
 const createInitialState = {
   prenom: '',
@@ -25,7 +26,14 @@ function buildEditState(user) {
   };
 }
 
-export function UserForm({ roles, currentUser, userToEdit, onSubmit, onCancelEdit }) {
+export function UserForm({
+  roles,
+  colleges,
+  currentUser,
+  userToEdit,
+  onSubmit,
+  onCancelEdit
+}) {
   const isEditMode = Boolean(userToEdit);
   const [form, setForm] = useState(createInitialState);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -37,7 +45,6 @@ export function UserForm({ roles, currentUser, userToEdit, onSubmit, onCancelEdi
       return roles;
     }
 
-    // Un admin local ne peut pas creer ou attribuer le role SuperAdministrateur.
     return roles.filter((role) => role.nomRole !== 'SuperAdministrateur');
   }, [roles, isSuperAdmin]);
 
@@ -95,7 +102,7 @@ export function UserForm({ roles, currentUser, userToEdit, onSubmit, onCancelEdi
     <form className="admin-form" onSubmit={handleSubmit}>
       <div className="form-grid">
         <label>
-          Prenom
+          Prénom
           <input
             name="prenom"
             value={form.prenom}
@@ -151,7 +158,7 @@ export function UserForm({ roles, currentUser, userToEdit, onSubmit, onCancelEdi
         )}
 
         <label>
-          Role
+          Rôle
           <select
             name="idRole"
             value={form.idRole}
@@ -160,7 +167,7 @@ export function UserForm({ roles, currentUser, userToEdit, onSubmit, onCancelEdi
           >
             {availableRoles.map((role) => (
               <option key={role.idRole} value={role.idRole}>
-                {role.nomRole}
+                {formatRole(role.nomRole)}
               </option>
             ))}
           </select>
@@ -168,15 +175,20 @@ export function UserForm({ roles, currentUser, userToEdit, onSubmit, onCancelEdi
 
         {isSuperAdmin && (
           <label>
-            Id du college
-            <input
-              type="number"
-              min="1"
+            Collège
+            <select
               name="idCollege"
               value={form.idCollege}
               onChange={handleChange}
-              placeholder="Vide pour SuperAdmin"
-            />
+            >
+              <option value="">Aucun collège / Super administrateur</option>
+
+              {colleges.map((college) => (
+                <option key={college.idCollege} value={college.idCollege}>
+                  {college.nom}
+                </option>
+              ))}
+            </select>
           </label>
         )}
       </div>
@@ -184,7 +196,7 @@ export function UserForm({ roles, currentUser, userToEdit, onSubmit, onCancelEdi
       {!isSuperAdmin && (
         <p className="form-help">
           Votre compte administrateur rattache automatiquement les utilisateurs
-          a votre college.
+          à votre collège.
         </p>
       )}
 
@@ -194,7 +206,7 @@ export function UserForm({ roles, currentUser, userToEdit, onSubmit, onCancelEdi
             ? 'Enregistrement...'
             : isEditMode
               ? 'Enregistrer les modifications'
-              : "Creer l'utilisateur"}
+              : "Créer l'utilisateur"}
         </button>
 
         {isEditMode && (

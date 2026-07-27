@@ -23,9 +23,9 @@ export function OffreFilters({ filtreType, filtreStatut, onTypeChange, onStatutC
         >
           <option value="">Tous</option>
           <option value="Active">Active</option>
-          <option value="Fermee">Fermee</option>
+          <option value="Fermee">Fermée</option>
           <option value="Brouillon">Brouillon</option>
-          <option value="Expiree">Expiree</option>
+          <option value="Expiree">Expirée</option>
         </select>
       </label>
     </div>

@@ -1043,6 +1043,33 @@ p {
   white-space: nowrap;
 }
 
+/* Réponse de l'employeur dans Mes candidatures */
+.candidature-reponse {
+    display: grid;
+    gap: 8px;
+    padding: 14px 16px;
+    background: #f7fbff;
+    border: 1px solid var(--color-border);
+    border-left: 4px solid var(--color-primary);
+    border-radius: var(--radius-sm);
+}
+
+.candidature-reponse__titre {
+    color: var(--color-primary-dark);
+    font-weight: 800;
+}
+
+.candidature-reponse__message {
+    margin: 0;
+    color: var(--color-text);
+    line-height: 1.5;
+    white-space: pre-wrap;
+}
+
+.candidature-reponse__date {
+    color: var(--color-muted);
+    font-size: 0.85rem;
+}
 
 /* Navigation principale par role */
 .app-header {
@@ -1097,6 +1124,29 @@ p {
   color: #ffffff;
   background: var(--color-primary);
   border-color: var(--color-primary);
+}
+
+.app-nav-link-alert {
+  color: #ffffff;
+  background: #e5484d;
+  border-color: #e5484d;
+  animation: nav-alert-pulse 1.4s ease-in-out infinite;
+}
+
+.app-nav-link-alert:hover {
+  color: #ffffff;
+  background: #c62a2f;
+  border-color: #c62a2f;
+}
+
+@keyframes nav-alert-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(229, 72, 77, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 0 6px rgba(229, 72, 77, 0);
+  }
 }
 
 @media (max-width: 760px) {
@@ -1176,3 +1226,114 @@ p {
   border-radius: 999px;
 }
 
+
+/* Demande de stage - mise en page */
+.demande-stage-form {
+  display: grid;
+  gap: 20px;
+}
+
+.demande-stage-form__grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: 18px;
+}
+
+.demande-stage-form__field {
+  display: grid;
+  min-width: 0;
+  gap: 8px;
+  color: var(--color-primary-dark);
+  font-weight: 800;
+}
+
+.demande-stage-form__field--full {
+  grid-column: 1 / -1;
+}
+
+.demande-stage-form input,
+.demande-stage-form select,
+.demande-stage-form textarea {
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 12px;
+  color: var(--color-text);
+  background: #f7fbff;
+  border: 1px solid #b7d8ec;
+  border-radius: var(--radius-sm);
+  outline: none;
+}
+
+.demande-stage-form textarea {
+  min-height: 96px;
+  line-height: 1.5;
+  resize: vertical;
+}
+
+.demande-stage-form textarea[rows="4"] {
+  min-height: 140px;
+}
+
+.demande-stage-form input:focus,
+.demande-stage-form select:focus,
+.demande-stage-form textarea:focus {
+  background: #ffffff;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(0, 159, 218, 0.16);
+}
+
+.demande-stage-form .form-actions {
+  justify-content: flex-end;
+}
+
+.demande-stage-form .primary-action {
+  min-width: 190px;
+}
+
+.demande-stage-list {
+  margin-top: 24px;
+}
+
+.demande-stage-list__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 20px;
+}
+
+.demande-stage-list__header h2 {
+  margin: 0;
+  color: var(--color-primary-dark);
+}
+
+.demande-stage-list__header .page-kicker {
+  margin-bottom: 5px;
+}
+
+.demande-stage-list .empty-state {
+  margin: 0;
+}
+
+@media (max-width: 760px) {
+  .demande-stage-form__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .demande-stage-form__field--full {
+    grid-column: auto;
+  }
+
+  .demande-stage-form .form-actions {
+    justify-content: stretch;
+  }
+
+  .demande-stage-form .primary-action {
+    width: 100%;
+  }
+
+  .demande-stage-list__header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}

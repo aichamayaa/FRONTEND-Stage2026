@@ -1,3 +1,3 @@
 export function RolesPage() {
-  return <h1>RolesPage</h1>;
+  return <h1>Gestion des rôles</h1>;
 }

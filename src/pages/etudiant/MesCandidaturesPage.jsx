@@ -61,16 +61,18 @@ export function MesCandidaturesPage() {
 
   function ouvrirEdition(c) {
     setEditId(c.idCandidature);
-    setEditMessage('');
+    setEditMessage(c.messageMotivation ?? '');
     setMessage(null);
+    setErreur(null);
   }
 
   async function handleEnregistrer(id) {
     try {
       await mettreAJourCandidature(id, editMessage);
       setMessage('Candidature mise à jour.');
+      setErreur(null);
       setEditId(null);
-      charger();
+      await charger();
     } catch {
       setErreur('Impossible de mettre à jour la candidature.');
     }
@@ -91,7 +93,7 @@ export function MesCandidaturesPage() {
       {!chargement && candidatures.length === 0 && (
         <div className="empty-state">
           <h2>Aucune candidature</h2>
-          <p>Vous n'avez postulé à aucune offre pour le moment.</p>
+          <p>Vous n&#39;avez postulé à aucune offre pour le moment.</p>
         </div>
       )}
 
@@ -108,6 +110,7 @@ export function MesCandidaturesPage() {
                 <th>Actions</th>
               </tr>
             </thead>
+
             <tbody>
               {candidatures.map((c) => (
                 <Fragment key={c.idCandidature}>
@@ -131,6 +134,7 @@ export function MesCandidaturesPage() {
                           >
                             Modifier
                           </button>
+
                           <button
                             type="button"
                             className="table-action danger-action"
@@ -144,6 +148,51 @@ export function MesCandidaturesPage() {
                       )}
                     </td>
                   </tr>
+
+                  {['Acceptee', 'Refusee'].includes(c.statut) && (
+                    <tr>
+                      <td colSpan={6}>
+                        <div className="candidature-reponse">
+                          <strong className="candidature-reponse__titre">
+                            Réponse de l’employeur
+                          </strong>
+
+                          <p className="candidature-reponse__message">
+                            {c.messageReponseEmployeur || 'Aucun message fourni.'}
+                          </p>
+
+                          {c.dateReponseEmployeur && (
+                            <small className="candidature-reponse__date">
+                              Réponse reçue le {formatDate(c.dateReponseEmployeur)}
+                            </small>
+                          )}
+                        </div>
+                      </td>
+                    </tr>
+                  )}
+                  {c.emploiConfirme && (
+                      <tr>
+                          <td colSpan={6}>
+                              <div className="candidature-reponse">
+                                  <strong className="candidature-reponse__titre">
+                                      Emploi confirmé
+                                  </strong>
+
+                                  <p className="candidature-reponse__message">
+                                      {c.messageConfirmationEmploi ||
+                                          "Emploi confirmé par l'employeur."}
+                                  </p>
+
+                                  {c.dateConfirmationEmploi && (
+                                      <small className="candidature-reponse__date">
+                                          Confirmation reçue le{' '}
+                                          {formatDate(c.dateConfirmationEmploi)}
+                                      </small>
+                                  )}
+                              </div>
+                          </td>
+                      </tr>
+                  )}
                   {editId === c.idCandidature && (
                     <tr>
                       <td colSpan={6}>
@@ -156,6 +205,7 @@ export function MesCandidaturesPage() {
                             style={{ width: '100%' }}
                           />
                         </label>
+
                         <div className="table-actions" style={{ marginTop: 8 }}>
                           <button
                             type="button"
@@ -164,6 +214,7 @@ export function MesCandidaturesPage() {
                           >
                             Enregistrer
                           </button>
+
                           <button
                             type="button"
                             className="secondary-action"

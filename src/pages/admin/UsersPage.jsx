@@ -3,6 +3,7 @@ import { AppLayout } from '../../components/layout/AppLayout';
 import { UserForm } from '../../components/users/UserForm';
 import { UserTable } from '../../components/users/UserTable';
 import { useAuth } from '../../hooks/useAuth';
+import { getColleges } from '../../services/collegeService';
 import { getRoles } from '../../services/roleService';
 import {
   activerUser,
@@ -16,6 +17,7 @@ export function UsersPage() {
   const { user: currentUser } = useAuth();
   const [users, setUsers] = useState([]);
   const [roles, setRoles] = useState([]);
+  const [colleges, setColleges] = useState([]);
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
@@ -26,13 +28,15 @@ export function UsersPage() {
     setError('');
 
     try {
-      const [usersData, rolesData] = await Promise.all([
+      const [usersData, rolesData, collegesData] = await Promise.all([
         getUsers(),
-        getRoles()
+        getRoles(),
+        getColleges()
       ]);
 
       setUsers(usersData);
       setRoles(rolesData);
+      setColleges(collegesData);
     } catch {
       setError('Impossible de charger les utilisateurs.');
     } finally {
@@ -50,10 +54,10 @@ export function UsersPage() {
 
     try {
       await createUser(user);
-      setMessage('Utilisateur cree avec succes.');
+      setMessage('Utilisateur créé avec succès.');
       await loadData();
     } catch {
-      setError("Impossible de creer l'utilisateur.");
+      setError("Impossible de créer l'utilisateur.");
     }
   }
 
@@ -64,7 +68,7 @@ export function UsersPage() {
     try {
       await updateUser(selectedUser.idUtilisateur, user);
       setSelectedUser(null);
-      setMessage('Utilisateur modifie avec succes.');
+      setMessage('Utilisateur modifié avec succès.');
       await loadData();
     } catch {
       setError("Impossible de modifier l'utilisateur.");
@@ -86,10 +90,10 @@ export function UsersPage() {
     try {
       if (user.actif) {
         await desactiverUser(user.idUtilisateur);
-        setMessage('Utilisateur desactive.');
+        setMessage('Utilisateur désactivé.');
       } else {
         await activerUser(user.idUtilisateur);
-        setMessage('Utilisateur active.');
+        setMessage('Utilisateur activé.');
       }
 
       await loadData();
@@ -105,7 +109,7 @@ export function UsersPage() {
           <p className="page-kicker">Administration</p>
           <h1>Gestion des utilisateurs</h1>
           <p>
-            Creez les comptes et gerez les acces selon votre niveau
+            Créez les comptes et gérez les accès selon votre niveau
             {"d'administration."}
           </p>
         </div>
@@ -116,9 +120,10 @@ export function UsersPage() {
 
       <section className="admin-grid">
         <div className="panel">
-          <h2>{selectedUser ? 'Modifier un utilisateur' : 'Creer un utilisateur'}</h2>
+          <h2>{selectedUser ? 'Modifier un utilisateur' : 'Créer un utilisateur'}</h2>
           <UserForm
             roles={roles}
+            colleges={colleges}
             currentUser={currentUser}
             userToEdit={selectedUser}
             onSubmit={handleSubmitUser}

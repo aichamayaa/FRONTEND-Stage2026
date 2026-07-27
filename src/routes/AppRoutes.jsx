@@ -20,6 +20,7 @@ import { OffresStageRecuesPage } from '../pages/etudiant/OffresStageRecuesPage';
 import { MesDemarchesPage } from '../pages/etudiant/MesDemarchesPage';
 import { SuiviEtudiantsPage } from '../pages/responsable/SuiviEtudiantsPage';
 import { ConfirmationsStagePage } from '../pages/responsable/ConfirmationsStagePage';
+import { NotificationsPage } from '../pages/shared/NotificationsPage';
 import { RecommandationsPage } from '../pages/responsable/RecommandationsPage';
 import { NotFoundPage } from '../pages/shared/NotFoundPage';
 
@@ -39,6 +40,7 @@ export function AppRoutes() {
         }
       />
 
+      {/* ── Administration ─────────────────────────────── */}
       <Route
         path="/admin/users"
         element={
@@ -47,7 +49,6 @@ export function AppRoutes() {
           </ProtectedRoute>
         }
       />
-
       <Route
         path="/admin/roles"
         element={
@@ -56,7 +57,6 @@ export function AppRoutes() {
           </ProtectedRoute>
         }
       />
-
       <Route
         path="/admin/colleges"
         element={
@@ -65,7 +65,6 @@ export function AppRoutes() {
           </ProtectedRoute>
         }
       />
-
       <Route
         path="/admin/domaines-etudes"
         element={
@@ -75,6 +74,7 @@ export function AppRoutes() {
         }
       />
 
+      {/* ── Employeur ──────────────────────────────────── */}
       <Route
         path="/employeur/profil-entreprise"
         element={
@@ -83,7 +83,6 @@ export function AppRoutes() {
           </ProtectedRoute>
         }
       />
-
       <Route
         path="/employeur/offres"
         element={
@@ -101,7 +100,6 @@ export function AppRoutes() {
           </ProtectedRoute>
         }
       />
-
       <Route
         path="/employeur/candidatures-domaine"
         element={
@@ -110,7 +108,6 @@ export function AppRoutes() {
           </ProtectedRoute>
         }
       />
-
       <Route
         path="/employeur/demandes-stage"
         element={
@@ -119,7 +116,6 @@ export function AppRoutes() {
           </ProtectedRoute>
         }
       />
-
       <Route
         path="/employeur/offres-stage-directes"
         element={
@@ -129,6 +125,7 @@ export function AppRoutes() {
         }
       />
 
+      {/* ── Etudiant ───────────────────────────────────── */}
       <Route
         path="/recherche-offres"
         element={
@@ -137,7 +134,6 @@ export function AppRoutes() {
           </ProtectedRoute>
         }
       />
-
       <Route
         path="/statut-offre"
         element={
@@ -146,7 +142,6 @@ export function AppRoutes() {
           </ProtectedRoute>
         }
       />
-
       <Route
         path="/mes-candidatures"
         element={
@@ -155,7 +150,6 @@ export function AppRoutes() {
           </ProtectedRoute>
         }
       />
-
       <Route
         path="/demande-stage"
         element={
@@ -164,7 +158,6 @@ export function AppRoutes() {
           </ProtectedRoute>
         }
       />
-
       <Route
         path="/offres-stage-recues"
         element={
@@ -173,7 +166,6 @@ export function AppRoutes() {
           </ProtectedRoute>
         }
       />
-
       <Route
         path="/mes-demarches"
         element={
@@ -183,6 +175,7 @@ export function AppRoutes() {
         }
       />
 
+      {/* ── Responsable de stage ───────────────────────── */}
       <Route
         path="/responsable/suivi-etudiants"
         element={
@@ -191,7 +184,6 @@ export function AppRoutes() {
           </ProtectedRoute>
         }
       />
-
       <Route
         path="/responsable/recommandations"
         element={
@@ -206,6 +198,16 @@ export function AppRoutes() {
         element={
           <ProtectedRoute roles={['ResponsableStage', 'Employeur']}>
             <ConfirmationsStagePage />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* ── Notifications ───────────────────────────────── */}
+      <Route
+        path="/notifications"
+        element={
+          <ProtectedRoute roles={['Employeur', 'Etudiant']}>
+            <NotificationsPage />
           </ProtectedRoute>
         }
       />

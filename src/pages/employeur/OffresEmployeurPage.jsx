@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { AppLayout } from '../../components/layout/AppLayout';
 import { OffreFilters } from '../../components/offres/OffreFilters';
 import { OffreTable } from '../../components/offres/OffreTable';
 import { OffreForm } from '../../components/offres/OffreForm';
+import { formatStatus } from '../../utils/formatStatus';
 import { OffrePdfActions } from '../../components/offres/OffrePdfActions';
 import {
   getMesOffres,
@@ -41,11 +42,7 @@ export function OffresEmployeurPage() {
   const [erreurForm, setErreurForm] = useState(null);
   const [succes, setSucces] = useState(null);
 
-  useEffect(() => {
-    chargerOffres();
-  }, [filtreType, filtreStatut]);
-
-  async function chargerOffres() {
+  const chargerOffres = useCallback(async () => {
     setChargement(true);
     setErreur(null);
 
@@ -65,7 +62,11 @@ export function OffresEmployeurPage() {
     } finally {
       setChargement(false);
     }
-  }
+  }, [filtreType, filtreStatut]);
+
+  useEffect(() => {
+    chargerOffres();
+  }, [chargerOffres]);
 
   async function handleVoir(idOffre) {
     setErreur(null);
@@ -95,7 +96,7 @@ export function OffresEmployeurPage() {
     try {
       await supprimerOffre(idOffre);
       setOffres((prev) => prev.filter((o) => o.idOffre !== idOffre));
-      afficherSucces('Offre supprimee avec succes.');
+      afficherSucces('Offre supprimée avec succès.');
     } catch (e) {
       setErreur(messageErreur(e));
     }
@@ -116,7 +117,7 @@ export function OffresEmployeurPage() {
           await modifierOffreEmploi(offreSelectionnee.idOffre, payload);
         }
 
-        afficherSucces('Offre modifiee avec succes.');
+        afficherSucces('Offre modifiée avec succès.');
       } else {
         if (isStage) {
           await creerOffreStage(payload);
@@ -124,7 +125,7 @@ export function OffresEmployeurPage() {
           await creerOffreEmploi(payload);
         }
 
-        afficherSucces('Offre publiee avec succes.');
+        afficherSucces('Offre publiée avec succès.');
       }
 
       setVue(VUE_LISTE);
@@ -177,7 +178,7 @@ export function OffresEmployeurPage() {
       <AppLayout>
         <div className="page-header">
           <p className="page-kicker">
-            {o.typeOffre === 'Stage' ? 'Stage' : 'Emploi'} &middot; {o.statut}
+            {o.typeOffre === 'Stage' ? 'Stage' : 'Emploi'} &middot; {formatStatus(o.statut)}
           </p>
           <h1>{o.titre}</h1>
           <p>{o.nomEmployeur} &mdash; {o.ville}</p>
@@ -190,7 +191,7 @@ export function OffresEmployeurPage() {
             style={{ marginBottom: '20px' }}
             onClick={() => setVue(VUE_LISTE)}
           >
-            Retour a la liste
+            Retour à la liste
           </button>
 
           <p style={{ whiteSpace: 'pre-wrap' }}>{o.description}</p>
@@ -218,7 +219,7 @@ export function OffresEmployeurPage() {
       <div className="page-header">
         <p className="page-kicker">Employeur</p>
         <h1>Mes offres</h1>
-        <p>Gerez vos offres d&apos;emploi et de stage.</p>
+        <p>Gérez vos offres d&apos;emploi et de stage.</p>
       </div>
 
       {succes && <p className="notice notice-success">{succes}</p>}

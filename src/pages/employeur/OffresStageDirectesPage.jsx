@@ -7,13 +7,7 @@ import {
     getMesOffresDirectesEnvoyees,
 } from '../../services/offreStageDirecteService';
 import { formatDate } from '../../utils/formatDate';
-
-const STATUT_LABELS = {
-    Envoyee: 'Envoyee',
-    Acceptee: 'Acceptee',
-    Refusee: 'Refusee',
-    Annulee: 'Annulee',
-};
+import { formatStatus } from '../../utils/formatStatus';
 
 const STATUT_BADGE = {
     Envoyee: 'badge-muted',
@@ -83,7 +77,7 @@ export function OffresStageDirectesPage() {
             setOffres(offresData);
             setOffresDirectes(offresDirectesData);
         } catch (e) {
-            setErreur(getErreur(e, 'Impossible de charger les donnees.'));
+            setErreur(getErreur(e, 'Impossible de charger les données.'));
         } finally {
             setChargement(false);
         }
@@ -124,7 +118,7 @@ export function OffresStageDirectesPage() {
         setMessage(null);
 
         if (!candidatureSelectionnee) {
-            setErreur('Veuillez selectionner un etudiant.');
+            setErreur('Veuillez sélectionner un étudiant.');
             return;
         }
 
@@ -138,12 +132,12 @@ export function OffresStageDirectesPage() {
             form.dateFinProposee &&
             form.dateFinProposee < form.dateDebutProposee
         ) {
-            setErreur('La date de fin doit etre apres la date de debut.');
+            setErreur('La date de fin doit être après la date de début.');
             return;
         }
 
         if (!candidatureSelectionnee.idEtudiant) {
-            setErreur("Impossible de creer l'offre : IdEtudiant manquant.");
+            setErreur("Impossible de créer l’offre : IdEtudiant manquant.");
             return;
         }
 
@@ -162,11 +156,11 @@ export function OffresStageDirectesPage() {
 
         try {
             await creerOffreStageDirecte(payload);
-            setMessage('Offre de stage directe envoyee.');
+            setMessage('Offre de stage directe envoyée.');
             setForm(initialForm);
             await chargerOffresDirectes();
         } catch (e) {
-            setErreur(getErreur(e, "Impossible de creer l'offre de stage directe."));
+            setErreur(getErreur(e, "Impossible de créer l’offre de stage directe."));
         } finally {
             setCreationEnCours(false);
         }
@@ -178,7 +172,7 @@ export function OffresStageDirectesPage() {
                 <p className="page-kicker">Employeur</p>
                 <h1>Offres de stage directes</h1>
                 <p>
-                    Proposez directement un stage a un etudiant ayant postule a une offre de stage.
+                    Proposez directement un stage à un étudiant ayant postulé à une offre de stage.
                 </p>
             </div>
 
@@ -211,7 +205,7 @@ export function OffresStageDirectesPage() {
 
                             {offresStage.length === 0 && (
                                 <p className="notice">
-                                    Aucune offre de stage active. Creez d'abord une offre de stage.
+                                    Aucune offre de stage active. Créez d’abord une offre de stage.
                                 </p>
                             )}
 
@@ -226,7 +220,7 @@ export function OffresStageDirectesPage() {
                                     <table className="table">
                                         <thead>
                                             <tr>
-                                                <th>Etudiant</th>
+                                                <th>Étudiant</th>
                                                 <th>Courriel</th>
                                                 <th>Statut</th>
                                                 <th>Action</th>
@@ -239,7 +233,7 @@ export function OffresStageDirectesPage() {
                                                     <td>{c.courrielEtudiant ?? c.emailEtudiant ?? '-'}</td>
                                                     <td>
                                                         <span className="badge badge-muted">
-                                                            {c.statut}
+                                                            {formatStatus(c.statut)}
                                                         </span>
                                                     </td>
                                                     <td>
@@ -249,8 +243,8 @@ export function OffresStageDirectesPage() {
                                                             onClick={() => setCandidatureSelectionnee(c)}
                                                         >
                                                             {candidatureSelectionnee?.idCandidature === c.idCandidature
-                                                                ? 'Selectionne'
-                                                                : 'Selectionner'}
+                                                                ? 'Sélectionné'
+                                                                : 'Sélectionner'}
                                                         </button>
                                                     </td>
                                                 </tr>
@@ -263,19 +257,19 @@ export function OffresStageDirectesPage() {
                             <form className="admin-form" onSubmit={handleSubmit} style={{ marginTop: '20px' }}>
                                 <div className="form-grid">
                                     <label>
-                                        Etudiant selectionne
+                                        Étudiant sélectionné
                                         <input
                                             value={
                                                 candidatureSelectionnee
                                                     ? `${candidatureSelectionnee.prenomEtudiant} ${candidatureSelectionnee.nomEtudiant}`
-                                                    : 'Aucun etudiant selectionne'
+                                                    : 'Aucun étudiant sélectionné'
                                             }
                                             disabled
                                         />
                                     </label>
 
                                     <label>
-                                        Date de debut proposee
+                                        Date de début proposée
                                         <input
                                             type="date"
                                             name="dateDebutProposee"
@@ -286,7 +280,7 @@ export function OffresStageDirectesPage() {
                                     </label>
 
                                     <label>
-                                        Date de fin proposee
+                                        Date de fin proposée
                                         <input
                                             type="date"
                                             name="dateFinProposee"
@@ -305,7 +299,7 @@ export function OffresStageDirectesPage() {
                                         onChange={handleFormChange}
                                         rows={4}
                                         required
-                                        placeholder="Ex. Horaire, lieu, encadrement, modalites du stage..."
+                                        placeholder="Ex. Horaire, lieu, encadrement, modalités du stage..."
                                     />
                                 </label>
 
@@ -316,7 +310,7 @@ export function OffresStageDirectesPage() {
                                         value={form.commentaire}
                                         onChange={handleFormChange}
                                         rows={3}
-                                        placeholder="Commentaire optionnel pour l'etudiant."
+                                        placeholder="Commentaire optionnel pour l’étudiant."
                                     />
                                 </label>
 
@@ -333,24 +327,24 @@ export function OffresStageDirectesPage() {
                         </div>
 
                         <div className="panel admin-list-panel">
-                            <h2>Offres directes envoyees</h2>
+                            <h2>Offres directes envoyées</h2>
 
                             {offresDirectes.length === 0 ? (
                                 <div className="empty-state">
                                     <h2>Aucune offre directe</h2>
-                                    <p>Les offres de stage directes envoyees apparaitront ici.</p>
+                                    <p>Les offres de stage directes envoyées apparaîtront ici.</p>
                                 </div>
                             ) : (
                                 <div className="table-shell">
                                     <table className="table">
                                         <thead>
                                             <tr>
-                                                <th>Etudiant</th>
+                                                <th>Étudiant</th>
                                                 <th>Conditions</th>
                                                 <th>Debut</th>
                                                 <th>Fin</th>
                                                 <th>Statut</th>
-                                                <th>Reponse</th>
+                                                <th>Réponse</th>
                                                 <th>Date</th>
                                             </tr>
                                         </thead>
@@ -363,7 +357,7 @@ export function OffresStageDirectesPage() {
                                                     <td>{o.dateFinProposee ? formatDate(o.dateFinProposee) : '-'}</td>
                                                     <td>
                                                         <span className={`badge ${STATUT_BADGE[o.statut] ?? 'badge-muted'}`}>
-                                                            {STATUT_LABELS[o.statut] ?? o.statut}
+                                                            {formatStatus(o.statut)}
                                                         </span>
                                                     </td>
                                                     <td>{o.reponseEtudiant ?? '-'}</td>
@@ -381,12 +375,3 @@ export function OffresStageDirectesPage() {
         </AppLayout>
     );
 }
-
-{/*
-    Remplacez cet espace r�serv� par une v�ritable page employeur capable de:
-
-    -Charger les offres directes de l�employeur: GET /api/offres-stage-directes/mes.
-    -Cr�er une nouvelle offre directe: POST /api/offres-stage-directes.
-    -Afficher les offres directes envoy�es dans un tableau.
-
-*/ }

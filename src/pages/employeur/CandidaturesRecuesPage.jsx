@@ -4,57 +4,80 @@ import { CandidatureTable } from '../../components/candidatures/CandidatureTable
 import { CandidatureDetail } from '../../components/candidatures/CandidatureDetail';
 import {
     getCandidaturesOffre,
+    getCandidaturesParDomaine,
     getCandidatureDetail,
     changerStatutCandidature,
     confirmerEmploi,
 } from '../../services/candidatureService';
-import { getOffres } from '../../services/offreService';
+import { getMesOffres } from '../../services/offreService';
+import { getDomainesEtudes } from '../../services/domaineEtudeService';
 
 const VUE_LISTE = 'liste';
 const VUE_DETAIL = 'detail';
 
 export function CandidaturesRecuesPage() {
     const [vue, setVue] = useState(VUE_LISTE);
+    const [modeFiltre, setModeFiltre] = useState('offre'); // 'offre' | 'domaine'
     const [offres, setOffres] = useState([]);
+    const [domaines, setDomaines] = useState([]);
     const [idOffreSelectionnee, setIdOffreSelectionnee] = useState('');
+    const [idDomaineSelectionne, setIdDomaineSelectionne] = useState('');
     const [candidatures, setCandidatures] = useState([]);
     const [candidatureDetail, setCandidatureDetail] = useState(null);
     const [chargement, setChargement] = useState(false);
     const [erreur, setErreur] = useState(null);
     const [succes, setSucces] = useState(null);
 
-    // Ajout d'un assistant d'offre sélectionné
     const offreSelectionnee = offres.find(
         (o) => o.idOffre.toString() === idOffreSelectionnee.toString()
     );
 
-    // Charger les offres de l'employeur au montage
+    // Charger les offres + domaines de l'employeur connecte au montage
     useEffect(() => {
-        getOffres(undefined, 'Active')
+        getMesOffres()
             .then(setOffres)
             .catch((e) => setErreur(e.response?.data?.message ?? e.message));
+        getDomainesEtudes()
+            .then(setDomaines)
+            .catch(() => { /* silencieux */ });
     }, []);
 
-    // Charger les candidatures quand l'offre change
+    // Charger les candidatures selon le filtre actif
     useEffect(() => {
-        if (!idOffreSelectionnee) {
-            setCandidatures([]);
-            return;
+        if (modeFiltre === 'offre') {
+            if (!idOffreSelectionnee) {
+                setCandidatures([]);
+                return;
+            }
+            chargerCandidatures(() => getCandidaturesOffre(idOffreSelectionnee));
+        } else {
+            if (!idDomaineSelectionne) {
+                setCandidatures([]);
+                return;
+            }
+            chargerCandidatures(() => getCandidaturesParDomaine(idDomaineSelectionne));
         }
-        chargerCandidatures(idOffreSelectionnee);
-    }, [idOffreSelectionnee]);
+    }, [modeFiltre, idOffreSelectionnee, idDomaineSelectionne]);
 
-    async function chargerCandidatures(idOffre) {
+    async function chargerCandidatures(fetcher) {
         setChargement(true);
         setErreur(null);
         try {
-            const data = await getCandidaturesOffre(idOffre);
+            const data = await fetcher();
             setCandidatures(data);
         } catch (e) {
             setErreur(e.response?.data?.message ?? e.message);
         } finally {
             setChargement(false);
         }
+    }
+
+    function changerMode(mode) {
+        setModeFiltre(mode);
+        setIdOffreSelectionnee('');
+        setIdDomaineSelectionne('');
+        setCandidatures([]);
+        setErreur(null);
     }
 
     async function handleVoirDetail(idCandidature) {
@@ -68,7 +91,6 @@ export function CandidaturesRecuesPage() {
         }
     }
 
-    // Modifié pour US - 14
     async function handleChangerStatut(idCandidature, statut) {
         let message = null;
 
@@ -80,10 +102,9 @@ export function CandidaturesRecuesPage() {
                     : 'Votre candidature a été refusée.'
             );
 
-            if (message === null) return; // Si l'employeur clique 
+            if (message === null) return;
         }
 
-        // Appelle l'API backend
         try {
             await changerStatutCandidature(idCandidature, statut, message?.trim() || null);
 
@@ -103,13 +124,12 @@ export function CandidaturesRecuesPage() {
                 );
             }
 
-            afficherSucces('Statut mis a jour.');
+            afficherSucces('Statut mis à jour.');
         } catch (e) {
             setErreur(e.response?.data?.message ?? e.message);
         }
     }
 
-    // Ajout d'un gestionnaire pour la confirmation d'un emploi par un id de candidature
     async function handleConfirmerEmploi(idCandidature) {
         const message = window.prompt(
             "Message de confirmation pour l'étudiant :",
@@ -118,29 +138,41 @@ export function CandidaturesRecuesPage() {
 
         if (message === null) return;
 
+        const messageConfirmation = message.trim() || "Emploi confirmé par l'employeur.";
+        const dateConfirmation = new Date().toISOString();
+
         setErreur(null);
 
         try {
-            await confirmerEmploi(
-                idCandidature,
-                message.trim() || "Emploi confirmé par l'employeur."
-            );
+            await confirmerEmploi(idCandidature, messageConfirmation);
 
             setCandidatures((prev) =>
                 prev.map((c) =>
                     c.idCandidature === idCandidature
-                        ? { ...c, statut: 'Acceptée' }
+                        ? {
+                            ...c,
+                            emploiConfirme: true,
+                            messageConfirmationEmploi: messageConfirmation,
+                            dateConfirmationEmploi: dateConfirmation,
+                        }
                         : c
                 )
             );
 
             if (candidatureDetail?.idCandidature === idCandidature) {
                 setCandidatureDetail((prev) =>
-                    prev ? { ...prev, statut: 'Acceptée' } : prev
+                    prev
+                        ? {
+                            ...prev,
+                            emploiConfirme: true,
+                            messageConfirmationEmploi: messageConfirmation,
+                            dateConfirmationEmploi: dateConfirmation,
+                        }
+                        : prev
                 );
             }
 
-            afficherSucces("Emploi confirmé avec succès.");
+            afficherSucces('Emploi confirmé avec succès.');
         } catch (e) {
             setErreur(e.response?.data?.message ?? e.message);
         }
@@ -151,13 +183,12 @@ export function CandidaturesRecuesPage() {
         setTimeout(() => setSucces(null), 3000);
     }
 
-    // Rendu detail 
     if (vue === VUE_DETAIL && candidatureDetail) {
         return (
             <AppLayout>
                 <div className="page-header">
-                    <p className="page-kicker">Candidatures recues</p>
-                    <h1>Detail de la candidature</h1>
+                    <p className="page-kicker">Candidatures reçues</p>
+                    <h1>Détail de la candidature</h1>
                 </div>
 
                 {succes && <p className="notice notice-success">{succes}</p>}
@@ -171,51 +202,86 @@ export function CandidaturesRecuesPage() {
         );
     }
 
-    // Rendu liste
+    const aUneSelection =
+        (modeFiltre === 'offre' && idOffreSelectionnee) ||
+        (modeFiltre === 'domaine' && idDomaineSelectionne);
+
     return (
         <AppLayout>
             <div className="page-header">
                 <p className="page-kicker">Employeur</p>
-                <h1>Candidatures recues</h1>
-                <p>Consultez et gerez les candidatures pour vos offres.</p>
+                <h1>Candidatures reçues</h1>
+                <p>Consultez et gérez les candidatures pour vos offres, par offre ou par domaine.</p>
             </div>
 
             {succes && <p className="notice notice-success">{succes}</p>}
             {erreur && <p className="notice notice-error">{erreur}</p>}
 
             <div className="panel" style={{ marginBottom: '16px' }}>
-                <label className="offre-filters__label">
-                    Selectionner une offre
-                    <select
-                        className="offre-filters__select"
-                        value={idOffreSelectionnee}
-                        onChange={(e) => setIdOffreSelectionnee(e.target.value)}
-                        style={{ maxWidth: '400px' }}
-                    >
-                        <option value="">-- Choisir une offre --</option>
-                        {offres.map((o) => (
-                            <option key={o.idOffre} value={o.idOffre}>
-                                {o.titre} ({o.typeOffre})
-                            </option>
-                        ))}
-                    </select>
-                </label>
+                <div className="offre-filters">
+                    <label className="offre-filters__label">
+                        Filtrer par
+                        <select
+                            className="offre-filters__select"
+                            value={modeFiltre}
+                            onChange={(e) => changerMode(e.target.value)}
+                        >
+                            <option value="offre">Offre</option>
+                            <option value="domaine">Domaine</option>
+                        </select>
+                    </label>
+
+                    {modeFiltre === 'offre' ? (
+                        <label className="offre-filters__label">
+                            Offre
+                            <select
+                                className="offre-filters__select"
+                                value={idOffreSelectionnee}
+                                onChange={(e) => setIdOffreSelectionnee(e.target.value)}
+                                style={{ minWidth: '260px' }}
+                            >
+                                <option value="">-- Choisir une offre --</option>
+                                {offres.map((o) => (
+                                    <option key={o.idOffre} value={o.idOffre}>
+                                        {o.titre} ({o.typeOffre})
+                                    </option>
+                                ))}
+                            </select>
+                        </label>
+                    ) : (
+                        <label className="offre-filters__label">
+                            Domaine
+                            <select
+                                className="offre-filters__select"
+                                value={idDomaineSelectionne}
+                                onChange={(e) => setIdDomaineSelectionne(e.target.value)}
+                                style={{ minWidth: '260px' }}
+                            >
+                                <option value="">-- Choisir un domaine --</option>
+                                {domaines.map((d) => (
+                                    <option key={d.idDomaine} value={d.idDomaine}>
+                                        {d.nom}
+                                    </option>
+                                ))}
+                            </select>
+                        </label>
+                    )}
+                </div>
             </div>
 
-            {idOffreSelectionnee && (
+            {aUneSelection && (
                 <div className="panel">
-                    {chargement
-                        ? <p>Chargement...</p>
-                        : (
-                            <CandidatureTable
-                                candidatures={candidatures}
-                                onVoirDetail={handleVoirDetail}
-                                onChangerStatut={handleChangerStatut}
-                                onConfirmerEmploi={handleConfirmerEmploi}
-                                isOffreEmploi={offreSelectionnee?.typeOffre === 'Emploi'}
-                            />
-                        )
-                    }
+                    {chargement ? (
+                        <p>Chargement...</p>
+                    ) : (
+                        <CandidatureTable
+                            candidatures={candidatures}
+                            onVoirDetail={handleVoirDetail}
+                            onChangerStatut={handleChangerStatut}
+                            onConfirmerEmploi={handleConfirmerEmploi}
+                            isOffreEmploi={modeFiltre === 'offre' && offreSelectionnee?.typeOffre === 'Emploi'}
+                        />
+                    )}
                 </div>
             )}
         </AppLayout>

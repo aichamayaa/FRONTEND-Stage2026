@@ -2,7 +2,13 @@ import { useState } from 'react';
 
 const TYPE_CONTRAT = ['Temps plein', 'Temps partiel', 'Contractuel', 'Pigiste'];
 const TELE_TRAVAIL = ['Aucun', 'Partiel', 'Total'];
-const SESSIONS = ['Hiver 2026', 'Ete 2026', 'Automne 2026', 'Hiver 2027', 'Ete 2027'];
+const SESSIONS = [
+  { value: 'Hiver 2026', label: 'Hiver 2026' },
+  { value: 'Ete 2026', label: 'Été 2026' },
+  { value: 'Automne 2026', label: 'Automne 2026' },
+  { value: 'Hiver 2027', label: 'Hiver 2027' },
+  { value: 'Ete 2027', label: 'Été 2027' }
+];
 
 // Valeurs initiales vides pour un formulaire vide
 const EMPTY_EMPLOI = {
@@ -158,7 +164,7 @@ export function OffreForm({ typeOffre, initial, onSubmit, onAnnuler, isEdit, loa
                 onChange={(e) => set('statut', e.target.value)}
               >
                 <option value="Active">Active</option>
-                <option value="Fermee">Fermee</option>
+                <option value="Fermee">Fermée</option>
                 <option value="Brouillon">Brouillon</option>
               </select>
             </label>
@@ -181,7 +187,7 @@ export function OffreForm({ typeOffre, initial, onSubmit, onAnnuler, isEdit, loa
                 </select>
               </label>
               <label>
-                Teletravail
+                Télétravail
                 <select
                   value={form.teleTravail}
                   onChange={(e) => set('teleTravail', e.target.value)}
@@ -230,7 +236,7 @@ export function OffreForm({ typeOffre, initial, onSubmit, onAnnuler, isEdit, loa
                 >
                   <option value="">-- Choisir --</option>
                   {SESSIONS.map((s) => (
-                    <option key={s} value={s}>{s}</option>
+                    <option key={s.value} value={s.value}>{s.label}</option>
                   ))}
                 </select>
               </label>
@@ -248,7 +254,7 @@ export function OffreForm({ typeOffre, initial, onSubmit, onAnnuler, isEdit, loa
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }}>
               <label>
-                Date de debut
+                Date de début
                 <input
                   type="date"
                   value={form.dateDebutStage}
@@ -266,7 +272,7 @@ export function OffreForm({ typeOffre, initial, onSubmit, onAnnuler, isEdit, loa
             </div>
 
             <label>
-              Remuneration ($/h)
+              Rémunération ($/h)
               <input
                 type="number"
                 min="0"

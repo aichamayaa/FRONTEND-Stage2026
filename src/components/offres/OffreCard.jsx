@@ -1,4 +1,5 @@
 import { formatDate } from '../../utils/formatDate';
+import { formatStatus } from '../../utils/formatStatus';
 
 export function OffreCard({ offre, onVoir, onModifier, onSupprimer, isEmployeur }) {
   const badgeTypeClass = offre.typeOffre === 'Stage' ? 'badge-stage' : 'badge-emploi';
@@ -10,7 +11,7 @@ export function OffreCard({ offre, onVoir, onModifier, onSupprimer, isEmployeur 
         <span className={`badge ${badgeTypeClass}`}>
           {offre.typeOffre === 'Stage' ? 'Stage' : 'Emploi'}
         </span>
-        <span className={`badge ${badgeStatutClass}`}>{offre.statut}</span>
+        <span className={`badge ${badgeStatutClass}`}>{formatStatus(offre.statut)}</span>
       </div>
 
       <h3 className="offre-card__titre">{offre.titre}</h3>
@@ -28,7 +29,7 @@ export function OffreCard({ offre, onVoir, onModifier, onSupprimer, isEmployeur 
       )}
 
       <p className="offre-card__date">
-        Publie le {formatDate(offre.datePublication)}
+        Publié le {formatDate(offre.datePublication)}
         {offre.dateExpiration && (
           <> &middot; Expire le {formatDate(offre.dateExpiration)}</>
         )}

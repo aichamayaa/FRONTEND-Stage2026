@@ -16,6 +16,15 @@ const STATUT_BADGE = {
   Annulee: 'badge-danger'
 };
 
+const SESSIONS = [
+  'Hiver 2026',
+  'Été 2026',
+  'Automne 2026',
+  'Hiver 2027',
+  'Été 2027',
+  'Automne 2027'
+];
+
 export function DemandeStagePage() {
   const [domaines, setDomaines] = useState([]);
   const [demandes, setDemandes] = useState([]);
@@ -77,13 +86,13 @@ export function DemandeStagePage() {
       <div className="page-header">
         <p className="page-kicker">Espace étudiant</p>
         <h1>Demande de stage</h1>
-        <p>Formulez une demande de stage dans un domaine d'études.</p>
+        <p>Formulez une demande de stage dans un domaine d’études.</p>
       </div>
 
-      <form className="panel" onSubmit={handleSubmit}>
-        <div className="form-grid">
-          <label>
-            Domaine d'études *
+      <form className="panel demande-stage-form" onSubmit={handleSubmit}>
+        <div className="form-grid demande-stage-form__grid">
+          <label className="demande-stage-form__field">
+            Domaine d’études *
             <select value={idDomaine} onChange={(e) => setIdDomaine(e.target.value)}>
               <option value="">-- Choisir --</option>
               {domaines.map((d) => (
@@ -91,20 +100,23 @@ export function DemandeStagePage() {
               ))}
             </select>
           </label>
-          <label>
+          <label className="demande-stage-form__field">
             Période souhaitée
-            <input
-              type="text"
+            <select
               value={periodeSouhaitee}
               onChange={(e) => setPeriodeSouhaitee(e.target.value)}
-              placeholder="Ex : Hiver 2026"
-            />
+            >
+              <option value="">-- Choisir --</option>
+              {SESSIONS.map((s) => (
+                <option key={s} value={s}>{s}</option>
+              ))}
+            </select>
           </label>
-          <label>
+          <label className="demande-stage-form__field demande-stage-form__field--full">
             Compétences
             <textarea rows={2} value={competences} onChange={(e) => setCompetences(e.target.value)} />
           </label>
-          <label>
+          <label className="demande-stage-form__field demande-stage-form__field--full">
             Description du projet *
             <textarea rows={4} value={description} onChange={(e) => setDescription(e.target.value)} required />
           </label>
@@ -120,40 +132,52 @@ export function DemandeStagePage() {
         </div>
       </form>
 
-      <div className="page-header" style={{ marginTop: 24 }}>
-        <h2>Mes demandes de stage</h2>
-      </div>
+      <section className="panel demande-stage-list">
+        <div className="demande-stage-list__header">
+          <div>
+            <p className="page-kicker">Suivi</p>
+            <h2>Mes demandes de stage</h2>
+          </div>
 
-      {demandes.length === 0 ? (
-        <p className="notice">Aucune demande pour le moment.</p>
-      ) : (
-        <div className="table-shell">
-          <table className="table">
-            <thead>
-              <tr>
-                <th>Domaine</th>
-                <th>Période</th>
-                <th>Statut</th>
-                <th>Date</th>
-              </tr>
-            </thead>
-            <tbody>
-              {demandes.map((d) => (
-                <tr key={d.idDemandeStage}>
-                  <td>{d.nomDomaine}</td>
-                  <td>{d.periodeSouhaitee ?? '—'}</td>
-                  <td>
-                    <span className={`badge ${STATUT_BADGE[d.statut] ?? 'badge-muted'}`}>
-                      {STATUT_LABELS[d.statut] ?? d.statut}
-                    </span>
-                  </td>
-                  <td>{formatDate(d.dateCreation)}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <span className="badge badge-muted">
+            {demandes.length}{' '}
+            {demandes.length === 1 ? 'demande' : 'demandes'}
+          </span>
         </div>
-      )}
+
+        {demandes.length === 0 ? (
+          <div className="empty-state">
+            Aucune demande pour le moment.
+          </div>
+        ) : (
+          <div className="table-shell">
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>Domaine</th>
+                  <th>Période</th>
+                  <th>Statut</th>
+                  <th>Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                {demandes.map((d) => (
+                  <tr key={d.idDemandeStage}>
+                    <td>{d.nomDomaine}</td>
+                    <td>{d.periodeSouhaitee ?? '—'}</td>
+                    <td>
+                      <span className={`badge ${STATUT_BADGE[d.statut] ?? 'badge-muted'}`}>
+                        {STATUT_LABELS[d.statut] ?? d.statut}
+                      </span>
+                    </td>
+                    <td>{formatDate(d.dateCreation)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </section>
     </AppLayout>
   );
 }
