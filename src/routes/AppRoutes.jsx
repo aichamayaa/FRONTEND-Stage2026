@@ -10,7 +10,6 @@ import { OffresEmployeurPage } from '../pages/employeur/OffresEmployeurPage';
 import { OffresStageDirectesPage } from '../pages/employeur/OffresStageDirectesPage';
 import { CandidaturesRecuesPage } from '../pages/employeur/CandidaturesRecuesPage';
 import { ProfilEntreprisePage } from '../pages/employeur/ProfilEntreprisePage';
-import { CandidaturesParDomainePage } from '../pages/employeur/CandidaturesParDomainePage';
 import { DemandesStageRecuesPage } from '../pages/employeur/DemandesStageRecuesPage';
 import { RechercheOffresPage } from '../pages/etudiant/RechercheOffresPage';
 import { StatutOffrePage } from '../pages/etudiant/StatutOffrePage';
@@ -97,14 +96,6 @@ export function AppRoutes() {
         element={
           <ProtectedRoute roles={['Employeur']}>
             <CandidaturesRecuesPage />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/employeur/candidatures-domaine"
-        element={
-          <ProtectedRoute roles={['Employeur']}>
-            <CandidaturesParDomainePage />
           </ProtectedRoute>
         }
       />
