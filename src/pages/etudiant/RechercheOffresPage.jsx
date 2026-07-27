@@ -18,8 +18,10 @@ export function RechercheOffresPage() {
 
   async function handleSearch(event) {
     event.preventDefault();
+
     setChargement(true);
     setErreur(null);
+    setConfirmation(null);
     setIdOffrePostuler(null);
 
     try {
@@ -28,24 +30,28 @@ export function RechercheOffresPage() {
         lieu: lieu || undefined,
         motsCles: motsCles || undefined
       });
+
       setOffres(data);
     } catch {
       setErreur('Impossible de récupérer les offres.');
+      setOffres([]);
     } finally {
       setChargement(false);
       setRecherchee(true);
     }
   }
 
-  const offreSelectionnee = offres.find((o) => o.idOffre === idOffrePostuler);
+  const offreSelectionnee = offres.find(
+    (offre) => offre.idOffre === idOffrePostuler
+  );
 
   return (
     <AppLayout>
-      <div className="page-header">
+      <section className="page-header">
         <p className="page-kicker">Espace étudiant</p>
         <h1>Recherche d’offres</h1>
         <p>Trouvez un emploi ou un stage et postulez en ligne.</p>
-      </div>
+      </section>
 
       <form className="panel" onSubmit={handleSearch}>
         <div className="offre-filters">
@@ -82,31 +88,25 @@ export function RechercheOffresPage() {
             />
           </label>
 
-          <button
-            type="submit"
-            className="primary-action"
-            style={{ alignSelf: 'flex-end' }}
-          >
+          <button type="submit" className="primary-action">
             Rechercher
           </button>
         </div>
       </form>
 
       {chargement && <p>Chargement...</p>}
+
       {erreur && <p className="notice notice-error">{erreur}</p>}
+
       {!chargement && recherchee && offres.length === 0 && (
         <p className="notice">Aucune offre trouvée.</p>
       )}
-      {confirmation && <p className="notice notice-success">{confirmation}</p>}
 
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
-          gap: 16,
-          marginTop: 16
-        }}
-      >
+      {confirmation && (
+        <p className="notice notice-success">{confirmation}</p>
+      )}
+
+      <section className="offres-grid">
         {offres.map((offre) => (
           <OffreCard
             key={offre.idOffre}
@@ -118,31 +118,74 @@ export function RechercheOffresPage() {
             }}
           />
         ))}
-      </div>
+      </section>
 
       {idOffrePostuler && offreSelectionnee && (
-        <section style={{ marginTop: 24 }}>
-          <div className="page-header">
-            <p className="page-kicker">Candidature</p>
-            <h2>Postuler à : {offreSelectionnee.titre}</h2>
-            <p>{offreSelectionnee.nomEmployeur} &mdash; {offreSelectionnee.ville}</p>
+        <section className="apply-section">
+          <div className="apply-header">
+            <div>
+              <p className="page-kicker">Candidature</p>
+              <h2>Postuler à cette offre</h2>
+              <p>
+                Vérifiez les informations de l’offre, puis joignez votre CV et
+                votre lettre de motivation.
+              </p>
+            </div>
+
+            <button
+              type="button"
+              className="secondary-action"
+              onClick={() => setIdOffrePostuler(null)}
+            >
+              Fermer
+            </button>
           </div>
 
-          <div className="panel" style={{ marginBottom: '16px' }}>
-            <OffrePdfActions idOffre={idOffrePostuler} />
-          </div>
+          <div className="apply-grid">
+            <aside className="apply-offer-card">
+              <span className="badge">
+                {offreSelectionnee.typeOffre || 'Offre'}
+              </span>
 
-          <CandidatureForm
-            idOffre={idOffrePostuler}
-            titreOffre={offreSelectionnee.titre}
-            onSuccess={(candidature) => {
-              const titre = offreSelectionnee.titre ?? "l'offre";
-              setConfirmation(
-                `Merci d'avoir postulé à : ${titre}. Numéro de confirmation : ${candidature.idCandidature}.`
-              );
-              setIdOffrePostuler(null);
-            }}
-          />
+              <h3>{offreSelectionnee.titre}</h3>
+
+              <p className="apply-company">
+                {offreSelectionnee.nomEmployeur || 'Employeur non précisé'}
+              </p>
+
+              <dl className="apply-offer-info">
+                <div>
+                  <dt>Lieu</dt>
+                  <dd>{offreSelectionnee.ville || 'Non précisé'}</dd>
+                </div>
+
+                <div>
+                  <dt>Statut</dt>
+                  <dd>{offreSelectionnee.statut || 'Non précisé'}</dd>
+                </div>
+              </dl>
+
+              <div className="apply-pdf-actions">
+                <OffrePdfActions idOffre={idOffrePostuler} />
+              </div>
+            </aside>
+
+            <div className="apply-form-panel">
+              <CandidatureForm
+                idOffre={idOffrePostuler}
+                titreOffre={offreSelectionnee.titre}
+                onSuccess={(candidature) => {
+                  const titre = offreSelectionnee.titre ?? "l'offre";
+
+                  setConfirmation(
+                    `Merci d'avoir postulé à : ${titre}. Numéro de confirmation : ${candidature.idCandidature}.`
+                  );
+
+                  setIdOffrePostuler(null);
+                }}
+              />
+            </div>
+          </div>
         </section>
       )}
     </AppLayout>

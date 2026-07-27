@@ -1337,3 +1337,193 @@ p {
     flex-direction: column;
   }
 }
+.offres-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.apply-section {
+  margin-top: 28px;
+}
+
+.apply-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  align-items: flex-start;
+  margin-bottom: 18px;
+}
+
+.apply-header h2 {
+  margin: 0 0 8px;
+  color: var(--color-primary-dark);
+}
+
+.apply-header p {
+  margin: 0;
+  color: var(--color-muted);
+}
+
+.apply-grid {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+.apply-offer-card,
+.apply-form-panel {
+  background: #ffffff;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  box-shadow: var(--shadow-soft);
+}
+
+.apply-offer-card {
+  padding: 22px;
+}
+
+.apply-offer-card h3 {
+  margin: 14px 0 8px;
+  color: var(--color-primary-dark);
+}
+
+.apply-company {
+  margin: 0 0 18px;
+  color: var(--color-muted);
+  font-weight: 700;
+}
+
+.apply-offer-info {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+}
+
+.apply-offer-info div {
+  padding-top: 12px;
+  border-top: 1px solid var(--color-border);
+}
+
+.apply-offer-info dt {
+  color: var(--color-muted);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.apply-offer-info dd {
+  margin: 4px 0 0;
+  color: var(--color-text);
+  font-weight: 800;
+}
+
+.apply-pdf-actions {
+  margin-top: 20px;
+}
+
+.apply-form-panel {
+  padding: 24px;
+}
+
+@media (max-width: 900px) {
+  .apply-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .apply-header {
+    flex-direction: column;
+  }
+}
+.candidature-form {
+  display: grid;
+  gap: 22px;
+}
+
+.candidature-form__header h3 {
+  margin: 4px 0 8px;
+  color: var(--color-primary-dark);
+  font-size: 1.35rem;
+}
+
+.candidature-form__header p {
+  margin: 0;
+  color: var(--color-muted);
+}
+
+.candidature-form__documents {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.upload-card {
+  display: grid;
+  gap: 14px;
+  padding: 18px;
+  background: #f7fbff;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+}
+
+.upload-card__label {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--color-primary-dark);
+  font-weight: 800;
+}
+
+.upload-card strong {
+  display: block;
+  color: var(--color-text);
+}
+
+.upload-card p {
+  margin: 6px 0 0;
+  color: var(--color-muted);
+  font-size: 0.95rem;
+}
+
+.upload-card__file,
+.upload-card__empty {
+  display: block;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: #ffffff;
+  border: 1px solid var(--color-border);
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.upload-card__file {
+  color: var(--color-primary-dark);
+}
+
+.upload-card__empty {
+  color: var(--color-muted);
+}
+
+.sr-only-file {
+  display: none;
+}
+
+.candidature-form__actions {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 4px;
+}
+
+@media (max-width: 900px) {
+  .candidature-form__documents {
+    grid-template-columns: 1fr;
+  }
+
+  .candidature-form__actions {
+    justify-content: stretch;
+  }
+
+  .candidature-form__actions .primary-action {
+    width: 100%;
+  }
+}
