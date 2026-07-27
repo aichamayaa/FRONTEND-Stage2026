@@ -3,6 +3,7 @@ import { AppLayout } from '../../components/layout/AppLayout';
 import { rechercherOffres } from '../../services/offreService';
 import { OffreCard } from '../../components/offres/OffreCard';
 import { CandidatureForm } from '../../components/candidatures/CandidatureForm';
+import { OffrePdfActions } from '../../components/offres/OffrePdfActions';
 
 export function RechercheOffresPage() {
   const [type, setType] = useState('');
@@ -29,12 +30,14 @@ export function RechercheOffresPage() {
       });
       setOffres(data);
     } catch {
-      setErreur('Impossible de récupérer les offres.');
+      setErreur('Impossible de r\u00e9cup\u00e9rer les offres.');
     } finally {
       setChargement(false);
       setRecherchee(true);
     }
   }
+
+  const offreSelectionnee = offres.find((o) => o.idOffre === idOffrePostuler);
 
   return (
     <AppLayout>
@@ -70,7 +73,7 @@ export function RechercheOffresPage() {
           </label>
 
           <label className="offre-filters__label">
-            Mots-clés
+            Mots-cl\u00e9s
             <input
               className="offre-filters__select"
               placeholder="Titre ou description"
@@ -92,7 +95,7 @@ export function RechercheOffresPage() {
       {chargement && <p>Chargement...</p>}
       {erreur && <p className="notice notice-error">{erreur}</p>}
       {!chargement && recherchee && offres.length === 0 && (
-        <p className="notice">Aucune offre trouvée.</p>
+        <p className="notice">Aucune offre trouv\u00e9e.</p>
       )}
       {confirmation && <p className="notice notice-success">{confirmation}</p>}
 
@@ -117,19 +120,25 @@ export function RechercheOffresPage() {
         ))}
       </div>
 
-      {idOffrePostuler && (
+      {idOffrePostuler && offreSelectionnee && (
         <section style={{ marginTop: 24 }}>
           <div className="page-header">
             <p className="page-kicker">Candidature</p>
-            <h2>Postuler à : {offres.find((o) => o.idOffre === idOffrePostuler)?.titre}</h2>
+            <h2>Postuler \u00e0 : {offreSelectionnee.titre}</h2>
+            <p>{offreSelectionnee.nomEmployeur} &mdash; {offreSelectionnee.ville}</p>
           </div>
+
+          <div className="panel" style={{ marginBottom: '16px' }}>
+            <OffrePdfActions idOffre={idOffrePostuler} />
+          </div>
+
           <CandidatureForm
             idOffre={idOffrePostuler}
-            titreOffre={offres.find((o) => o.idOffre === idOffrePostuler)?.titre}
+            titreOffre={offreSelectionnee.titre}
             onSuccess={(candidature) => {
-              const titre = offres.find((o) => o.idOffre === idOffrePostuler)?.titre ?? "l'offre";
+              const titre = offreSelectionnee.titre ?? "l'offre";
               setConfirmation(
-                `Merci d'avoir postulé à : ${titre}. Numéro de confirmation : ${candidature.idCandidature}.`
+                `Merci d'avoir postul\u00e9 \u00e0 : ${titre}. Num\u00e9ro de confirmation : ${candidature.idCandidature}.`
               );
               setIdOffrePostuler(null);
             }}

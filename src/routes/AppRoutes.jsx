@@ -10,6 +10,7 @@ import { OffresEmployeurPage } from '../pages/employeur/OffresEmployeurPage';
 import { OffresStageDirectesPage } from '../pages/employeur/OffresStageDirectesPage';
 import { CandidaturesRecuesPage } from '../pages/employeur/CandidaturesRecuesPage';
 import { ProfilEntreprisePage } from '../pages/employeur/ProfilEntreprisePage';
+import { CandidaturesParDomainePage } from '../pages/employeur/CandidaturesParDomainePage';
 import { DemandesStageRecuesPage } from '../pages/employeur/DemandesStageRecuesPage';
 import { RechercheOffresPage } from '../pages/etudiant/RechercheOffresPage';
 import { StatutOffrePage } from '../pages/etudiant/StatutOffrePage';
@@ -20,6 +21,7 @@ import { MesDemarchesPage } from '../pages/etudiant/MesDemarchesPage';
 import { SuiviEtudiantsPage } from '../pages/responsable/SuiviEtudiantsPage';
 import { ConfirmationsStagePage } from '../pages/responsable/ConfirmationsStagePage';
 import { NotificationsPage } from '../pages/shared/NotificationsPage';
+import { RecommandationsPage } from '../pages/responsable/RecommandationsPage';
 import { NotFoundPage } from '../pages/shared/NotFoundPage';
 
 const ADMIN_ROLES = ['SuperAdministrateur', 'Administrateur'];
@@ -89,11 +91,20 @@ export function AppRoutes() {
           </ProtectedRoute>
         }
       />
+
       <Route
         path="/employeur/candidatures"
         element={
           <ProtectedRoute roles={['Employeur']}>
             <CandidaturesRecuesPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/employeur/candidatures-domaine"
+        element={
+          <ProtectedRoute roles={['Employeur']}>
+            <CandidaturesParDomainePage />
           </ProtectedRoute>
         }
       />
@@ -173,6 +184,15 @@ export function AppRoutes() {
           </ProtectedRoute>
         }
       />
+      <Route
+        path="/responsable/recommandations"
+        element={
+          <ProtectedRoute roles={['ResponsableStage']}>
+            <RecommandationsPage />
+          </ProtectedRoute>
+        }
+      />
+
       <Route
         path="/stages/confirmations"
         element={

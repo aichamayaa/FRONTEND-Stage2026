@@ -4,8 +4,8 @@ import { telechargerDocument } from '../../services/candidatureService';
 const STATUT_LABELS = {
     EnAttente: 'En attente',
     Vue: 'Vue',
-    Acceptee: 'Acceptée',
-    Refusee: 'Refusée',
+    Acceptee: 'Accept\u00e9e',
+    Refusee: 'Refus\u00e9e',
 };
 
 const TYPE_LABELS = {
@@ -61,32 +61,13 @@ export function CandidatureDetail({ candidature, onRetour }) {
                     </div>
                 )}
 
-                {/* Ajout de la réponse de l'employeur si elle existe, avec la date de réponse */}
                 {candidature.messageReponseEmployeur && (
                     <div className="candidature-detail__message">
-                        <h3>Réponse de l&#39;employeur</h3>
+                        <h3>R&eacute;ponse de l&apos;employeur</h3>
                         <p style={{ whiteSpace: 'pre-wrap' }}>{candidature.messageReponseEmployeur}</p>
                         {candidature.dateReponseEmployeur && (
                             <p className="candidature-detail__date">
-                                Réponse envoyée le {formatDate(candidature.dateReponseEmployeur)}
-                            </p>
-                        )}
-                    </div>
-                )}
-
-                {candidature.emploiConfirme && (
-                    <div className="candidature-detail__message">
-                        <h3>Confirmation de l&#39;emploi</h3>
-
-                        <p style={{ whiteSpace: 'pre-wrap' }}>
-                            {candidature.messageConfirmationEmploi ||
-                                "Emploi confirmé par l'employeur."}
-                        </p>
-
-                        {candidature.dateConfirmationEmploi && (
-                            <p className="candidature-detail__date">
-                                Emploi confirmé le{' '}
-                                {formatDate(candidature.dateConfirmationEmploi)}
+                                R&eacute;ponse envoy&eacute;e le {formatDate(candidature.dateReponseEmployeur)}
                             </p>
                         )}
                     </div>
@@ -112,7 +93,7 @@ export function CandidatureDetail({ candidature, onRetour }) {
                                         className="table-action"
                                         onClick={() => telechargerDocument(doc.idDocument, doc.nomFichier)}
                                     >
-                                        Télécharger
+                                        T&eacute;l&eacute;charger
                                     </button>
                                 </div>
                             ))}

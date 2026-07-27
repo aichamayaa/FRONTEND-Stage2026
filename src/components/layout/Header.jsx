@@ -124,6 +124,12 @@ export function Header() {
     },
     {
       label: 'Confirmations de stage',
+      label: 'Recommandations',
+      to: '/responsable/recommandations',
+      roles: ['ResponsableStage'],
+    },
+    {
+      label: 'Confirmations',
       to: '/stages/confirmations',
       roles: ['Employeur', 'ResponsableStage'],
     },
@@ -147,20 +153,17 @@ export function Header() {
             src={logoUrl}
             alt={nomCollege}
           />
-
           <div>
             <strong>Système de placement</strong>
             <span>{nomCollege}</span>
           </div>
         </div>
-
         <div className="header-actions">
           {user && (
             <span className="header-user">
               {user.prenom} - {formatRole(user.role)}
             </span>
           )}
-
           {user && (
             <button type="button" onClick={logout}>
               Déconnexion
@@ -168,7 +171,6 @@ export function Header() {
           )}
         </div>
       </div>
-
       {user && visibleNavigationItems.length > 0 && (
         <nav className="app-nav" aria-label="Navigation principale">
           {visibleNavigationItems.map((item) => {
