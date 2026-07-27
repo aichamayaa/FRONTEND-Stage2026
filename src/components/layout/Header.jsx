@@ -11,7 +11,8 @@ export function Header() {
   const role = user?.role;
 
   const [nonLues, setNonLues] = useState(0);
-  const peutRecevoirNotifs = role === 'Employeur' || role === 'Etudiant';
+  const peutRecevoirNotifs =
+    role === 'Employeur' || role === 'Etudiant' || role === 'ResponsableStage';
 
   useEffect(() => {
     if (!peutRecevoirNotifs) {
@@ -136,7 +137,7 @@ export function Header() {
     {
       label: 'Notifications',
       to: '/notifications',
-      roles: ['Employeur', 'Etudiant'],
+      roles: ['Employeur', 'Etudiant', 'ResponsableStage'],
     },
   ];
 

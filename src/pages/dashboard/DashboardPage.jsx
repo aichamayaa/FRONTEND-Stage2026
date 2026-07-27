@@ -223,13 +223,20 @@ export function DashboardPage() {
             className="dashboard-card dashboard-link"
             to="/stages/confirmations"
           >
-            
+
             <h2>Confirmations de stage</h2>
             <p>Confirmer ou refuser un stage afin d’officialiser le placement.</p>
           </Link>
         )}
 
-       
+        {isResponsableStage && (
+          <Link className="dashboard-card dashboard-link" to="/notifications">
+            <h2>Notifications</h2>
+            <p>Consulter les avis et évènements liés au suivi des stages.</p>
+          </Link>
+        )}
+
+
       </section>
     </AppLayout>
   );

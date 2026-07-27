@@ -197,7 +197,7 @@ export function AppRoutes() {
       <Route
         path="/notifications"
         element={
-          <ProtectedRoute roles={['Employeur', 'Etudiant']}>
+          <ProtectedRoute roles={['Employeur', 'Etudiant', 'ResponsableStage']}>
             <NotificationsPage />
           </ProtectedRoute>
         }
