@@ -123,7 +123,7 @@ export function Header() {
       roles: ['ResponsableStage'],
     },
     {
-      label: 'Confirmations de stage',
+     
       label: 'Recommandations',
       to: '/responsable/recommandations',
       roles: ['ResponsableStage'],
