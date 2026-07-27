@@ -22,22 +22,25 @@ export function RecommandationsPage() {
   const [etudiants, setEtudiants] = useState([]);
   const [selected, setSelected] = useState(null);
   const [recommandations, setRecommandations] = useState([]);
+
   const [loading, setLoading] = useState(true);
   const [loadingRecommandations, setLoadingRecommandations] = useState(false);
   const [loadingForm, setLoadingForm] = useState(false);
-  const [erreur, setErreur] = useState(null);
-  const [erreurForm, setErreurForm] = useState(null);
-  const [succes, setSucces] = useState(null);
+
+  const [erreur, setErreur] = useState('');
+  const [erreurForm, setErreurForm] = useState('');
+  const [succes, setSucces] = useState('');
 
   async function chargerEtudiants() {
     setLoading(true);
-    setErreur(null);
+    setErreur('');
 
     try {
       const data = await suiviService.getEtudiantsSuivis();
       setEtudiants(data);
     } catch (e) {
       setErreur(messageErreur(e));
+      setEtudiants([]);
     } finally {
       setLoading(false);
     }
@@ -45,8 +48,10 @@ export function RecommandationsPage() {
 
   async function ouvrirEtudiant(etudiant) {
     setSelected(etudiant);
-    setErreurForm(null);
-    setSucces(null);
+    setRecommandations([]);
+    setErreur('');
+    setErreurForm('');
+    setSucces('');
     setLoadingRecommandations(true);
 
     try {
@@ -54,6 +59,7 @@ export function RecommandationsPage() {
       setRecommandations(data);
     } catch (e) {
       setErreur(messageErreur(e));
+      setRecommandations([]);
     } finally {
       setLoadingRecommandations(false);
     }
@@ -65,16 +71,18 @@ export function RecommandationsPage() {
     }
 
     setLoadingForm(true);
-    setErreurForm(null);
+    setErreurForm('');
+    setSucces('');
 
     try {
       await envoyerRecommandation(selected.idEtudiant, commentaire, lettre);
+
       const data = await getRecommandationsEtudiant(selected.idEtudiant);
       setRecommandations(data);
-      setSucces('Recommandation envoyee avec succes.');
+
+      setSucces('Recommandation envoyée avec succès.');
     } catch (e) {
       setErreurForm(messageErreur(e));
-      throw e;
     } finally {
       setLoadingForm(false);
     }
@@ -90,7 +98,7 @@ export function RecommandationsPage() {
         <p className="page-kicker">Responsable de stage</p>
         <h1>Recommandations</h1>
         <p>
-          Recommandez un etudiant a l&apos;aide d&apos;un commentaire ou
+          Recommandez un étudiant à l&apos;aide d&apos;un commentaire ou
           d&apos;une lettre.
         </p>
       </section>
@@ -100,14 +108,16 @@ export function RecommandationsPage() {
 
       <section className="admin-grid">
         <div className="panel admin-list-panel">
-          <h2>Etudiants suivis</h2>
+          <h2>Étudiants suivis</h2>
 
-          {loading && <p>Chargement des etudiants...</p>}
+          {loading && <p>Chargement des étudiants...</p>}
 
           {!loading && etudiants.length === 0 && (
             <div className="empty-state">
-              <h2>Aucun etudiant trouve</h2>
-              <p>Aucun etudiant n&apos;est rattache a votre college pour le moment.</p>
+              <h2>Aucun étudiant trouvé</h2>
+              <p>
+                Aucun étudiant n&apos;est rattaché à votre collège pour le moment.
+              </p>
             </div>
           )}
 
@@ -116,10 +126,11 @@ export function RecommandationsPage() {
               <table className="table">
                 <thead>
                   <tr>
-                    <th>Etudiant</th>
+                    <th>Étudiant</th>
                     <th>Action</th>
                   </tr>
                 </thead>
+
                 <tbody>
                   {etudiants.map((etudiant) => (
                     <tr key={etudiant.idEtudiant}>
@@ -130,6 +141,7 @@ export function RecommandationsPage() {
                         <br />
                         <span>{etudiant.courriel}</span>
                       </td>
+
                       <td>
                         <button
                           className="table-action"
@@ -151,7 +163,9 @@ export function RecommandationsPage() {
           {!selected && (
             <div className="empty-state">
               <h2>Recommandation</h2>
-              <p>Selectionnez un etudiant pour lui envoyer une recommandation.</p>
+              <p>
+                Sélectionnez un étudiant pour lui envoyer une recommandation.
+              </p>
             </div>
           )}
 
@@ -160,9 +174,10 @@ export function RecommandationsPage() {
               <h2>
                 {selected.prenom} {selected.nom}
               </h2>
+
               <p>{selected.courriel}</p>
 
-              <h3>Recommandations envoyees</h3>
+              <h3>Recommandations envoyées</h3>
 
               {loadingRecommandations ? (
                 <p>Chargement des recommandations...</p>
