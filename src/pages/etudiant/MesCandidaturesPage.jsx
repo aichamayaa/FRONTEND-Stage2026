@@ -107,6 +107,7 @@ export function MesCandidaturesPage() {
                 <th>CV</th>
                 <th>Lettre</th>
                 <th>Date</th>
+                <th>Confirmé</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -124,6 +125,13 @@ export function MesCandidaturesPage() {
                     <td>{c.acv ? 'Oui' : 'Non'}</td>
                     <td>{c.aLettreMotivation ? 'Oui' : 'Non'}</td>
                     <td>{formatDate(c.dateCandidature)}</td>
+                    <td>
+                      {c.emploiConfirme ? (
+                        <span className="badge badge-success">Oui</span>
+                      ) : (
+                        <span>—</span>
+                      )}
+                    </td>
                     <td>
                       {c.statut === 'EnAttente' ? (
                         <div className="table-actions">
@@ -151,7 +159,7 @@ export function MesCandidaturesPage() {
 
                   {['Acceptee', 'Refusee'].includes(c.statut) && (
                     <tr>
-                      <td colSpan={6}>
+                      <td colSpan={7}>
                         <div className="candidature-reponse">
                           <strong className="candidature-reponse__titre">
                             Réponse de l’employeur
@@ -172,7 +180,7 @@ export function MesCandidaturesPage() {
                   )}
                   {c.emploiConfirme && (
                       <tr>
-                          <td colSpan={6}>
+                          <td colSpan={7}>
                               <div className="candidature-reponse">
                                   <strong className="candidature-reponse__titre">
                                       Emploi confirmé
@@ -195,7 +203,7 @@ export function MesCandidaturesPage() {
                   )}
                   {editId === c.idCandidature && (
                     <tr>
-                      <td colSpan={6}>
+                      <td colSpan={7}>
                         <label>
                           Nouveau message de motivation
                           <textarea
