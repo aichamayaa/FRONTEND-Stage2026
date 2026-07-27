@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { AppLayout } from '../../components/layout/AppLayout';
 import { getCandidaturesOffre } from '../../services/candidatureService';
-import { getOffres } from '../../services/offreService';
+import { getMesOffres } from '../../services/offreService';
 import {
     creerOffreStageDirecte,
     getMesOffresDirectesEnvoyees,
@@ -70,7 +70,7 @@ export function OffresStageDirectesPage() {
 
         try {
             const [offresData, offresDirectesData] = await Promise.all([
-                getOffres(undefined, 'Active'),
+                getMesOffres(),
                 getMesOffresDirectesEnvoyees(),
             ]);
 
