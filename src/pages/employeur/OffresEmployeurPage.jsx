@@ -86,11 +86,23 @@ export function OffresEmployeurPage() {
     setVue(type === 'Stage' ? VUE_FORM_STAGE : VUE_FORM_EMPLOI);
   }
 
-  function handleModifier(offre) {
-    setOffreSelectionnee(offre);
+  async function handleModifier(offre) {
+    setErreur(null);
     setErreurForm(null);
-    setVue(offre.typeOffre === 'Stage' ? VUE_FORM_STAGE : VUE_FORM_EMPLOI);
-  }
+
+    try {
+      const offreComplete = await getOffreById(offre.idOffre);
+
+      setOffreSelectionnee(offreComplete);
+      setVue(
+        offreComplete.typeOffre === 'Stage'
+          ? VUE_FORM_STAGE
+          : VUE_FORM_EMPLOI
+      );
+    } catch (e) {
+      setErreur(messageErreur(e));
+    }
+   }
 
   async function handleSupprimer(idOffre) {
     try {
