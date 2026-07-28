@@ -50,6 +50,22 @@ export function OffresStageDirectesPage() {
         [offres]
     );
 
+    const offresDirectesActivesParCandidature = useMemo(() => {
+        const resultats = new Map();
+
+        offresDirectes
+            .filter(
+                (o) =>
+                    o.idCandidature &&
+                    ['Envoyee', 'Acceptee'].includes(o.statut)
+            )
+            .forEach((o) => {
+                resultats.set(o.idCandidature, o);
+            });
+
+        return resultats;
+    }, [offresDirectes]);
+
     useEffect(() => {
         chargerDonneesInitiales();
     }, []);
@@ -158,7 +174,9 @@ export function OffresStageDirectesPage() {
             await creerOffreStageDirecte(payload);
             setMessage('Offre de stage directe envoyée.');
             setForm(initialForm);
+            setCandidatureSelectionnee(null);
             await chargerOffresDirectes();
+
         } catch (e) {
             setErreur(getErreur(e, "Impossible de créer l’offre de stage directe."));
         } finally {
@@ -227,28 +245,45 @@ export function OffresStageDirectesPage() {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {candidatures.map((c) => (
-                                                <tr key={c.idCandidature}>
-                                                    <td>{c.prenomEtudiant} {c.nomEtudiant}</td>
-                                                    <td>{c.courrielEtudiant ?? c.emailEtudiant ?? '-'}</td>
-                                                    <td>
-                                                        <span className="badge badge-muted">
-                                                            {formatStatus(c.statut)}
-                                                        </span>
-                                                    </td>
-                                                    <td>
-                                                        <button
-                                                            type="button"
-                                                            className="table-action"
-                                                            onClick={() => setCandidatureSelectionnee(c)}
-                                                        >
-                                                            {candidatureSelectionnee?.idCandidature === c.idCandidature
-                                                                ? 'Sélectionné'
-                                                                : 'Sélectionner'}
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                            ))}
+                                            {candidatures.map((c) => {
+                                                const offreDirecteExistante =
+                                                    offresDirectesActivesParCandidature.get(c.idCandidature);
+
+                                                const selectionBloquee = Boolean(offreDirecteExistante);
+
+                                                return (
+                                                    <tr key={c.idCandidature}>
+                                                        <td>{c.prenomEtudiant} {c.nomEtudiant}</td>
+                                                        <td>{c.courrielEtudiant ?? c.emailEtudiant ?? '-'}</td>
+                                                        <td>
+                                                            <span className="badge badge-muted">
+                                                                {formatStatus(c.statut)}
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            <button
+                                                                type="button"
+                                                                className="table-action"
+                                                                disabled={selectionBloquee}
+                                                                title={
+                                                                    selectionBloquee
+                                                                        ? 'Une offre directe active existe déjà pour cette candidature.'
+                                                                        : undefined
+                                                                }
+                                                                onClick={() => setCandidatureSelectionnee(c)}
+                                                            >
+                                                                {selectionBloquee
+                                                                    ? `Offre ${formatStatus(offreDirecteExistante.statut)}`
+                                                                    : candidatureSelectionnee?.idCandidature ===
+                                                                        c.idCandidature
+                                                                        ? 'Sélectionné'
+                                                                        : 'Sélectionner'}
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                );
+                                            })}
+
                                         </tbody>
                                     </table>
                                 </div>
