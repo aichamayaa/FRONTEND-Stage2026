@@ -2,24 +2,26 @@ import { useEffect, useState } from 'react';
 import { AppLayout } from '../../components/layout/AppLayout';
 import { RecommandationForm } from '../../components/recommandations/RecommandationForm';
 import { RecommandationTable } from '../../components/recommandations/RecommandationTable';
+import { getEmployeurs } from '../../services/entrepriseService';
 import { suiviService } from '../../services/suiviService';
 import {
   envoyerRecommandation,
-  getRecommandationsEtudiant,
+  getRecommandationsEtudiant
 } from '../../services/recommandationService';
 
-function messageErreur(e) {
-  const data = e.response?.data;
+function messageErreur(error) {
+  const data = error.response?.data;
 
   if (data?.errors) {
     return Object.values(data.errors).flat().join(' ');
   }
 
-  return data?.message ?? data?.title ?? e.message;
+  return data?.message ?? data?.title ?? error.message;
 }
 
 export function RecommandationsPage() {
   const [etudiants, setEtudiants] = useState([]);
+  const [employeurs, setEmployeurs] = useState([]);
   const [selected, setSelected] = useState(null);
   const [recommandations, setRecommandations] = useState([]);
 
@@ -31,16 +33,22 @@ export function RecommandationsPage() {
   const [erreurForm, setErreurForm] = useState('');
   const [succes, setSucces] = useState('');
 
-  async function chargerEtudiants() {
+  async function chargerDonnees() {
     setLoading(true);
     setErreur('');
 
     try {
-      const data = await suiviService.getEtudiantsSuivis();
-      setEtudiants(data);
-    } catch (e) {
-      setErreur(messageErreur(e));
+      const [etudiantsData, employeursData] = await Promise.all([
+        suiviService.getEtudiantsSuivis(),
+        getEmployeurs()
+      ]);
+
+      setEtudiants(etudiantsData);
+      setEmployeurs(employeursData);
+    } catch (error) {
+      setErreur(messageErreur(error));
       setEtudiants([]);
+      setEmployeurs([]);
     } finally {
       setLoading(false);
     }
@@ -57,15 +65,15 @@ export function RecommandationsPage() {
     try {
       const data = await getRecommandationsEtudiant(etudiant.idEtudiant);
       setRecommandations(data);
-    } catch (e) {
-      setErreur(messageErreur(e));
+    } catch (error) {
+      setErreur(messageErreur(error));
       setRecommandations([]);
     } finally {
       setLoadingRecommandations(false);
     }
   }
 
-  async function handleEnvoyer(commentaire, lettre) {
+  async function handleEnvoyer(idEmployeurDestinataire, commentaire, lettre) {
     if (!selected) {
       return;
     }
@@ -75,21 +83,26 @@ export function RecommandationsPage() {
     setSucces('');
 
     try {
-      await envoyerRecommandation(selected.idEtudiant, commentaire, lettre);
+      await envoyerRecommandation(
+        selected.idEtudiant,
+        idEmployeurDestinataire,
+        commentaire,
+        lettre
+      );
 
       const data = await getRecommandationsEtudiant(selected.idEtudiant);
       setRecommandations(data);
 
       setSucces('Recommandation envoyée avec succès.');
-    } catch (e) {
-      setErreurForm(messageErreur(e));
+    } catch (error) {
+      setErreurForm(messageErreur(error));
     } finally {
       setLoadingForm(false);
     }
   }
 
   useEffect(() => {
-    chargerEtudiants();
+    chargerDonnees();
   }, []);
 
   return (
@@ -98,8 +111,8 @@ export function RecommandationsPage() {
         <p className="page-kicker">Responsable de stage</p>
         <h1>Recommandations</h1>
         <p>
-          Recommandez un étudiant à l&apos;aide d&apos;un commentaire ou
-          d&apos;une lettre.
+          Recommandez un étudiant à un employeur avec un commentaire ou une
+          lettre.
         </p>
       </section>
 
@@ -116,7 +129,7 @@ export function RecommandationsPage() {
             <div className="empty-state">
               <h2>Aucun étudiant trouvé</h2>
               <p>
-                Aucun étudiant n&apos;est rattaché à votre collège pour le moment.
+                Aucun étudiant n’est rattaché à votre collège pour le moment.
               </p>
             </div>
           )}
@@ -164,7 +177,8 @@ export function RecommandationsPage() {
             <div className="empty-state">
               <h2>Recommandation</h2>
               <p>
-                Sélectionnez un étudiant pour lui envoyer une recommandation.
+                Sélectionnez un étudiant pour envoyer une recommandation à un
+                employeur.
               </p>
             </div>
           )}
@@ -187,6 +201,7 @@ export function RecommandationsPage() {
 
               <div style={{ marginTop: '24px' }}>
                 <RecommandationForm
+                  employeurs={employeurs}
                   onEnvoyer={handleEnvoyer}
                   loading={loadingForm}
                   error={erreurForm}

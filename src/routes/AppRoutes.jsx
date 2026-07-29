@@ -11,6 +11,7 @@ import { OffresStageDirectesPage } from '../pages/employeur/OffresStageDirectesP
 import { CandidaturesRecuesPage } from '../pages/employeur/CandidaturesRecuesPage';
 import { ProfilEntreprisePage } from '../pages/employeur/ProfilEntreprisePage';
 import { DemandesStageRecuesPage } from '../pages/employeur/DemandesStageRecuesPage';
+import { RecommandationsRecuesPage } from '../pages/employeur/RecommandationsRecuesPage';
 import { RechercheOffresPage } from '../pages/etudiant/RechercheOffresPage';
 import { StatutOffrePage } from '../pages/etudiant/StatutOffrePage';
 import { MesCandidaturesPage } from '../pages/etudiant/MesCandidaturesPage';
@@ -39,7 +40,6 @@ export function AppRoutes() {
         }
       />
 
-      {/* ── Administration ─────────────────────────────── */}
       <Route
         path="/admin/users"
         element={
@@ -48,6 +48,7 @@ export function AppRoutes() {
           </ProtectedRoute>
         }
       />
+
       <Route
         path="/admin/roles"
         element={
@@ -56,6 +57,7 @@ export function AppRoutes() {
           </ProtectedRoute>
         }
       />
+
       <Route
         path="/admin/colleges"
         element={
@@ -64,6 +66,7 @@ export function AppRoutes() {
           </ProtectedRoute>
         }
       />
+
       <Route
         path="/admin/domaines-etudes"
         element={
@@ -73,7 +76,6 @@ export function AppRoutes() {
         }
       />
 
-      {/* ── Employeur ──────────────────────────────────── */}
       <Route
         path="/employeur/profil-entreprise"
         element={
@@ -82,6 +84,7 @@ export function AppRoutes() {
           </ProtectedRoute>
         }
       />
+
       <Route
         path="/employeur/offres"
         element={
@@ -99,6 +102,7 @@ export function AppRoutes() {
           </ProtectedRoute>
         }
       />
+
       <Route
         path="/employeur/demandes-stage"
         element={
@@ -107,6 +111,7 @@ export function AppRoutes() {
           </ProtectedRoute>
         }
       />
+
       <Route
         path="/employeur/offres-stage-directes"
         element={
@@ -116,7 +121,15 @@ export function AppRoutes() {
         }
       />
 
-      {/* ── Etudiant ───────────────────────────────────── */}
+      <Route
+        path="/employeur/recommandations-recues"
+        element={
+          <ProtectedRoute roles={['Employeur']}>
+            <RecommandationsRecuesPage />
+          </ProtectedRoute>
+        }
+      />
+
       <Route
         path="/recherche-offres"
         element={
@@ -125,6 +138,7 @@ export function AppRoutes() {
           </ProtectedRoute>
         }
       />
+
       <Route
         path="/statut-offre"
         element={
@@ -133,6 +147,7 @@ export function AppRoutes() {
           </ProtectedRoute>
         }
       />
+
       <Route
         path="/mes-candidatures"
         element={
@@ -141,6 +156,7 @@ export function AppRoutes() {
           </ProtectedRoute>
         }
       />
+
       <Route
         path="/demande-stage"
         element={
@@ -149,6 +165,7 @@ export function AppRoutes() {
           </ProtectedRoute>
         }
       />
+
       <Route
         path="/offres-stage-recues"
         element={
@@ -157,6 +174,7 @@ export function AppRoutes() {
           </ProtectedRoute>
         }
       />
+
       <Route
         path="/mes-demarches"
         element={
@@ -166,7 +184,6 @@ export function AppRoutes() {
         }
       />
 
-      {/* ── Responsable de stage ───────────────────────── */}
       <Route
         path="/responsable/suivi-etudiants"
         element={
@@ -175,6 +192,7 @@ export function AppRoutes() {
           </ProtectedRoute>
         }
       />
+
       <Route
         path="/responsable/recommandations"
         element={
@@ -193,7 +211,6 @@ export function AppRoutes() {
         }
       />
 
-      {/* ── Notifications ───────────────────────────────── */}
       <Route
         path="/notifications"
         element={

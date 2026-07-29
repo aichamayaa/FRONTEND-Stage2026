@@ -148,6 +148,18 @@ export function DashboardPage() {
           </Link>
         )}
 
+        {isEmployeur && (
+  <Link
+    className="dashboard-card dashboard-link"
+    to="/employeur/recommandations-recues"
+  >
+    <h2>Recommandations reçues</h2>
+    <p>
+      Consultez les étudiants recommandés par les responsables de stage.
+    </p>
+  </Link>
+)}
+
         {isEtudiant && (
           <Link className="dashboard-card dashboard-link" to="/recherche-offres">
             

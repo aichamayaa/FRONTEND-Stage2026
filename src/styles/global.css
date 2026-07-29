@@ -1527,3 +1527,33 @@ p {
     width: 100%;
   }
 }
+/* Correction largeur formulaires dans les panneaux */
+.admin-form,
+.admin-form label,
+.form-grid {
+  width: 100%;
+  min-width: 0;
+}
+
+.admin-form input,
+.admin-form select,
+.admin-form textarea {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.admin-form textarea {
+  resize: vertical;
+}
+
+.panel {
+  min-width: 0;
+  overflow: hidden;
+}
+
+.admin-grid {
+  align-items: start;
+}
