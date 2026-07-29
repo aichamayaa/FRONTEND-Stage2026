@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { AppLayout } from '../../components/layout/AppLayout';
 import { getMesNotifications, marquerLue } from '../../services/notificationService';
 import { formatDateTime } from '../../utils/formatDate';
@@ -7,6 +8,7 @@ export function NotificationsPage() {
   const [notifications, setNotifications] = useState([]);
   const [chargement, setChargement] = useState(true);
   const [erreur, setErreur] = useState(null);
+  const navigate = useNavigate();
 
   async function charger() {
     setChargement(true);
@@ -31,6 +33,19 @@ export function NotificationsPage() {
       charger();
     } catch {
       setErreur('Impossible de marquer la notification.');
+    }
+  }
+
+  async function handleVoir(n) {
+    try {
+      if (!n.lue) {
+        await marquerLue(n.idNotification);
+      }
+    } catch {
+      /* on redirige quand meme */
+    }
+    if (n.lien) {
+      navigate(n.lien);
     }
   }
 
@@ -74,17 +89,28 @@ export function NotificationsPage() {
                     </span>
                   </td>
                   <td>
-                    {!n.lue ? (
-                      <button
-                        type="button"
-                        className="table-action"
-                        onClick={() => handleLue(n.idNotification)}
-                      >
-                        Marquer comme lue
-                      </button>
-                    ) : (
-                      <span>—</span>
-                    )}
+                    <div className="table-actions">
+                      {n.lien && (
+                        <button
+                          type="button"
+                          className="table-action"
+                          onClick={() => handleVoir(n)}
+                        >
+                          Voir
+                        </button>
+                      )}
+                      {!n.lue ? (
+                        <button
+                          type="button"
+                          className="table-action secondary-table-action"
+                          onClick={() => handleLue(n.idNotification)}
+                        >
+                          Marquer comme lue
+                        </button>
+                      ) : (
+                        !n.lien && <span>—</span>
+                      )}
+                    </div>
                   </td>
                 </tr>
               ))}
