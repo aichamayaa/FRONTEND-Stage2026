@@ -11,6 +11,7 @@ export function Header() {
   const role = user?.role;
 
   const [nonLues, setNonLues] = useState(0);
+
   const peutRecevoirNotifs =
     role === 'Employeur' || role === 'Etudiant' || role === 'ResponsableStage';
 
@@ -21,17 +22,23 @@ export function Header() {
     }
 
     let actif = true;
+
     async function charger() {
       try {
-        const n = await compterNonLues();
-        if (actif) setNonLues(n);
+        const nombre = await compterNonLues();
+
+        if (actif) {
+          setNonLues(nombre);
+        }
       } catch {
         /* silencieux */
       }
     }
 
     charger();
+
     const intervalle = setInterval(charger, 20000);
+
     return () => {
       actif = false;
       clearInterval(intervalle);
@@ -45,100 +52,109 @@ export function Header() {
     {
       label: 'Tableau de bord',
       to: '/',
-      roles: ['SuperAdministrateur', 'Administrateur', 'Employeur', 'Etudiant', 'ResponsableStage'],
+      roles: [
+        'SuperAdministrateur',
+        'Administrateur',
+        'Employeur',
+        'Etudiant',
+        'ResponsableStage'
+      ]
     },
     {
       label: 'Gestion des utilisateurs',
       to: '/admin/users',
-      roles: ['SuperAdministrateur', 'Administrateur'],
+      roles: ['SuperAdministrateur', 'Administrateur']
     },
-  
     {
       label: 'Gestion des cégeps',
       to: '/admin/colleges',
-      roles: ['SuperAdministrateur'],
+      roles: ['SuperAdministrateur']
     },
     {
       label: 'Domaines d’études',
       to: '/admin/domaines-etudes',
-      roles: ['SuperAdministrateur', 'Administrateur'],
+      roles: ['SuperAdministrateur', 'Administrateur']
     },
     {
       label: 'Profil entreprise',
       to: '/employeur/profil-entreprise',
-      roles: ['Employeur'],
+      roles: ['Employeur']
     },
     {
       label: 'Mes offres',
       to: '/employeur/offres',
-      roles: ['Employeur'],
+      roles: ['Employeur']
     },
     {
       label: 'Candidatures reçues',
       to: '/employeur/candidatures',
-      roles: ['Employeur'],
+      roles: ['Employeur']
     },
     {
       label: 'Demandes de stage',
       to: '/employeur/demandes-stage',
-      roles: ['Employeur'],
+      roles: ['Employeur']
     },
     {
       label: 'Offres de stage directes',
       to: '/employeur/offres-stage-directes',
-      roles: ['Employeur'],
+      roles: ['Employeur']
+    },
+    {
+      label: 'Recommandations reçues',
+      to: '/employeur/recommandations-recues',
+      roles: ['Employeur']
     },
     {
       label: 'Rechercher des offres',
       to: '/recherche-offres',
-      roles: ['Etudiant'],
+      roles: ['Etudiant']
     },
     {
       label: "Statut d'une offre",
       to: '/statut-offre',
-      roles: ['Etudiant'],
+      roles: ['Etudiant']
     },
     {
       label: 'Mes candidatures',
       to: '/mes-candidatures',
-      roles: ['Etudiant'],
+      roles: ['Etudiant']
     },
     {
       label: 'Demande de stage',
       to: '/demande-stage',
-      roles: ['Etudiant'],
+      roles: ['Etudiant']
     },
     {
       label: 'Offres de stage reçues',
       to: '/offres-stage-recues',
-      roles: ['Etudiant'],
+      roles: ['Etudiant']
     },
     {
       label: 'Mes démarches',
       to: '/mes-demarches',
-      roles: ['Etudiant'],
+      roles: ['Etudiant']
     },
     {
       label: 'Suivi des étudiants',
       to: '/responsable/suivi-etudiants',
-      roles: ['ResponsableStage'],
+      roles: ['ResponsableStage']
     },
     {
-     
       label: 'Recommandations',
       to: '/responsable/recommandations',
-      roles: ['ResponsableStage'],
+      roles: ['ResponsableStage']
     },
     {
       label: 'Confirmations',
       to: '/stages/confirmations',
-      roles: ['Employeur', 'ResponsableStage'],
+      roles: ['Employeur', 'ResponsableStage']
     },
     {
       label: 'Notifications',
       to: '/notifications',
-      roles: ['Employeur', 'Etudiant', 'ResponsableStage'],
-    },
+      roles: ['Employeur', 'Etudiant', 'ResponsableStage']
+    }
   ];
 
   const visibleNavigationItems = navigationItems.filter((item) =>
@@ -149,22 +165,21 @@ export function Header() {
     <header className="app-header">
       <div className="header-top-row">
         <div className="header-brand">
-          <img
-            className="header-logo"
-            src={logoUrl}
-            alt={nomCollege}
-          />
+          <img className="header-logo" src={logoUrl} alt={nomCollege} />
+
           <div>
             <strong>Système de placement</strong>
             <span>{nomCollege}</span>
           </div>
         </div>
+
         <div className="header-actions">
           {user && (
             <span className="header-user">
               {user.prenom} - {formatRole(user.role)}
             </span>
           )}
+
           {user && (
             <button type="button" onClick={logout}>
               Déconnexion
@@ -172,18 +187,27 @@ export function Header() {
           )}
         </div>
       </div>
+
       {user && visibleNavigationItems.length > 0 && (
         <nav className="app-nav" aria-label="Navigation principale">
           {visibleNavigationItems.map((item) => {
             const estNotif = item.to === '/notifications';
             const alerte = estNotif && nonLues > 0;
+
             return (
               <NavLink
                 key={item.to}
                 className={({ isActive }) => {
                   const classes = ['app-nav-link'];
-                  if (isActive) classes.push('app-nav-link-active');
-                  if (alerte) classes.push('app-nav-link-alert');
+
+                  if (isActive) {
+                    classes.push('app-nav-link-active');
+                  }
+
+                  if (alerte) {
+                    classes.push('app-nav-link-alert');
+                  }
+
                   return classes.join(' ');
                 }}
                 to={item.to}
