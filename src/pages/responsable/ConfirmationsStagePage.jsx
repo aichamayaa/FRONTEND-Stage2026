@@ -87,6 +87,7 @@ export function ConfirmationsStagePage() {
                 <thead>
                   <tr>
                     <th>Étudiant</th>
+                    <th>Offre</th>
                     <th>Statut</th>
                     <th>Confirmations</th>
                     <th>Action</th>
@@ -96,6 +97,7 @@ export function ConfirmationsStagePage() {
                   {stages.map((stage) => (
                     <tr key={stage.idStage}>
                       <td>{stage.nomEtudiant}</td>
+                      <td>{stage.titreOffre ?? 'Offre non précisée'}</td>
                       <td>
                         <span className="badge badge-muted">{formatStatus(stage.statut)}</span>
                       </td>
@@ -133,11 +135,15 @@ export function ConfirmationsStagePage() {
               </p>
 
               <dl className="offre-detail__dl">
+                <dt>Offre de stage</dt>
+                <dd>{selected.titreOffre ?? 'Non précisée'}</dd>
+
+
                 <dt>Lieu</dt>
                 <dd>{selected.lieu ?? 'Non précisé'}</dd>
 
-                <dt>Superviseur</dt>
-                <dd>{selected.superviseur ?? 'Non précisé'}</dd>
+                <dt>Superviseur en entreprise</dt>
+                <dd>{selected.superviseur ?? 'À définir'}</dd>
 
                 <dt>Début</dt>
                 <dd>
