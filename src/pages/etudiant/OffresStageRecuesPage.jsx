@@ -179,7 +179,7 @@ export function OffresStageRecuesPage() {
         <section className="panel" style={{ marginTop: '24px' }}>
           <div className="candidature-detail__header">
             <div>
-              <p className="page-kicker">Détail de l'offre</p>
+              <p className="page-kicker">Détail de l&apos;offre</p>
               <h2 className="candidature-detail__nom">
                 {getTitreOffre(offreOuverte)}
               </h2>
