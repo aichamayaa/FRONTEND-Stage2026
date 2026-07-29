@@ -809,6 +809,7 @@ p {
 /* Filtres */
 .offre-filters {
   display: flex;
+  align-items: flex-end;
   gap: 16px;
   flex-wrap: wrap;
 }
@@ -821,14 +822,25 @@ p {
   font-size: 0.9rem;
 }
 
-.offre-filters__select {
-  min-height: 40px;
-  padding: 6px 10px;
+.offre-filters__select,
+.offre-filters input,
+.offre-filters select {
+  height: 48px;
+  padding: 0 12px;
   color: var(--color-text);
   background: #f7fbff;
   border: 1px solid #b7d8ec;
   border-radius: var(--radius-sm);
   font: inherit;
+}
+
+.offre-filters button,
+.offre-filters .primary-action {
+  height: 48px;
+  min-height: 48px;
+  align-self: flex-end;
+  padding: 0 22px;
+  white-space: nowrap;
 }
 
 /* Carte offre */
