@@ -1,20 +1,54 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { AppLayout } from '../../components/layout/AppLayout';
 import { rechercherOffres } from '../../services/offreService';
+import { getDomainesEtudes } from '../../services/domaineEtudeService';
 import { OffreCard } from '../../components/offres/OffreCard';
 import { CandidatureForm } from '../../components/candidatures/CandidatureForm';
 import { OffrePdfActions } from '../../components/offres/OffrePdfActions';
 
+function getMessageErreur(error, fallback) {
+  return (
+    error.response?.data?.message ||
+    error.response?.data?.title ||
+    error.message ||
+    fallback
+  );
+}
+
 export function RechercheOffresPage() {
   const [type, setType] = useState('');
+  const [idDomaine, setIdDomaine] = useState('');
   const [lieu, setLieu] = useState('');
   const [motsCles, setMotsCles] = useState('');
+  const [domaines, setDomaines] = useState([]);
   const [offres, setOffres] = useState([]);
   const [chargement, setChargement] = useState(false);
   const [erreur, setErreur] = useState(null);
   const [recherchee, setRecherchee] = useState(false);
   const [idOffrePostuler, setIdOffrePostuler] = useState(null);
   const [confirmation, setConfirmation] = useState(null);
+
+  const applySectionRef = useRef(null);
+
+  useEffect(() => {
+    async function chargerDomaines() {
+      try {
+        const data = await getDomainesEtudes();
+
+        setDomaines(
+          data.filter(
+            (domaine) => domaine.actif && domaine.accepteStagiaires
+          )
+        );
+      } catch (error) {
+        setErreur(
+          getMessageErreur(error, 'Impossible de charger les domaines.')
+        );
+      }
+    }
+
+    chargerDomaines();
+  }, []);
 
   async function handleSearch(event) {
     event.preventDefault();
@@ -27,18 +61,33 @@ export function RechercheOffresPage() {
     try {
       const data = await rechercherOffres({
         type: type || undefined,
+        idDomaine: idDomaine || undefined,
         lieu: lieu || undefined,
-        motsCles: motsCles || undefined
+        motsCles: motsCles || undefined,
       });
 
       setOffres(data);
-    } catch {
-      setErreur('Impossible de récupérer les offres.');
+    } catch (error) {
+      setErreur(
+        getMessageErreur(error, 'Impossible de récupérer les offres.')
+      );
       setOffres([]);
     } finally {
       setChargement(false);
       setRecherchee(true);
     }
+  }
+
+  function ouvrirCandidature(idOffre) {
+    setIdOffrePostuler(idOffre);
+    setConfirmation(null);
+
+    setTimeout(() => {
+      applySectionRef.current?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      });
+    }, 50);
   }
 
   const offreSelectionnee = offres.find(
@@ -49,7 +98,7 @@ export function RechercheOffresPage() {
     <AppLayout>
       <section className="page-header">
         <p className="page-kicker">Espace étudiant</p>
-        <h1>Recherche d’offres</h1>
+        <h1>Recherche d&apos;offres</h1>
         <p>Trouvez un emploi ou un stage et postulez en ligne.</p>
       </section>
 
@@ -65,6 +114,22 @@ export function RechercheOffresPage() {
               <option value="">Tous les types</option>
               <option value="Emploi">Emploi</option>
               <option value="Stage">Stage</option>
+            </select>
+          </label>
+
+          <label className="offre-filters__label">
+            Domaine
+            <select
+              className="offre-filters__select"
+              value={idDomaine}
+              onChange={(event) => setIdDomaine(event.target.value)}
+            >
+              <option value="">Tous les domaines</option>
+              {domaines.map((domaine) => (
+                <option key={domaine.idDomaine} value={domaine.idDomaine}>
+                  {domaine.nom}
+                </option>
+              ))}
             </select>
           </label>
 
@@ -112,23 +177,20 @@ export function RechercheOffresPage() {
             key={offre.idOffre}
             offre={offre}
             isEmployeur={false}
-            onVoir={(id) => {
-              setIdOffrePostuler(id);
-              setConfirmation(null);
-            }}
+            onVoir={ouvrirCandidature}
           />
         ))}
       </section>
 
       {idOffrePostuler && offreSelectionnee && (
-        <section className="apply-section">
+        <section className="apply-section" ref={applySectionRef}>
           <div className="apply-header">
             <div>
               <p className="page-kicker">Candidature</p>
               <h2>Postuler à cette offre</h2>
               <p>
-                Vérifiez les informations de l’offre, puis joignez votre CV et
-                votre lettre de motivation.
+                Vérifiez les informations de l&apos;offre, puis joignez votre CV
+                et votre lettre de motivation.
               </p>
             </div>
 
@@ -152,6 +214,19 @@ export function RechercheOffresPage() {
               <p className="apply-company">
                 {offreSelectionnee.nomEmployeur || 'Employeur non précisé'}
               </p>
+
+              {offreSelectionnee.domaines?.length > 0 && (
+                <div className="offre-card__domaines">
+                  {offreSelectionnee.domaines.map((domaine) => (
+                    <span
+                      key={domaine}
+                      className="badge badge-muted offre-card__domaine-tag"
+                    >
+                      {domaine}
+                    </span>
+                  ))}
+                </div>
+              )}
 
               <dl className="apply-offer-info">
                 <div>
