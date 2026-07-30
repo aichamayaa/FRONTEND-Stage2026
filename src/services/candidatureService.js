@@ -44,7 +44,7 @@ export async function confirmerEmploi(idCandidature, message) {
     await apiClient.post(`/candidatures/${idCandidature}/confirmer-emploi`, { message });
 }
 
-// US-12 : URL de telechargement d'un document
+// US-12 : URL de téléchargement d'un document
 export function getUrlTelechargementDocument(idDocument) {
   const base = import.meta.env.VITE_API_BASE_URL ?? 'https://localhost:7266/api';
   return `${base}/candidatures/documents/${idDocument}/telecharger`;
@@ -57,7 +57,7 @@ export async function telechargerDocument(idDocument, nomFichier) {
     headers: token ? { Authorization: `Bearer ${token}` } : {}
   });
   if (!response.ok) {
-    throw new Error('Telechargement echoue.');
+    throw new Error('Téléchargement échoué.');
   }
   const blob = await response.blob();
   const url = URL.createObjectURL(blob);

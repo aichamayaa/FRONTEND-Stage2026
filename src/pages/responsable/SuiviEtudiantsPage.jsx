@@ -40,7 +40,7 @@ export function SuiviEtudiantsPage() {
 
     setSelected(detail);
     setForm({ typeDemarche: 'Note', note: '', visibleEtudiant: true });
-    setMessage('Demarche ajoutée avec succès.');
+    setMessage('Démarche ajoutée avec succès.');
   }
 
   useEffect(() => {
