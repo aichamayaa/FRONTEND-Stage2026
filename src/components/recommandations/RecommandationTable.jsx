@@ -2,7 +2,7 @@ import { formatDate } from '../../utils/formatDate';
 
 export function RecommandationTable({ recommandations }) {
   if (!recommandations || recommandations.length === 0) {
-    return <p>Aucune recommandation envoyee pour cet etudiant.</p>;
+    return <p>Aucune recommandation envoyée pour cet étudiant.</p>;
   }
 
   return (
@@ -15,24 +15,25 @@ export function RecommandationTable({ recommandations }) {
             <th>Lettre</th>
           </tr>
         </thead>
+
         <tbody>
           {recommandations.map((r) => (
             <tr key={r.idRecommandation}>
-              <td>{formatDate(r.dateRecommandation)}</td>
+              <td>{formatDate(r.dateCreation)}</td>
               <td>{r.commentaire || 'Aucun commentaire'}</td>
               <td>
-                {r.urlLettre
-                  ? (
-                    <a
-                      className="table-action"
-                      href={r.urlLettre}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      Voir la lettre
-                    </a>
-                  )
-                  : 'Aucune'}
+                {r.aLettre ? (
+                  <a
+                    className="table-action"
+                    href={`${import.meta.env.VITE_API_BASE_URL}/recommandations/${r.idRecommandation}/lettre`}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Voir la lettre
+                  </a>
+                ) : (
+                  'Aucune'
+                )}
               </td>
             </tr>
           ))}
