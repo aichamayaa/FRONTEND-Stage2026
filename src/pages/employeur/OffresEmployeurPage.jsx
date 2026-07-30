@@ -5,6 +5,7 @@ import { OffreTable } from '../../components/offres/OffreTable';
 import { OffreForm } from '../../components/offres/OffreForm';
 import { formatStatus } from '../../utils/formatStatus';
 import { OffrePdfActions } from '../../components/offres/OffrePdfActions';
+import { getDomainesEtudes } from '../../services/domaineEtudeService';
 import {
   getMesOffres,
   getOffreById,
@@ -33,6 +34,7 @@ function messageErreur(e) {
 export function OffresEmployeurPage() {
   const [vue, setVue] = useState(VUE_LISTE);
   const [offres, setOffres] = useState([]);
+  const [domaines, setDomaines] = useState([]);
   const [offreSelectionnee, setOffreSelectionnee] = useState(null);
   const [filtreType, setFiltreType] = useState('');
   const [filtreStatut, setFiltreStatut] = useState('');
@@ -68,6 +70,25 @@ export function OffresEmployeurPage() {
     chargerOffres();
   }, [chargerOffres]);
 
+  useEffect(() => {
+    async function chargerDomaines() {
+      try {
+        const data = await getDomainesEtudes();
+
+        // Pour les offres de stage, on garde seulement les domaines actifs qui acceptent les stagiaires.
+        const domainesDisponibles = data.filter(
+          (domaine) => domaine.actif && domaine.accepteStagiaires
+        );
+
+        setDomaines(domainesDisponibles);
+      } catch (e) {
+        setErreur(messageErreur(e));
+      }
+    }
+
+    chargerDomaines();
+  }, []);
+
   async function handleVoir(idOffre) {
     setErreur(null);
 
@@ -102,7 +123,7 @@ export function OffresEmployeurPage() {
     } catch (e) {
       setErreur(messageErreur(e));
     }
-   }
+  }
 
   async function handleSupprimer(idOffre) {
     try {
@@ -164,7 +185,7 @@ export function OffresEmployeurPage() {
               ? `Modifier - ${offreSelectionnee.titre}`
               : vue === VUE_FORM_STAGE
                 ? 'Nouvelle offre de stage'
-                : 'Nouvelle offre d\'emploi'}
+                : "Nouvelle offre d'emploi"}
           </h1>
         </div>
 
@@ -172,6 +193,7 @@ export function OffresEmployeurPage() {
           <OffreForm
             typeOffre={vue === VUE_FORM_STAGE ? 'Stage' : 'Emploi'}
             initial={offreSelectionnee ?? undefined}
+            domaines={domaines}
             onSubmit={handleSubmitForm}
             onAnnuler={() => setVue(VUE_LISTE)}
             isEdit={Boolean(offreSelectionnee)}
@@ -190,10 +212,13 @@ export function OffresEmployeurPage() {
       <AppLayout>
         <div className="page-header">
           <p className="page-kicker">
-            {o.typeOffre === 'Stage' ? 'Stage' : 'Emploi'} &middot; {formatStatus(o.statut)}
+            {o.typeOffre === 'Stage' ? 'Stage' : 'Emploi'} &middot;{' '}
+            {formatStatus(o.statut)}
           </p>
           <h1>{o.titre}</h1>
-          <p>{o.nomEmployeur} &mdash; {o.ville}</p>
+          <p>
+            {o.nomEmployeur} &mdash; {o.ville}
+          </p>
         </div>
 
         <div className="panel">
@@ -205,6 +230,16 @@ export function OffresEmployeurPage() {
           >
             Retour à la liste
           </button>
+
+          {o.domaines?.length > 0 && (
+            <div className="offre-card__domaines" style={{ marginBottom: '16px' }}>
+              {o.domaines.map((domaine) => (
+                <span key={domaine} className="badge badge-muted offre-card__domaine-tag">
+                  {domaine}
+                </span>
+              ))}
+            </div>
+          )}
 
           <p style={{ whiteSpace: 'pre-wrap' }}>{o.description}</p>
 

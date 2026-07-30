@@ -7,10 +7,9 @@ const SESSIONS = [
   { value: 'Ete 2026', label: 'Été 2026' },
   { value: 'Automne 2026', label: 'Automne 2026' },
   { value: 'Hiver 2027', label: 'Hiver 2027' },
-  { value: 'Ete 2027', label: 'Été 2027' }
+  { value: 'Ete 2027', label: 'Été 2027' },
 ];
 
-// Valeurs initiales vides pour un formulaire vide
 const EMPTY_EMPLOI = {
   titre: '',
   description: '',
@@ -45,20 +44,59 @@ function toDateInput(val) {
   return val.slice(0, 10);
 }
 
-export function OffreForm({ typeOffre, initial, onSubmit, onAnnuler, isEdit, loading, error }) {
-  const defaults = typeOffre === 'Stage'
-    ? { ...EMPTY_STAGE, ...initial }
-    : { ...EMPTY_EMPLOI, ...initial };
+export function OffreForm({
+  typeOffre,
+  initial,
+  domaines = [],
+  onSubmit,
+  onAnnuler,
+  isEdit,
+  loading,
+  error,
+}) {
+  const defaults =
+    typeOffre === 'Stage'
+      ? { ...EMPTY_STAGE, ...initial }
+      : { ...EMPTY_EMPLOI, ...initial };
 
   const [form, setForm] = useState({
     ...defaults,
+    idsDomaines: defaults.idsDomaines ?? [],
     dateExpiration: toDateInput(defaults.dateExpiration),
     dateDebutStage: toDateInput(defaults.dateDebutStage),
     dateFinStage: toDateInput(defaults.dateFinStage),
   });
 
+  const [domainesOuvert, setDomainesOuvert] = useState(false);
+
   function set(field, value) {
     setForm((prev) => ({ ...prev, [field]: value }));
+  }
+
+  function toggleDomaine(idDomaine) {
+    setForm((prev) => {
+      const existe = prev.idsDomaines.includes(idDomaine);
+
+      return {
+        ...prev,
+        idsDomaines: existe
+          ? prev.idsDomaines.filter((id) => id !== idDomaine)
+          : [...prev.idsDomaines, idDomaine],
+      };
+    });
+  }
+
+  function getDomainesLabel() {
+    if (form.idsDomaines.length === 0) {
+      return 'Sélectionner un ou plusieurs domaines';
+    }
+
+    if (form.idsDomaines.length === 1) {
+      const domaine = domaines.find((d) => d.idDomaine === form.idsDomaines[0]);
+      return domaine?.nom ?? '1 domaine sélectionné';
+    }
+
+    return `${form.idsDomaines.length} domaines sélectionnés`;
   }
 
   function handleSubmit(e) {
@@ -78,7 +116,7 @@ export function OffreForm({ typeOffre, initial, onSubmit, onAnnuler, isEdit, loa
       payload.dateDebutStage = form.dateDebutStage || undefined;
       payload.dateFinStage = form.dateFinStage || undefined;
       payload.dureeHeuresParSemaine = form.dureeHeuresParSemaine
-        ? parseInt(form.dureeHeuresParSemaine)
+        ? parseInt(form.dureeHeuresParSemaine, 10)
         : undefined;
       payload.remuneration = form.remuneration
         ? parseFloat(form.remuneration)
@@ -86,8 +124,12 @@ export function OffreForm({ typeOffre, initial, onSubmit, onAnnuler, isEdit, loa
       payload.session = form.session || undefined;
     } else {
       payload.typeContrat = form.typeContrat || undefined;
-      payload.salaireMin = form.salaireMin ? parseFloat(form.salaireMin) : undefined;
-      payload.salaireMax = form.salaireMax ? parseFloat(form.salaireMax) : undefined;
+      payload.salaireMin = form.salaireMin
+        ? parseFloat(form.salaireMin)
+        : undefined;
+      payload.salaireMax = form.salaireMax
+        ? parseFloat(form.salaireMax)
+        : undefined;
       payload.teleTravail = form.teleTravail || undefined;
     }
 
@@ -123,7 +165,6 @@ export function OffreForm({ typeOffre, initial, onSubmit, onAnnuler, isEdit, loa
             value={form.description}
             onChange={(e) => set('description', e.target.value)}
             required
-            style={{ padding: '8px 10px', border: '1px solid #b7d8ec', borderRadius: '6px', resize: 'vertical' }}
           />
         </label>
 
@@ -137,6 +178,7 @@ export function OffreForm({ typeOffre, initial, onSubmit, onAnnuler, isEdit, loa
               required
             />
           </label>
+
           <label>
             Adresse
             <input
@@ -147,7 +189,13 @@ export function OffreForm({ typeOffre, initial, onSubmit, onAnnuler, isEdit, loa
           </label>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: isEdit ? '1fr 1fr' : '1fr', gap: '14px' }}>
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: isEdit ? '1fr 1fr' : '1fr',
+            gap: '14px',
+          }}
+        >
           <label>
             Date d&apos;expiration
             <input
@@ -156,6 +204,7 @@ export function OffreForm({ typeOffre, initial, onSubmit, onAnnuler, isEdit, loa
               onChange={(e) => set('dateExpiration', e.target.value)}
             />
           </label>
+
           {isEdit && (
             <label>
               Statut
@@ -171,6 +220,46 @@ export function OffreForm({ typeOffre, initial, onSubmit, onAnnuler, isEdit, loa
           )}
         </div>
 
+        <div className="domaines-dropdown">
+          <span className="domaines-dropdown__title">Domaines d&apos;études</span>
+
+          <button
+            type="button"
+            className="domaines-dropdown__button"
+            onClick={() => setDomainesOuvert((prev) => !prev)}
+          >
+            <span>{getDomainesLabel()}</span>
+            <span aria-hidden="true">▾</span>
+          </button>
+
+          {domainesOuvert && (
+            <div className="domaines-dropdown__menu">
+              {domaines.length === 0 ? (
+                <p className="form-help">
+                  Aucun domaine disponible pour votre collège.
+                </p>
+              ) : (
+                domaines.map((domaine) => (
+                  <label
+                    className="domaines-dropdown__item"
+                    key={domaine.idDomaine}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={form.idsDomaines.includes(domaine.idDomaine)}
+                      onChange={() => toggleDomaine(domaine.idDomaine)}
+                    />
+                    <span>
+                      {domaine.nom}
+                      {domaine.nomCollege && <small>{domaine.nomCollege}</small>}
+                    </span>
+                  </label>
+                ))
+              )}
+            </div>
+          )}
+        </div>
+
         {typeOffre === 'Emploi' && (
           <>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }}>
@@ -182,10 +271,13 @@ export function OffreForm({ typeOffre, initial, onSubmit, onAnnuler, isEdit, loa
                 >
                   <option value="">-- Choisir --</option>
                   {TYPE_CONTRAT.map((t) => (
-                    <option key={t} value={t}>{t}</option>
+                    <option key={t} value={t}>
+                      {t}
+                    </option>
                   ))}
                 </select>
               </label>
+
               <label>
                 Télétravail
                 <select
@@ -194,7 +286,9 @@ export function OffreForm({ typeOffre, initial, onSubmit, onAnnuler, isEdit, loa
                 >
                   <option value="">-- Choisir --</option>
                   {TELE_TRAVAIL.map((t) => (
-                    <option key={t} value={t}>{t}</option>
+                    <option key={t} value={t}>
+                      {t}
+                    </option>
                   ))}
                 </select>
               </label>
@@ -211,6 +305,7 @@ export function OffreForm({ typeOffre, initial, onSubmit, onAnnuler, isEdit, loa
                   onChange={(e) => set('salaireMin', e.target.value)}
                 />
               </label>
+
               <label>
                 Salaire maximum
                 <input
@@ -236,10 +331,13 @@ export function OffreForm({ typeOffre, initial, onSubmit, onAnnuler, isEdit, loa
                 >
                   <option value="">-- Choisir --</option>
                   {SESSIONS.map((s) => (
-                    <option key={s.value} value={s.value}>{s.label}</option>
+                    <option key={s.value} value={s.value}>
+                      {s.label}
+                    </option>
                   ))}
                 </select>
               </label>
+
               <label>
                 Heures / semaine
                 <input
@@ -261,6 +359,7 @@ export function OffreForm({ typeOffre, initial, onSubmit, onAnnuler, isEdit, loa
                   onChange={(e) => set('dateDebutStage', e.target.value)}
                 />
               </label>
+
               <label>
                 Date de fin
                 <input
@@ -294,16 +393,9 @@ export function OffreForm({ typeOffre, initial, onSubmit, onAnnuler, isEdit, loa
         >
           Annuler
         </button>
-        <button
-          type="submit"
-          className="primary-action"
-          disabled={loading}
-        >
-          {loading
-            ? 'Enregistrement...'
-            : isEdit
-              ? 'Enregistrer'
-              : 'Publier'}
+
+        <button type="submit" className="primary-action" disabled={loading}>
+          {loading ? 'Enregistrement...' : isEdit ? 'Enregistrer' : 'Publier'}
         </button>
       </div>
     </form>
