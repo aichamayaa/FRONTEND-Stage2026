@@ -1650,3 +1650,107 @@ p {
   color: var(--color-muted);
   font-weight: 700;
 }
+
+/* GLOBAL DARK MODE */
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+
+  --color-primary: #38bdf8;
+  --color-primary-dark: #b9e6ff;
+  --color-primary-hover: #1698cc;
+  --color-secondary: #438bd3;
+  --color-accent: #85d442;
+
+  --color-bg: #0b1220;
+  --color-surface: #151f31;
+  --color-border: #35445b;
+
+  --color-text: #f1f5f9;
+  --color-muted: #aab7c8;
+  --color-danger: #ffb4ad;
+
+  --shadow-soft: 0 20px 46px rgba(0, 0, 0, 0.38);
+}
+
+.theme-toggle {
+  align-self: flex-end;
+  min-height: 40px;
+  margin-bottom: 20px;
+  padding: 8px 14px;
+  color: var(--color-primary-dark);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-weight: 800;
+}
+
+.theme-toggle:hover {
+  color: #ffffff;
+  background: var(--color-secondary);
+  border-color: var(--color-secondary);
+}
+
+:root[data-theme='dark'] .login-page {
+  background:
+    linear-gradient(
+      115deg,
+      #0f3152 0%,
+      #0f3152 44%,
+      var(--color-surface) 44%,
+      var(--color-surface) 100%
+    );
+}
+
+:root[data-theme='dark'] .login-visual {
+  background:
+    linear-gradient(
+      135deg,
+      #123d62,
+      #172b4b
+    );
+}
+
+:root[data-theme='dark'] input,
+:root[data-theme='dark'] select,
+:root[data-theme='dark'] textarea {
+  color: var(--color-text);
+  background: #0e1929;
+  border-color: var(--color-border);
+}
+
+:root[data-theme='dark'] input::placeholder,
+:root[data-theme='dark'] textarea::placeholder {
+  color: var(--color-muted);
+}
+
+:root[data-theme='dark'] .table th {
+  color: var(--color-primary-dark);
+  background: #1c3048;
+}
+
+:root[data-theme='dark'] .empty-state {
+  background: #101b2c;
+  border-color: var(--color-border);
+}
+
+:root[data-theme='dark'] .badge-muted,
+:root[data-theme='dark'] .secondary-action,
+:root[data-theme='dark'] .secondary-table-action {
+  color: var(--color-primary-dark);
+  background: #24364d;
+  border-color: var(--color-border);
+}
+
+:root[data-theme='dark'] .notice-success {
+  color: #b9f49e;
+  background: #183522;
+  border-color: #346b42;
+}
+
+:root[data-theme='dark'] .notice-error,
+:root[data-theme='dark'] .form-error {
+  color: #ffb4ad;
+  background: #3a1b1b;
+  border-color: #7f3535;
+}

@@ -5,6 +5,11 @@ import App from './App.jsx';
 import { AuthProvider } from './context/AuthContext.jsx';
 import './styles/global.css';
 
+const savedTheme = localStorage.getItem('application-theme');
+
+document.documentElement.dataset.theme =
+  savedTheme === 'dark' ? 'dark' : 'light';
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <BrowserRouter>
