@@ -1,9 +1,21 @@
+import { useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { LoginForm } from '../../components/auth/LoginForm';
 import { useAuth } from '../../hooks/useAuth';
 
 export function LoginPage() {
   const { isAuthenticated } = useAuth();
+  const [isDarkMode, setIsDarkMode] = useState(
+    () => document.documentElement.dataset.theme === 'dark'
+  );
+
+  function toggleTheme() {
+    const nextTheme = isDarkMode ? 'light' : 'dark';
+
+    document.documentElement.dataset.theme = nextTheme;
+    localStorage.setItem('application-theme', nextTheme);
+    setIsDarkMode(nextTheme === 'dark');
+  }
 
   if (isAuthenticated) {
     return <Navigate to="/" replace />;
@@ -53,6 +65,14 @@ export function LoginPage() {
       </section>
 
       <section className="login-panel">
+        <button
+          className="theme-toggle"
+          type="button"
+          aria-pressed={isDarkMode}
+          onClick={toggleTheme}
+        >
+          {isDarkMode ? '☀️ Mode clair' : '🌙 Mode sombre'}
+        </button>
         <p className="login-eyebrow">Accès sécurisé</p>
         <h2>Connexion</h2>
         <LoginForm />
