@@ -2,18 +2,8 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AppLayout } from '../../components/layout/AppLayout';
 import { getRecommandationsRecues } from '../../services/recommandationService';
+import { formatDate } from '../../utils/formatDate';
 
-function formatDate(date) {
-  if (!date) {
-    return 'Date inconnue';
-  }
-
-  return new Date(date).toLocaleDateString('fr-CA', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
-  });
-}
 
 export function RecommandationsRecuesPage() {
   const [recommandations, setRecommandations] = useState([]);
