@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { LoginForm } from '../../components/auth/LoginForm';
 import { useAuth } from '../../hooks/useAuth';
+import { applyAppearanceTheme } from '../../utils/collegeTheme';
 
 export function LoginPage() {
   const { isAuthenticated } = useAuth();
@@ -12,8 +13,7 @@ export function LoginPage() {
   function toggleTheme() {
     const nextTheme = isDarkMode ? 'light' : 'dark';
 
-    document.documentElement.dataset.theme = nextTheme;
-    localStorage.setItem('application-theme', nextTheme);
+    applyAppearanceTheme(nextTheme);
     setIsDarkMode(nextTheme === 'dark');
   }
 

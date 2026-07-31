@@ -207,8 +207,8 @@ export function ProfilEntreprisePage() {
                                             minHeight: '120px',
                                             padding: '8px 10px',
                                             color: 'var(--color-text)',
-                                            background: '#f7fbff',
-                                            border: '1px solid #b7d8ec',
+                                            background: 'var(--color-input-bg)',
+                                            border: '1px solid var(--color-input-border)',
                                             borderRadius: 'var(--radius-sm)',
                                             resize: 'vertical'
                                         }}
