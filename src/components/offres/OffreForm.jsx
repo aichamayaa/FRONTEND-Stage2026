@@ -44,6 +44,28 @@ function toDateInput(val) {
   return val.slice(0, 10);
 }
 
+function getCollegesDisponibles(domaine) {
+  return domaine.colleges?.filter(
+    (college) => college.actif && college.accepteStagiaires
+  ) ?? [];
+}
+
+function getDomaineDescription(domaine) {
+  const collegesDisponibles = getCollegesDisponibles(domaine);
+
+  if (collegesDisponibles.length > 0) {
+    return `Disponible dans : ${collegesDisponibles
+      .map((college) => college.nomCollege)
+      .join(', ')}`;
+  }
+
+  if (domaine.nomCollege) {
+    return domaine.nomCollege;
+  }
+
+  return 'Disponible pour tous les cégeps liés';
+}
+
 export function OffreForm({
   typeOffre,
   initial,
@@ -236,7 +258,7 @@ export function OffreForm({
             <div className="domaines-dropdown__menu">
               {domaines.length === 0 ? (
                 <p className="form-help">
-                  Aucun domaine disponible pour votre collège.
+                  Aucun domaine disponible.
                 </p>
               ) : (
                 domaines.map((domaine) => (
@@ -250,8 +272,8 @@ export function OffreForm({
                       onChange={() => toggleDomaine(domaine.idDomaine)}
                     />
                     <span>
-                      {domaine.nom}
-                      {domaine.nomCollege && <small>{domaine.nomCollege}</small>}
+                      <strong>{domaine.nom}</strong>
+                      <small>{getDomaineDescription(domaine)}</small>
                     </span>
                   </label>
                 ))
@@ -271,9 +293,7 @@ export function OffreForm({
                 >
                   <option value="">-- Choisir --</option>
                   {TYPE_CONTRAT.map((t) => (
-                    <option key={t} value={t}>
-                      {t}
-                    </option>
+                    <option key={t} value={t}>{t}</option>
                   ))}
                 </select>
               </label>
@@ -286,9 +306,7 @@ export function OffreForm({
                 >
                   <option value="">-- Choisir --</option>
                   {TELE_TRAVAIL.map((t) => (
-                    <option key={t} value={t}>
-                      {t}
-                    </option>
+                    <option key={t} value={t}>{t}</option>
                   ))}
                 </select>
               </label>
@@ -331,9 +349,7 @@ export function OffreForm({
                 >
                   <option value="">-- Choisir --</option>
                   {SESSIONS.map((s) => (
-                    <option key={s.value} value={s.value}>
-                      {s.label}
-                    </option>
+                    <option key={s.value} value={s.value}>{s.label}</option>
                   ))}
                 </select>
               </label>
