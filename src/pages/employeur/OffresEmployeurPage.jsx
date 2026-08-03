@@ -31,6 +31,13 @@ function messageErreur(e) {
   return data?.message ?? data?.title ?? e.message;
 }
 
+function domaineAccepteStagiaires(domaine) {
+  // Nouvelle logique : le domaine est global et peut être lié à plusieurs cégeps.
+  return domaine.colleges?.some(
+    (college) => college.actif && college.accepteStagiaires
+  );
+}
+
 export function OffresEmployeurPage() {
   const [vue, setVue] = useState(VUE_LISTE);
   const [offres, setOffres] = useState([]);
@@ -75,9 +82,9 @@ export function OffresEmployeurPage() {
       try {
         const data = await getDomainesEtudes();
 
-        // Pour les offres de stage, on garde seulement les domaines actifs qui acceptent les stagiaires.
+        // On garde les domaines globaux actifs qui sont disponibles dans au moins un cégep.
         const domainesDisponibles = data.filter(
-          (domaine) => domaine.actif && domaine.accepteStagiaires
+          (domaine) => domaine.actif && domaineAccepteStagiaires(domaine)
         );
 
         setDomaines(domainesDisponibles);
@@ -212,12 +219,11 @@ export function OffresEmployeurPage() {
       <AppLayout>
         <div className="page-header">
           <p className="page-kicker">
-            {o.typeOffre === 'Stage' ? 'Stage' : 'Emploi'} &middot;{' '}
-            {formatStatus(o.statut)}
+            {o.typeOffre === 'Stage' ? 'Stage' : 'Emploi'} · {formatStatus(o.statut)}
           </p>
           <h1>{o.titre}</h1>
           <p>
-            {o.nomEmployeur} &mdash; {o.ville}
+            {o.nomEmployeur} — {o.ville}
           </p>
         </div>
 

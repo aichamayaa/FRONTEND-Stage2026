@@ -1,3 +1,4 @@
+
 import { formatDate } from '../../utils/formatDate';
 import { telechargerDocument } from '../../services/candidatureService';
 
@@ -28,11 +29,47 @@ export function CandidatureDetail({ candidature, onRetour }) {
                 Retour aux candidatures
             </button>
 
-            <div className="panel" style={{ marginBottom: '16px', background: '#003D7D', color: '#fff', borderRadius: '6px', padding: '20px 24px' }}>
-                <p style={{ margin: '0 0 4px', fontSize: '0.85rem', opacity: 0.8 }}>Offre</p>
-                <h2 style={{ margin: '0 0 6px', fontSize: '1.3rem' }}>{candidature.titreOffre}</h2>
-                <p style={{ margin: 0, fontSize: '0.9rem', opacity: 0.85 }}>
-                    Candidature re&ccedil;ue le {formatDate(candidature.dateCandidature)}
+            <div
+                className="panel"
+                style={{
+                    marginBottom: '16px',
+                    background:
+                        'linear-gradient(135deg, var(--color-primary), var(--color-secondary))',
+                    color: '#ffffff',
+                    borderRadius: '6px',
+                    padding: '20px 24px',
+                }}
+            >
+                <p
+                    style={{
+                        margin: '0 0 4px',
+                        fontSize: '0.85rem',
+                        opacity: 0.85,
+                        color: '#ffffff',
+                    }}
+                >
+                    Offre
+                </p>
+
+                <h2
+                    style={{
+                        margin: '0 0 6px',
+                        fontSize: '1.3rem',
+                        color: '#ffffff',
+                    }}
+                >
+                    {candidature.titreOffre}
+                </h2>
+
+                <p
+                    style={{
+                        margin: 0,
+                        fontSize: '0.9rem',
+                        opacity: 0.9,
+                        color: '#ffffff',
+                    }}
+                >
+                    Candidature reçue le {formatDate(candidature.dateCandidature)}
                 </p>
             </div>
 
@@ -42,14 +79,27 @@ export function CandidatureDetail({ candidature, onRetour }) {
                         <h2 className="candidature-detail__nom">
                             {candidature.prenomEtudiant} {candidature.nomEtudiant}
                         </h2>
+
                         {candidature.courrielEtudiant && (
-                            <p className="candidature-detail__email">{candidature.courrielEtudiant}</p>
+                            <p className="candidature-detail__email">
+                                {candidature.courrielEtudiant}
+                            </p>
                         )}
+
                         {candidature.emailEtudiant && !candidature.courrielEtudiant && (
-                            <p className="candidature-detail__email">{candidature.emailEtudiant}</p>
+                            <p className="candidature-detail__email">
+                                {candidature.emailEtudiant}
+                            </p>
                         )}
                     </div>
-                    <span className={`badge ${candidature.statut === 'Acceptee' ? 'badge-success' : 'badge-muted'}`}>
+
+                    <span
+                        className={`badge ${
+                            candidature.statut === 'Acceptee'
+                                ? 'badge-success'
+                                : 'badge-muted'
+                        }`}
+                    >
                         {STATUT_LABELS[candidature.statut] ?? candidature.statut}
                     </span>
                 </div>
@@ -57,18 +107,24 @@ export function CandidatureDetail({ candidature, onRetour }) {
                 {candidature.messageMotivation && (
                     <div className="candidature-detail__message">
                         <h3>Message de motivation</h3>
-                        <p style={{ whiteSpace: 'pre-wrap' }}>{candidature.messageMotivation}</p>
+                        <p style={{ whiteSpace: 'pre-wrap' }}>
+                            {candidature.messageMotivation}
+                        </p>
                     </div>
                 )}
 
-                {/* Ajout de la réponse de l'employeur si elle existe, avec la date de réponse */}
                 {candidature.messageReponseEmployeur && (
                     <div className="candidature-detail__message">
-                        <h3>Réponse de l&#39;employeur</h3>
-                        <p style={{ whiteSpace: 'pre-wrap' }}>{candidature.messageReponseEmployeur}</p>
+                        <h3>Réponse de l&apos;employeur</h3>
+
+                        <p style={{ whiteSpace: 'pre-wrap' }}>
+                            {candidature.messageReponseEmployeur}
+                        </p>
+
                         {candidature.dateReponseEmployeur && (
                             <p className="candidature-detail__date">
-                                Réponse envoyée le {formatDate(candidature.dateReponseEmployeur)}
+                                Réponse envoyée le{' '}
+                                {formatDate(candidature.dateReponseEmployeur)}
                             </p>
                         )}
                     </div>
@@ -76,7 +132,7 @@ export function CandidatureDetail({ candidature, onRetour }) {
 
                 {candidature.emploiConfirme && (
                     <div className="candidature-detail__message">
-                        <h3>Confirmation de l&#39;emploi</h3>
+                        <h3>Confirmation de l&apos;emploi</h3>
 
                         <p style={{ whiteSpace: 'pre-wrap' }}>
                             {candidature.messageConfirmationEmploi ||
@@ -95,6 +151,7 @@ export function CandidatureDetail({ candidature, onRetour }) {
                 {candidature.documents?.length > 0 && (
                     <div className="candidature-detail__documents">
                         <h3>Documents</h3>
+
                         <div className="documents-liste">
                             {candidature.documents.map((doc) => (
                                 <div key={doc.idDocument} className="document-item">
@@ -102,15 +159,25 @@ export function CandidatureDetail({ candidature, onRetour }) {
                                         <span className="document-item__type">
                                             {TYPE_LABELS[doc.typeDocument] ?? doc.typeDocument}
                                         </span>
-                                        <span className="document-item__nom">{doc.nomFichier}</span>
+
+                                        <span className="document-item__nom">
+                                            {doc.nomFichier}
+                                        </span>
+
                                         <span className="document-item__taille">
                                             {(doc.tailleFichier / 1024).toFixed(0)} Ko
                                         </span>
                                     </div>
+
                                     <button
                                         type="button"
                                         className="table-action"
-                                        onClick={() => telechargerDocument(doc.idDocument, doc.nomFichier)}
+                                        onClick={() =>
+                                            telechargerDocument(
+                                                doc.idDocument,
+                                                doc.nomFichier
+                                            )
+                                        }
                                     >
                                         Télécharger
                                     </button>
@@ -121,7 +188,9 @@ export function CandidatureDetail({ candidature, onRetour }) {
                 )}
 
                 {(!candidature.documents || candidature.documents.length === 0) && (
-                    <p className="candidature-detail__no-doc">Aucun document joint.</p>
+                    <p className="candidature-detail__no-doc">
+                        Aucun document joint.
+                    </p>
                 )}
             </div>
         </div>
