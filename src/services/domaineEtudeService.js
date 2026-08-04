@@ -1,7 +1,10 @@
 import apiClient from './apiClient';
 
-export async function getDomainesEtudes() {
-  const response = await apiClient.get('/domaines-etudes');
+export async function getDomainesEtudes(includeInactive = false) {
+  const response = await apiClient.get('/domaines-etudes', {
+    params: { includeInactive }
+  });
+
   return response.data;
 }
 
@@ -23,17 +26,17 @@ export async function updateDomaineEtude(id, domaineEtude) {
 }
 
 export async function deleteDomaineEtude(id) {
-  // SuperAdmin : desactive le domaine global.
-  // Admin : desactive le domaine seulement pour son college.
+  // SuperAdmin : désactive le domaine global.
+  // Admin : désactive le domaine seulement pour son collège.
   await apiClient.delete(`/domaines-etudes/${id}`);
 }
 
 export async function ajouterCollegeAuDomaine(idDomaine, idCollege, payload) {
-  // SuperAdmin : ajoute un college a un domaine existant.
+  // SuperAdmin : ajoute un collège à un domaine existant.
   await apiClient.post(`/domaines-etudes/${idDomaine}/colleges/${idCollege}`, payload);
 }
 
 export async function modifierLienCollegeDomaine(idDomaine, idCollege, payload) {
-  // Modifie accepteStagiaires / actif pour un college donne.
+  // Modifie accepteStagiaires / actif pour un collège donné.
   await apiClient.put(`/domaines-etudes/${idDomaine}/colleges/${idCollege}`, payload);
 }

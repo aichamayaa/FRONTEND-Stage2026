@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { AppLayout } from '../../components/layout/AppLayout';
 import { useAuth } from '../../hooks/useAuth';
 import { getColleges } from '../../services/collegeService';
@@ -7,6 +7,7 @@ import {
   createDomaineEtude,
   deleteDomaineEtude,
   getDomainesEtudes,
+  modifierLienCollegeDomaine,
   updateDomaineEtude
 } from '../../services/domaineEtudeService';
 
@@ -45,6 +46,7 @@ export function DomainesEtudesPage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [linkSaving, setLinkSaving] = useState(false);
+  const [linkUpdatingId, setLinkUpdatingId] = useState(null);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
 
@@ -66,31 +68,41 @@ export function DomainesEtudesPage() {
     );
   }, [collegesActifs, selectedDomaine]);
 
-  async function loadData() {
+  const loadData = useCallback(async () => {
     setLoading(true);
     setError('');
 
     try {
       const [domainesData, collegesData] = await Promise.all([
-        getDomainesEtudes(),
+        getDomainesEtudes(isAdmin),
         getColleges()
       ]);
 
-      setDomaines(domainesData);
+      const domainesVisibles = isAdmin
+        ? domainesData.map((domaine) => ({
+            ...domaine,
+            colleges: (domaine.colleges ?? []).filter(
+              (college) =>
+                Number(college.idCollege) === Number(user?.idCollege)
+            )
+          }))
+        : domainesData;
+
+      setDomaines(domainesVisibles);
       setColleges(collegesData);
 
-      return domainesData;
+      return domainesVisibles;
     } catch (e) {
       setError(getErrorMessage(e) || 'Impossible de charger les données.');
       return [];
     } finally {
       setLoading(false);
     }
-  }
+  }, [isAdmin, user?.idCollege]);
 
   useEffect(() => {
     loadData();
-  }, []);
+  }, [loadData]);
 
   function handleChange(event) {
     const { name, value, type, checked } = event.target;
@@ -175,6 +187,10 @@ export function DomainesEtudesPage() {
   async function handleSubmit(event) {
     event.preventDefault();
 
+    if (selectedDomaine && isAdmin) {
+      return;
+    }
+
     setSaving(true);
     setMessage('');
     setError('');
@@ -258,6 +274,54 @@ export function DomainesEtudesPage() {
     }
   }
 
+  function handleExistingCollegeLinkChange(idCollege, field, value) {
+    setSelectedDomaine((prev) => {
+      if (!prev) return prev;
+
+      return {
+        ...prev,
+        colleges: (prev.colleges ?? []).map((college) =>
+          Number(college.idCollege) === Number(idCollege)
+            ? { ...college, [field]: value }
+            : college
+        )
+      };
+    });
+  }
+
+  async function handleSaveCollegeLink(college) {
+    if (!selectedDomaine) return;
+
+    const idDomaine = selectedDomaine.idDomaine;
+
+    setLinkUpdatingId(college.idCollege);
+    setMessage('');
+    setError('');
+
+    try {
+      await modifierLienCollegeDomaine(
+        idDomaine,
+        college.idCollege,
+        {
+          accepteStagiaires: college.accepteStagiaires === true,
+          actif: college.actif === true
+        }
+      );
+
+      const domainesData = await loadData();
+      const domaineMisAJour = domainesData.find(
+        (domaine) => domaine.idDomaine === idDomaine
+      );
+
+      setSelectedDomaine(domaineMisAJour ?? null);
+      setMessage('Association cégep-domaine modifiée avec succès.');
+    } catch (e) {
+      setError(getErrorMessage(e));
+    } finally {
+      setLinkUpdatingId(null);
+    }
+  }
+
   async function handleDelete(domaine) {
     const confirmation = window.confirm(
       `Désactiver le domaine "${domaine.nom}" ?`
@@ -331,7 +395,9 @@ export function DomainesEtudesPage() {
         <div className="panel">
           <h2>
             {selectedDomaine
-              ? 'Modifier un domaine d’études'
+              ? isAdmin
+                ? 'Gérer le domaine pour votre cégep'
+                : 'Modifier un domaine d’études'
               : 'Créer un domaine d’études'}
           </h2>
 
@@ -345,6 +411,7 @@ export function DomainesEtudesPage() {
                   value={form.nom}
                   onChange={handleChange}
                   placeholder="Ex. Informatique"
+                  disabled={selectedDomaine && isAdmin}
                 />
               </label>
 
@@ -356,6 +423,7 @@ export function DomainesEtudesPage() {
                   value={form.code}
                   onChange={handleChange}
                   placeholder="Ex. INFO"
+                  disabled={selectedDomaine && isAdmin}
                 />
               </label>
 
@@ -406,6 +474,7 @@ export function DomainesEtudesPage() {
                     name="actif"
                     checked={form.actif}
                     onChange={handleChange}
+                    disabled={selectedDomaine && isAdmin}
                     style={{ marginRight: '8px' }}
                   />
                   Domaine actif
@@ -414,13 +483,15 @@ export function DomainesEtudesPage() {
             </div>
 
             <div className="form-actions">
-              <button type="submit" className="primary-action" disabled={saving}>
-                {saving
-                  ? 'Enregistrement...'
-                  : selectedDomaine
-                    ? 'Modifier'
-                    : 'Créer'}
-              </button>
+              {(!selectedDomaine || isSuperAdmin) && (
+                <button type="submit" className="primary-action" disabled={saving}>
+                  {saving
+                    ? 'Enregistrement...'
+                    : selectedDomaine
+                      ? 'Modifier'
+                      : 'Créer'}
+                </button>
+              )}
 
               {selectedDomaine && (
                 <button
@@ -434,6 +505,80 @@ export function DomainesEtudesPage() {
               )}
             </div>
           </form>
+
+          {selectedDomaine && (
+            <div className="admin-form" style={{ marginTop: '24px' }}>
+              <h3>
+                {isAdmin
+                  ? 'Paramètres de votre cégep'
+                  : 'Gérer les cégeps liés'}
+              </h3>
+
+              {(selectedDomaine.colleges ?? []).length === 0 ? (
+                <p className="form-help">
+                  Aucune association cégep-domaine n’est disponible.
+                </p>
+              ) : (
+                <div className="table-shell">
+                  <table className="table">
+                    <thead>
+                      <tr>
+                        <th>Cégep</th>
+                        <th>Accepte les stagiaires</th>
+                        <th>Lien actif</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {(selectedDomaine.colleges ?? []).map((college) => (
+                        <tr key={college.idCollege}>
+                          <td>{college.nomCollege}</td>
+                          <td>
+                            <input
+                              type="checkbox"
+                              checked={college.accepteStagiaires === true}
+                              onChange={(event) =>
+                                handleExistingCollegeLinkChange(
+                                  college.idCollege,
+                                  'accepteStagiaires',
+                                  event.target.checked
+                                )
+                              }
+                            />
+                          </td>
+                          <td>
+                            <input
+                              type="checkbox"
+                              checked={college.actif === true}
+                              onChange={(event) =>
+                                handleExistingCollegeLinkChange(
+                                  college.idCollege,
+                                  'actif',
+                                  event.target.checked
+                                )
+                              }
+                            />
+                          </td>
+                          <td>
+                            <button
+                              type="button"
+                              className="secondary-action"
+                              disabled={linkUpdatingId === college.idCollege}
+                              onClick={() => handleSaveCollegeLink(college)}
+                            >
+                              {linkUpdatingId === college.idCollege
+                                ? 'Enregistrement...'
+                                : 'Enregistrer'}
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
+          )}
 
           {isSuperAdmin && selectedDomaine && (
             <form onSubmit={handleAddCollegeToDomaine} className="admin-form" style={{ marginTop: '24px' }}>
@@ -536,23 +681,28 @@ export function DomainesEtudesPage() {
                       </td>
                       <td>
                         <div className="table-actions">
-                          {isSuperAdmin && (
+                          {(isSuperAdmin || isAdmin) && (
                             <button
                               type="button"
                               className="secondary-action"
                               onClick={() => handleEdit(domaine)}
                             >
-                              Modifier
+                              {isAdmin ? 'Gérer' : 'Modifier'}
                             </button>
                           )}
 
-                          <button
-                            type="button"
-                            className="danger-action"
-                            onClick={() => handleDelete(domaine)}
-                          >
-                            Désactiver
-                          </button>
+                          {(isSuperAdmin ||
+                            domaine.colleges?.some(
+                              (college) => college.actif !== false
+                            )) && (
+                            <button
+                              type="button"
+                              className="danger-action"
+                              onClick={() => handleDelete(domaine)}
+                            >
+                              Désactiver
+                            </button>
+                          )}
                         </div>
                       </td>
                     </tr>
