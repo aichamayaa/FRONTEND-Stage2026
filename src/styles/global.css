@@ -1,5 +1,5 @@
 ﻿:root {
-  /* Theme par defaut : Cegep Gerald-Godin */
+  /* Thème par défaut : Cégep Gérald-Godin */
   --color-primary: #009fda;
   --color-primary-dark: #003f7d;
   --color-primary-hover: #007fba;
@@ -1886,7 +1886,7 @@ textarea {
   background: rgba(56, 189, 248, 0.12);
 }
 
-/* Domaines d'etudes - selection multi-cegeps */
+/* Domaines d’études - sélection multi-cégeps */
 .form-field-full {
   grid-column: 1 / -1;
 }
@@ -1932,4 +1932,44 @@ textarea {
 
 .text-muted {
   color: var(--color-muted);
+}
+
+/* Dark mode - multi-college checkbox list */
+:root[data-theme='dark'] .checkbox-list {
+  color: var(--color-text);
+  background: var(--color-input-bg);
+  border-color: var(--color-input-border);
+}
+
+:root[data-theme='dark'] .checkbox-row {
+  color: var(--color-text);
+}
+
+
+/* QA - alignement global des cases à cocher */
+input[type='checkbox'] {
+  display: inline-block;
+  width: 18px;
+  min-width: 18px;
+  max-width: 18px;
+  height: 18px;
+  min-height: 18px;
+  max-height: 18px;
+  margin: 0 !important;
+  padding: 0;
+  flex: 0 0 18px;
+  vertical-align: middle;
+}
+
+.admin-form label > span,
+.checkbox-row,
+.domaines-dropdown__item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.table th,
+.table td {
+  vertical-align: middle;
 }
