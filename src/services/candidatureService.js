@@ -1,12 +1,12 @@
 import apiClient from './apiClient';
 
-// US-10 : candidatures recues pour une offre
+// US-10 : candidatures reçues pour une offre
 export async function getCandidaturesOffre(idOffre) {
   const { data } = await apiClient.get(`/offres/${idOffre}/candidatures`);
   return data;
 }
 
-// Candidatures de l'etudiant connecte
+// Candidatures de l'étudiant connecté
 export async function getMesCandidatures() {
   const { data } = await apiClient.get('/candidatures/mes');
   return data;
