@@ -4,8 +4,8 @@ import { telechargerDocument } from '../../services/candidatureService';
 const STATUT_LABELS = {
     EnAttente: 'En attente',
     Vue: 'Vue',
-    Acceptee: 'Accept\u00e9e',
-    Refusee: 'Refus\u00e9e',
+    Acceptee: 'Acceptée',
+    Refusee: 'Refusée',
 };
 
 const TYPE_LABELS = {

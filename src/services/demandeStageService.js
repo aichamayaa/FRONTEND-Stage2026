@@ -6,7 +6,7 @@ export async function creerDemandeStage(payload) {
   return data;
 }
 
-// Demandes de stage de l'etudiant connecte
+// Demandes de stage de l'étudiant connecté
 export async function getMesDemandesStage() {
   const { data } = await apiClient.get('/demandes-stage/mes');
   return data;

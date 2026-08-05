@@ -19,7 +19,7 @@ export async function creerOffreStageDirecte(payload) {
 }
 
 
-// US-21 : offres de stage directes recues par l'etudiant
+// US-21 : offres de stage directes reçues par l'étudiant
 export async function getMesOffresRecues() {
     const { data } = await apiClient.get('/offres-stage-directes/recues');
     return data;
